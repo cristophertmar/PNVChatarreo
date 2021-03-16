@@ -1,0 +1,400 @@
+<div class="main-content">
+
+    <form autocomplete="off">
+        <!-- <div style="padding-left: 20px; padding-right: 20px; padding-bottom: 10px; width: 100%;">
+            <div class="row">
+                <div class="col-md-11">
+                    <h3>Chatarreo Voluntario</h3>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="row" style="margin-top: -5px; margin-bottom: 0px;">
+            <div class="col-md-8">
+                <div class="misma-linea">
+                    <label style="line-height: 2.8; padding-left: 20px; font-size: 15px; margin-right: 20px;">Nº&nbsp;Placa:</label>
+                    <mat-form-field appearance="outline" class="input-small">
+                        <input type="text" matInput>
+                    </mat-form-field>
+                    <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="misma-linea" style="margin-top: -20px;">
+                    <label style="line-height: 5; padding-left: 20px; font-size: 15px; margin-right: 20px;">Nº&nbsp;Solicitud:</label>
+                    <h3 style="color: #D44650; font-weight: 600;">12345-2021-000042</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Datos del Propietario -->
+                    <div class="card">
+                        <fieldset>
+                            <legend>
+                                Datos del propietario
+                                <mat-slide-toggle color="warn" style="margin-left: 20px;">¿representante?</mat-slide-toggle>
+                            </legend>
+                            <div class="container-fielset">
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Tipo&nbsp;Documento:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label>Nº&nbsp;Documento:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="misma-linea">
+                                    <label>Propietario:</label>
+                                    <mat-form-field appearance="outline" class="imput-medium">
+                                        <input type="text" matInput>
+                                    </mat-form-field>
+                                </div>
+
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- Datos del Vehículo -->
+                    <div class="card">
+                        <fieldset>
+                            <legend>
+                                Datos del vehículo
+                            </legend>
+                            <div class="container-fielset">
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Nº&nbsp;Chasis:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label>Nº&nbsp;Motor:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label class="label-sm">VIN:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Modelo:</label>
+                                            <mat-form-field appearance="outline" class="imput-medium">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label class="label-sm">Marca:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Año&nbsp;fabricación:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label>Combustible:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label class="label-sm">Categoría:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Datos del Representante -->
+                    <div class="card">
+                        <fieldset>
+                            <legend>
+                                Datos del representante
+                            </legend>
+                            <div class="container-fielset">
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Tipo&nbsp;Documento:</label>
+                                            <mat-form-field appearance="outline" style="width: 340px;">
+                                                <mat-select>
+                                                    <mat-option value="option">DNI</mat-option>
+                                                    <mat-option value="option">Carnet Extranjería</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label>Nº&nbsp;Documento:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                            <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
+                                                <mat-icon>search</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Representante:</label>
+                                            <mat-form-field appearance="outline" style="width: 340px;">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label style="width: 55px;">Correo:</label>
+                                            <mat-form-field appearance="outline" style="width: 185px;">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label style="width: 55px;">Celular:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Datos de la solicitud -->
+                    <div class="card">
+                        <fieldset>
+                            <legend>
+                                Datos de la solicitud
+                            </legend>
+                            <div class="container-fielset">
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Fecha Solicitud:</label>
+                                            <mat-form-field appearance="outline" style="width: 151px;">
+                                                <input type="date" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label>Pgm. Chatarreo:</label>
+                                            <mat-form-field appearance="outline" style="width: 311px;">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                            <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
+                                                <mat-icon>more_vert</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Ent.&nbsp;Promotora:</label>
+                                            <mat-form-field appearance="outline" class="imput-medium">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <mat-form-field appearance="outline" style="width: 201px;">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                            <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -1px;">
+                                                <mat-icon>dialpad</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+
+                    <div class="card">
+                        <fieldset>
+                            <legend>
+                                Documentación requerida
+                            </legend>
+                            <div class="container-fielset">
+                                <div style="height: 250px; overflow: auto;">
+                                    <div class="misma-linea">
+                                        <mat-checkbox color="warn">Documento 1</mat-checkbox>
+                                        <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
+                                            <img width="20px" src="assets/img/icons-form/pdf.svg">
+                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                <mat-icon>remove_circle_outline</mat-icon>
+                                              </button>
+                                        </div>
+                                    </div>
+                                    <div class="misma-linea">
+                                        <mat-checkbox color="warn">Documento 2</mat-checkbox>
+                                        <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
+                                            <img width="20px" src="assets/img/icons-form/pdf.svg">
+                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                <mat-icon>remove_circle_outline</mat-icon>
+                                              </button>
+                                        </div>
+                                    </div>
+                                    <div class="misma-linea">
+                                        <mat-checkbox color="warn">Documento 3</mat-checkbox>
+                                        <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
+                                            <img width="20px" src="assets/img/icons-form/pdf.svg">
+                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                <mat-icon>remove_circle_outline</mat-icon>
+                                              </button>
+                                        </div>
+                                    </div>
+                                    <div class="misma-linea">
+                                        <mat-checkbox color="warn">Documento 4</mat-checkbox>
+                                        <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
+                                            <img width="20px" src="assets/img/icons-form/pdf.svg">
+                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                <mat-icon>remove_circle_outline</mat-icon>
+                                              </button>
+                                        </div>
+                                    </div>
+                                    <div class="misma-linea">
+                                        <mat-checkbox color="warn">Documento 5</mat-checkbox>
+                                        <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
+                                            <img width="20px" src="assets/img/icons-form/pdf.svg">
+                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                <mat-icon>remove_circle_outline</mat-icon>
+                                              </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="card">
+                        <mat-tab-group color="warn">
+                            <mat-tab label="Obervaciones">
+                                <div style="height: 283px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
+                                    <mat-radio-group color="warn">
+                                        <mat-radio-button value="1">Desactivado</mat-radio-button>
+                                        <mat-radio-button value="2">Observado</mat-radio-button>
+                                        <mat-radio-button value="2">Subsanado</mat-radio-button>
+                                    </mat-radio-group>
+                                    <mat-form-field appearance="outline" class="w100p">
+                                        <textarea matInput rows="13"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Galería de imágenes">
+                                <div class="gallerize-example">
+                                    <div class="misma-linea" style="margin-bottom: 8px;">
+                                        <h4>Agregar imagen</h4>
+                                        <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: 25px;">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                    </div>
+                                    <div style="height: 200px; overflow: auto;display: flex; flex-wrap: wrap;">
+                                        <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
+                                            <img style="width: 100%;height: 90px;object-fit: cover;" [lightbox]="i" [gallery]="'anotherLightbox'" [src]="item.data.thumb">
+                                            <a href="javascript:void(0)" style="position: absolute; top:0; right: 0;"><img style="width: 20px;" src="assets/img/icons-form/delete.svg"></a>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+
+
+                    </div>
+
+                    <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 20px;">
+                        <div class="row">
+                            <div class="col-md-6" style="margin-right: -20px;">
+                                <button class="btn-block" mat-stroked-button color="warn">Cancelar</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn-block" mat-raised-button color="warn">Guardar</button>
+                            </div>
+                        </div>
+                        <div class="row ocultar">
+                            <div class="col-md-4" style="margin-right: -20px;">
+                                <button class="btn-block" mat-stroked-button color="warn">Cancelar</button>
+                            </div>
+                            <div class="col-md-4" style="margin-right: -20px;">
+                                <button (click)="abrirModal_aprobar()" class="btn-block" mat-raised-button color="warn">Aprobar</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button (click)="abrirModal_observar()" class="btn-block" mat-raised-button color="warn">Observar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+
+</div>

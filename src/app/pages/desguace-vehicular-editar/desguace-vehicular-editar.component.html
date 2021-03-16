@@ -1,0 +1,298 @@
+<div class="main-content">
+
+    <form autocomplete="off">
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+
+                    <!-- Datos de la solicitud -->
+                    <div class="card">
+                        <fieldset>
+                            <legend>
+                                Datos de la solicitud
+                            </legend>
+                            <div class="container-fielset">
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Nº Solicitud:</label>
+                                            <mat-form-field appearance="outline" style="width: 311px;">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label>Fecha Solicitud:</label>
+                                            <mat-form-field appearance="outline" style="width: 151px;">
+                                                <input type="date" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="misma-linea">
+                                        <label>Pgm. Chatarreo:</label>
+                                        <mat-form-field appearance="outline" style="width: 600px;">
+                                            <input type="text" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Ent.&nbsp;Promotora:</label>
+                                            <mat-form-field appearance="outline" class="imput-medium">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <mat-form-field appearance="outline" style="width: 201px;">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <br>
+                    <div class="alert alert-danger" role="alert">
+                        El desguace vehicular implica la descomposición del vehículo en partes, considerando los componentes mecánicos y estructurales.
+                    </div>
+                    <br>
+                    <!-- Desguace vehicular: -->
+                    <div class="card">
+                        <fieldset>
+                            <legend>
+                                Desguace vehicular
+                            </legend>
+                            <div class="container-fielset">
+                                <div class="misma-linea" style="margin-top: 10px;">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label class="label-sm">Fecha&nbsp;Inicio:</label>
+                                            <mat-form-field appearance="outline" style="width: 151px; margin-left: 8px;">
+                                                <input type="date" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label class="label-sm">Hora&nbsp;Inicio:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label class="label-sm">Fecha&nbsp;Fin:</label>
+                                            <mat-form-field appearance="outline" style="width: 151px; margin-left: 8px;">
+                                                <input type="date" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label class="label-sm">Hora&nbsp;Fin:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 40px;" class="row">
+                                    <div class="col-md-12">
+                                        <mat-checkbox color="warn" class="example-margin"> Se descompuso el vehículo en partes</mat-checkbox>
+                                    </div>
+                                    <div>
+                                        <div class="col-md-12">
+                                            <mat-checkbox color="warn" class="example-margin">Se destinaron las partes a las áreas competentes</mat-checkbox>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="col-md-12" style="margin-bottom: 135px;">
+                                            <mat-checkbox color="warn" class="example-margin">Otros componentes necesarios</mat-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <!-- Tablas -->
+                    <div class="card" style="padding: 20px 20px 1px 20px !important;">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center bg-vehiculo" colspan="4" scope="col">
+                                        Datos del vehículo
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Placa</th>
+                                    <td>AEF-717</td>
+                                    <th>Nº Chasis</th>
+                                    <td>ADR12345</td>
+                                </tr>
+                                <tr>
+                                    <th>Nº Motor</th>
+                                    <td>ADR12345</td>
+                                    <th>VIN</th>
+                                    <td>ADR12345</td>
+                                </tr>
+                                <tr>
+                                    <th>Categoría</th>
+                                    <td>Sedan</td>
+                                    <th>Marca</th>
+                                    <td>Toyota</td>
+
+                                </tr>
+                                <tr>
+                                    <th>Modelo</th>
+                                    <td colspan="3">Yaris 2015</td>
+                                </tr>
+                                <tr>
+                                    <th>Año</th>
+                                    <td>2015</td>
+                                    <th>Combustible</th>
+                                    <td>Gasolina</td>
+
+                                </tr>
+                                <tr>
+                                    <th>Peso Estimado</th>
+                                    <td>512 Kg.</td>
+                                    <th>Peso Real</th>
+                                    <td>500 Kg.</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card" style="padding: 20px 20px 1px 20px !important;">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center bg-propietario" colspan="2" scope="col">
+                                        Propietario
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th style="width: 35%;">Tipo de Documento</th>
+                                    <td>DNI</td>
+                                </tr>
+                                <tr>
+                                    <th>Nº Documento</th>
+                                    <td>06761377</td>
+                                </tr>
+                                <tr>
+                                    <th>Nombres</th>
+                                    <td>SICCHA MACASSI LUPE ELIZABETH</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card" style="padding: 20px 20px 1px 20px !important;">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center bg-representante" colspan="2" scope="col">
+                                        Representante
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th style="width: 35%;">Tipo de Documento</th>
+                                    <td>DNI</td>
+                                </tr>
+                                <tr>
+                                    <th>Nº Documento</th>
+                                    <td>21520706</td>
+                                </tr>
+                                <tr>
+                                    <th>Nombres</th>
+                                    <td>Jose Liza</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Observación e Imágenes-->
+                    <div class="card">
+                        <mat-tab-group color="warn">
+                            <mat-tab label="Obervaciones">
+                                <div style="height: 175px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
+                                    <div style="padding-left: 5px; margin-bottom: 5px; margin-top: 5px;">
+                                        <span>Escriba comentarios que considere necesarios en esta etapa:</span>
+                                    </div>
+                                    <mat-form-field appearance="outline" class="w100p">
+                                        <textarea matInput rows="7"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Galería de imágenes">
+                                <div class="gallerize-example">
+                                    <div class="misma-linea" style="margin-bottom: 8px;">
+                                        <h4>Agregar imagen</h4>
+                                        <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: 25px;">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                    </div>
+                                    <div style="height: 92px; overflow: auto;display: flex; flex-wrap: wrap;">
+                                        <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
+                                            <img style="width: 100%;height: 90px;object-fit: cover;" [lightbox]="i" [gallery]="'anotherLightbox'" [src]="item.data.thumb">
+                                            <a href="javascript:void(0)" style="position: absolute; top:0; right: 0;"><img style="width: 20px;" src="assets/img/icons-form/delete.svg"></a>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 5px; margin-bottom: -20px;">
+            <div class="row ocultar">
+                <div class="col-md-8"></div>
+                <div class="col-md-2" style="margin-right: -20px;">
+                    <button class="btn-block" mat-stroked-button color="warn">Cancelar</button>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn-block" mat-raised-button color="warn">Guardar</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div class="col-md-2" style="margin-right: -20px;">
+                    <button class="btn-block" mat-stroked-button color="warn">Cancelar</button>
+                </div>
+                <div class="col-md-2">
+                    <button (click)="abrirModal_aprobar()" class="btn-block" mat-raised-button color="warn">Aprobar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

@@ -1,0 +1,34 @@
+.main-login {
+    background-color: #F7F7F8 !important;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+.card-user {
+    width: 500px;
+    height: 700px;
+    position: absolute;
+    top: 115px;
+    /* left: 0; */
+    bottom: 0;
+    right: 50px;
+    /* margin: auto; */
+}
+
+.button-hide {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    outline: none !important;
+}
+
+.form-login {
+    padding: 25px;
+}
+
+.card {
+    /* box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%) !important; */
+    /* background-color: transparent; */
+    padding: 0px !important;
+    margin-bottom: 0px !important;
+}

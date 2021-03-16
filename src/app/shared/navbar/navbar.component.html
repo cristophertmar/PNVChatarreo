@@ -1,0 +1,135 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" (click)="sidebarToggle()">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
+            <!-- <a mat-stroked-button color="warn" class="navbar-brand" href="#">
+                Nuevo Proceso
+            </a> -->
+            <!-- <a class="navbar-brand" href="#">Driven Perú S.A.C - Miraflores</a> -->
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a href="javascript:void(0)" class="btnnavbar">
+                        Etapas
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="btnnavbar">
+                        Mantenimientos
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="btnnavbar">
+                        Reportes
+                    </a>
+                </li>
+                <!-- <li class="dropdown">
+                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                        Seleccionar Etapa
+                        <b class="caret"></b>
+
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:void(0)">Evaluación documentaria</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:void(0)">Verificación física</a></li>
+                        <li><a href="javascript:void(0)">Eliminación de fluidos</a></li>
+                        <li><a href="javascript:void(0)">Desguace de vehículos</a></li>
+                        <li><a href="javascript:void(0)">Compactación</a></li>
+                        <li><a href="javascript:void(0)">Emisión del CDV</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-dashboard"></i>
+                        <p class="hidden-lg hidden-md">{{getTitle()}}</p>
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-globe"></i>
+                        <b class="caret"></b>
+                        <span class="notification hidden-sm hidden-xs">5</span>
+                        <p class="hidden-lg hidden-md">
+                            5 Notifications
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Notification 1</a></li>
+                        <li><a href="#">Notification 2</a></li>
+                        <li><a href="#">Notification 3</a></li>
+                        <li><a href="#">Notification 4</a></li>
+                        <li><a href="#">Another notification</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-search"></i>
+                        <p class="hidden-lg hidden-md">Search</p>
+                    </a>
+                </li> -->
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <!-- <li>
+                    <a href="#">
+                        Account
+                    </a>
+                </li> -->
+
+                <li>
+                    <a href="javascript:void(0)" (click)="abrirmodal()" style="padding-right: 30px;">
+                        <!-- <i style="font-size: 21px;" class="fa fa-search"></i> -->
+                        <i style="font-size: 25px; position: absolute;" class="pe-7s-search"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" style="padding-right: 30px;">
+                        <!-- <i style="font-size: 25px;" class="fa fa-question-circle-o"></i> -->
+                        <i style="font-size: 25px; position: absolute;" class="pe-7s-help1"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" style="padding-right: 100px;">
+                        <!-- <i style="font-size: 25px;" class="fa fa-comments-o"></i> -->
+                        <i style="font-size: 25px; position: absolute;" class="pe-7s-chat"></i>
+                    </a>
+                </li>
+                <li>
+                    <div style="padding-top: 6px; padding-right: 5px;">
+                        <i style="font-size: 45px;" class="pe-7s-user"></i>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <div style="padding-top: 9px; padding-right: 15px;">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: #fff;">
+                         Cristopher Torres                        
+                        <b class="caret"></b>
+                    </a>
+                        <div style="font-size: 13px;">Empresa ABC SRL / Local: 001</div>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Editar perfil</a></li>
+                            <li><a href="#">Cambiar contraseña</a></li>
+                            <li class="divider"></li>
+                            <li><a [routerLink]="['/login']" href="javascript:void(0)">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- <li>
+                    <a href="javascript:void(0)">
+                        Cerrar Sesión
+                    </a>
+                </li> -->
+                <li class="separator hidden-lg hidden-md"></li>
+            </ul>
+        </div>
+    </div>
+</nav>

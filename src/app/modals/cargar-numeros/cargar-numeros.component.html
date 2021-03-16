@@ -1,0 +1,94 @@
+<h3 mat-dialog-title>Carga de números de placa</h3>
+<div mat-dialog-content>
+
+
+    <mat-tab-group color="warn">
+        <mat-tab label="Carga de Placas">
+
+            <div style="margin-top: 20px;">
+                <div class="misma-linea">
+                    <label style="width: 120px; line-height: 2.5; text-align: left;">Inserte&nbsp;Archivo:</label>
+                    <mat-form-field appearance="outline" style="width: auto;">
+                        <input type="text" matInput value="Archivo*.CSV">
+                    </mat-form-field>
+                    <button mat-mini-fab color="basic" style="margin-top: -3px; margin-left: 8px;">
+                        <mat-icon>upload</mat-icon>
+                    </button>
+                    <small class="text-danger" style="margin-top: 12px; margin-left: 8px;">Completado!</small>
+
+                </div>
+
+                <br>
+                <div class="alert alert-danger" role="alert">
+                    Formato de Archivo: <br>Inserte el archivo, formato CSV delimitado por comas. <br> El formato debe indicarse cada placa en una línea.
+                </div>
+
+            </div>
+
+            <div class="row" style="width: 100%;">
+                <div class="col-md-9"></div>
+                <div class="misma-linea" style="padding-right: 15px; padding-top: 10px;">
+                    <button mat-dialog-close style="width: 200px;" mat-stroked-button color="warn">Cancelar</button>
+                </div>
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="Validación">
+            <br>
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Nº Placa</th>
+                        <th>Propietario</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Año</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>ABC-123</td>
+                        <td>Giacomo Guilizzo</td>
+                        <td>Toyota</td>
+                        <td>Corolla</td>
+                        <td>1975</td>
+                        <td>Ok</td>
+                    </tr>
+                    <tr>
+                        <td>ABC-123</td>
+                        <td>Giacomo Guilizzo</td>
+                        <td>Toyota</td>
+                        <td>Corolla</td>
+                        <td>1975</td>
+                        <td>Ok</td>
+                    </tr>
+                    <tr>
+                        <td>ABC-123</td>
+                        <td>Giacomo Guilizzo</td>
+                        <td>Toyota</td>
+                        <td>Corolla</td>
+                        <td>1975</td>
+                        <td>Ok</td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+            <span class="text-danger">Existe observaciones al archivo. Favor de verificar</span>
+            <br><br>
+
+            <div class="row" style="width: 100%;">
+                <div class="col-md-1"></div>
+                <div class="misma-linea" style="padding-right: 15px; padding-top: 10px;">
+                    <button mat-dialog-close style="width: 200px;" mat-stroked-button color="warn">Cancelar</button>
+                    <div style="width: 15px;"></div>
+                    <button style="width: 200px;" mat-raised-button color="warn">Guardar</button>
+                </div>
+            </div>
+
+        </mat-tab>
+
+    </mat-tab-group>

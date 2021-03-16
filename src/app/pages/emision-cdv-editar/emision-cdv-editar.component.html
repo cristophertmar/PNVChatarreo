@@ -1,0 +1,242 @@
+<div class="main-content">
+
+    <form autocomplete="off">
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+
+                    <!-- Datos de la solicitud -->
+                    <div class="card">
+                        <fieldset>
+                            <legend>
+                                Datos de la solicitud
+                            </legend>
+                            <div class="container-fielset">
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Nº Solicitud:</label>
+                                            <mat-form-field appearance="outline" style="width: 311px;">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label>Fecha Solicitud:</label>
+                                            <mat-form-field appearance="outline" style="width: 151px;">
+                                                <input type="date" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="misma-linea">
+                                        <label>Pgm. Chatarreo:</label>
+                                        <mat-form-field appearance="outline" style="width: 600px;">
+                                            <input type="text" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="misma-linea">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label>Ent.&nbsp;Promotora:</label>
+                                            <mat-form-field appearance="outline" class="imput-medium">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <mat-form-field appearance="outline" style="width: 201px;">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- <br>
+                    <div class="alert alert-danger" role="alert">
+                        La presente etapa de compactación de las partes del vehículo se realiza de conformidad con lo dispuesto en el Decreto Legislativo N° 1278 y su Reglamento aprobado por Decreto Supremo N° 014-2017-MINAM.
+                    </div> -->
+                    <br>
+                    <!-- Emisión del CDV -->
+                    <div class="card">
+                        <fieldset>
+                            <legend>
+                                Informe del CDV
+                            </legend>
+                            <div class="container-fielset">
+                                <div class="misma-linea" style="margin-top: 10px;">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label style="width: auto; margin-right: 10px;">Fecha&nbsp;Informe:</label>
+                                            <mat-form-field appearance="outline" style="width: 151px;">
+                                                <input type="date" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label style="width: auto; margin-right: 10px;">Hora&nbsp;Informe:</label>
+                                            <mat-form-field appearance="outline" class="input-small">
+                                                <input type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="padding-left: 5px; margin-bottom: 5px; margin-top: 25px;">
+                                    <span>Detalle adicional a ser considerado en el informe final:</span>
+                                </div>
+                                <mat-form-field appearance="outline" class="w100p">
+                                    <textarea matInput rows="8"></textarea>
+                                </mat-form-field>
+
+                                <div class="misma-linea" style="margin-top: 10px;">
+                                    <div>
+                                        <div class="misma-linea">
+                                            <label style="width: auto; margin-right: 10px;">Informe&nbsp;final&nbsp;generado:</label>
+                                            <img width="20px" style="margin-top: -7px;" src="assets/img/icons-form/pdf.svg">
+                                        </div>
+                                    </div>
+                                    <div class="ml-50">
+                                        <div class="misma-linea">
+                                            <label style="width: auto; margin-right: 10px;">Certificado&nbsp;de&nbsp;Destrucción&nbsp;Vehicular&nbsp;generado:</label>
+                                            <img width="20px" style="margin-top: -7px;" src="assets/img/icons-form/pdf.svg">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 80px; margin-bottom: 50px;">
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-4" style="margin-right: -20px;">
+                                            <button class="btn-block" mat-stroked-button color="warn">Cancelar</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button (click)="generarInforme()" class="btn-block" mat-raised-button color="warn">Generar informe final</button>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <!-- Tablas -->
+                    <div class="card" style="padding: 20px 20px 1px 20px !important;">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center bg-vehiculo" colspan="4" scope="col">
+                                        Datos del vehículo
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Placa</th>
+                                    <td>AEF-717</td>
+                                    <th>Nº Chasis</th>
+                                    <td>ADR12345</td>
+                                </tr>
+                                <tr>
+                                    <th>Nº Motor</th>
+                                    <td>ADR12345</td>
+                                    <th>VIN</th>
+                                    <td>ADR12345</td>
+                                </tr>
+                                <tr>
+                                    <th>Categoría</th>
+                                    <td>Sedan</td>
+                                    <th>Marca</th>
+                                    <td>Toyota</td>
+
+                                </tr>
+                                <tr>
+                                    <th>Modelo</th>
+                                    <td colspan="3">Yaris 2015</td>
+                                </tr>
+                                <tr>
+                                    <th>Año</th>
+                                    <td>2015</td>
+                                    <th>Combustible</th>
+                                    <td>Gasolina</td>
+
+                                </tr>
+                                <tr>
+                                    <th>Peso Estimado</th>
+                                    <td>512 Kg.</td>
+                                    <th>Peso Real</th>
+                                    <td>500 Kg.</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card" style="padding: 20px 20px 1px 20px !important;">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center bg-propietario" colspan="2" scope="col">
+                                        Propietario
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th style="width: 35%;">Tipo de Documento</th>
+                                    <td>DNI</td>
+                                </tr>
+                                <tr>
+                                    <th>Nº Documento</th>
+                                    <td>06761377</td>
+                                </tr>
+                                <tr>
+                                    <th>Nombres</th>
+                                    <td>SICCHA MACASSI LUPE ELIZABETH</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card" style="padding: 20px 20px 1px 20px !important;">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center bg-representante" colspan="2" scope="col">
+                                        Representante
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th style="width: 35%;">Tipo de Documento</th>
+                                    <td>DNI</td>
+                                </tr>
+                                <tr>
+                                    <th>Nº Documento</th>
+                                    <td>21520706</td>
+                                </tr>
+                                <tr>
+                                    <th>Nombres</th>
+                                    <td>Jose Liza</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+
+</div>
