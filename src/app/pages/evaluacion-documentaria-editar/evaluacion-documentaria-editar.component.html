@@ -1,25 +1,18 @@
 <div class="main-content">
 
     <form autocomplete="off">
-        <!-- <div style="padding-left: 20px; padding-right: 20px; padding-bottom: 10px; width: 100%;">
-            <div class="row">
-                <div class="col-md-11">
-                    <h3>Chatarreo Voluntario</h3>
-                </div>
-            </div>
-        </div> -->
 
         <div class="row" style="margin-top: -5px; margin-bottom: 0px;">
             <div class="col-md-8">
-                <div class="misma-linea">
+                <form class="misma-linea" autocomplete="off" [formGroup]="form_busqueda" (ngSubmit)="Buscar_placa()">
                     <label style="line-height: 2.8; padding-left: 20px; font-size: 15px; margin-right: 20px;">Nº&nbsp;Placa:</label>
                     <mat-form-field appearance="outline" class="input-small">
-                        <input type="text" matInput>
+                        <input formControlName="nro_placa" name="nro_placa" type="text" matInput>
                     </mat-form-field>
-                    <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
+                    <button type="submit" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
                         <mat-icon>search</mat-icon>
                     </button>
-                </div>
+                </form>
             </div>
             <div class="col-md-4">
                 <div class="misma-linea" style="margin-top: -20px;">
@@ -29,7 +22,7 @@
             </div>
         </div>
 
-        <div class="container-fluid">
+        <form class="container-fluid" autocomplete="off" [formGroup]="form_principal" (ngSubmit)="Buscar_placa()">
             <div class="row">
                 <div class="col-md-8">
                     <!-- Datos del Propietario -->
@@ -45,7 +38,7 @@
                                         <div class="misma-linea">
                                             <label>Tipo&nbsp;Documento:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="tipo_documento_prop" name="tipo_documento_prop" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -53,7 +46,7 @@
                                         <div class="misma-linea">
                                             <label>Nº&nbsp;Documento:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="nro_documento_prop" name="nro_documento_prop" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -62,7 +55,7 @@
                                 <div class="misma-linea">
                                     <label>Propietario:</label>
                                     <mat-form-field appearance="outline" class="imput-medium">
-                                        <input type="text" matInput>
+                                        <input formControlName="nombre_prop" name="nombre_prop" type="text" matInput>
                                     </mat-form-field>
                                 </div>
 
@@ -82,7 +75,7 @@
                                         <div class="misma-linea">
                                             <label>Nº&nbsp;Chasis:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="nro_chasis_veh" name="nro_chasis_veh" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -90,7 +83,7 @@
                                         <div class="misma-linea">
                                             <label>Nº&nbsp;Motor:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="nro_motor_veh" name="nro_motor_veh" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -98,7 +91,7 @@
                                         <div class="misma-linea">
                                             <label class="label-sm">VIN:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="vin_veh" name="vin_veh" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -108,7 +101,7 @@
                                         <div class="misma-linea">
                                             <label>Modelo:</label>
                                             <mat-form-field appearance="outline" class="imput-medium">
-                                                <input type="text" matInput>
+                                                <input formControlName="modelo_veh" name="modelo_veh" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -116,7 +109,7 @@
                                         <div class="misma-linea">
                                             <label class="label-sm">Marca:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="marca_veh" name="marca_veh" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -126,7 +119,7 @@
                                         <div class="misma-linea">
                                             <label>Año&nbsp;fabricación:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="anio_veh" name="anio_veh" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -134,7 +127,7 @@
                                         <div class="misma-linea">
                                             <label>Combustible:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="combustible_veh" name="combustible_veh" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -142,7 +135,7 @@
                                         <div class="misma-linea">
                                             <label class="label-sm">Categoría:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="categoria_veh" name="categoria_veh" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -166,7 +159,7 @@
                                         <div class="misma-linea">
                                             <label>Tipo&nbsp;Documento:</label>
                                             <mat-form-field appearance="outline" style="width: 340px;">
-                                                <mat-select>
+                                                <mat-select formControlName="tipo_documento_repre" name="tipo_documento_repre" type="text">
                                                     <mat-option value="option">DNI</mat-option>
                                                     <mat-option value="option">Carnet Extranjería</mat-option>
                                                 </mat-select>
@@ -177,7 +170,7 @@
                                         <div class="misma-linea">
                                             <label>Nº&nbsp;Documento:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="nro_documento_repre" name="nro_documento_repre" type="text" matInput>
                                             </mat-form-field>
                                             <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
                                                 <mat-icon>search</mat-icon>
@@ -190,7 +183,7 @@
                                         <div class="misma-linea">
                                             <label>Representante:</label>
                                             <mat-form-field appearance="outline" style="width: 340px;">
-                                                <input type="text" matInput>
+                                                <input formControlName="nombre_repre" name="nombre_repre" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -198,7 +191,7 @@
                                         <div class="misma-linea">
                                             <label style="width: 55px;">Correo:</label>
                                             <mat-form-field appearance="outline" style="width: 185px;">
-                                                <input type="text" matInput>
+                                                <input formControlName="correo_repre" name="correo_repre" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -206,7 +199,7 @@
                                         <div class="misma-linea">
                                             <label style="width: 55px;">Celular:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input type="text" matInput>
+                                                <input formControlName="celular_repre" name="celular_repre" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -227,7 +220,7 @@
                                         <div class="misma-linea">
                                             <label>Fecha Solicitud:</label>
                                             <mat-form-field appearance="outline" style="width: 151px;">
-                                                <input type="date" matInput>
+                                                <input formControlName="fecha_solicitud" name="fecha_solicitud" type="date" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -235,7 +228,7 @@
                                         <div class="misma-linea">
                                             <label>Pgm. Chatarreo:</label>
                                             <mat-form-field appearance="outline" style="width: 311px;">
-                                                <input type="text" matInput>
+                                                <input formControlName="pgm_chatarreo" name="pgm_chatarreo" type="text" matInput>
                                             </mat-form-field>
                                             <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
                                                 <mat-icon>more_vert</mat-icon>
@@ -248,14 +241,14 @@
                                         <div class="misma-linea">
                                             <label>Ent.&nbsp;Promotora:</label>
                                             <mat-form-field appearance="outline" class="imput-medium">
-                                                <input type="text" matInput>
+                                                <input formControlName="ent_promotora" name="ent_promotora" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
                                     <div class="ml-50">
                                         <div class="misma-linea">
                                             <mat-form-field appearance="outline" style="width: 201px;">
-                                                <input type="text" matInput>
+                                                <input formControlName="distrito_solicitud" name="distrito_solicitud" type="text" matInput>
                                             </mat-form-field>
                                             <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -1px;">
                                                 <mat-icon>dialpad</mat-icon>
@@ -350,9 +343,12 @@
                                 <div class="gallerize-example">
                                     <div class="misma-linea" style="margin-bottom: 8px;">
                                         <h4>Agregar imagen</h4>
-                                        <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: 25px;">
+                                        <button type="button" (click)="seleccionarImagen()" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: 25px;">
                                             <mat-icon>add</mat-icon>
                                         </button>
+                                        <!-- <input #selectorImagen (change)="seleccionImagen( $event.target.files[0] )" style="display: none;" type="file" multiple> -->
+                                        <input #selectorImagen (change)="onSelectFile($event)" style="display: none;" type="file" multiple>
+                                        <img *ngIf="imagenTemp" [src]="imagenTemp" class="w120 m-b-40 m-t-40">
                                     </div>
                                     <div style="height: 200px; overflow: auto;display: flex; flex-wrap: wrap;">
                                         <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
@@ -392,7 +388,7 @@
 
                 </div>
             </div>
-        </div>
+        </form>
 
 
     </form>
