@@ -12,22 +12,22 @@
                     <h3 class="title">Iniciar Sesión</h3>
                 </a>
             </div>
-            <form autocomplete="off" [formGroup]="form" (ngSubmit)="Ingresar()" class="mt-30 form-login">
+            <form autocomplete="off" class="mt-30 form-login">
                 <label style="margin-bottom: -10px;">Usuario:</label>
                 <mat-form-field appearance="outline" class="w100p">
-                    <input matInput formControlName="nombre_usuario" name="nombre_usuario">
+                    <input matInput>
                     <mat-icon matSuffix>person</mat-icon>
                 </mat-form-field>
                 <label style="margin-bottom: -10px;">Contraseña:</label>
                 <mat-form-field appearance="outline" class="w100p">
-                    <input formControlName="contrasena" name="contrasena" matInput [type]="hide ? 'password': 'text'">
+                    <input matInput [type]="hide ? 'password': 'text'">
                     <button style="height: .1em;" class="button-hide" type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                 </mat-form-field>
                 <mat-checkbox style="margin-left: -15px; margin-top: 5px;" class="example-margin" color="warn">Recuérdame</mat-checkbox>
                 <br><br>
-                <button type="submit" class="btn-block" mat-raised-button color="warn">Ingresar</button>
+                <button type="button" class="btn-block" mat-raised-button color="warn">Ingresar</button>
             </form>
         </div>
         <br><br><br><br><br>
