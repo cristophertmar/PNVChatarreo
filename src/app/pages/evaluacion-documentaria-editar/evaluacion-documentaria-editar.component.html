@@ -9,20 +9,20 @@
                     <mat-form-field appearance="outline" class="input-small">
                         <input formControlName="nro_placa" name="nro_placa" type="text" matInput>
                     </mat-form-field>
-                    <button type="submit" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
+                    <button *ngIf="!proceso_obtenido" type="submit" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
                         <mat-icon>search</mat-icon>
                     </button>
                 </form>
             </div>
             <div class="col-md-4">
-                <div class="misma-linea" style="margin-top: -20px;">
-                    <label style="line-height: 5; padding-left: 20px; font-size: 15px; margin-right: 20px;">Nº&nbsp;Solicitud:</label>
-                    <h3 style="color: #D44650; font-weight: 600;">12345-2021-000042</h3>
+                <div *ngIf="proceso_obtenido" class="misma-linea" style="margin-top: -20px;">
+                    <label style="line-height: 5; padding-left: 20px; font-size: 15px; margin-right: 10px;">Nº&nbsp;Solicitud:</label>
+                    <h3 style="color: #D44650; font-weight: 600;"> {{ proceso_obtenido.Correlativo }} </h3>
                 </div>
             </div>
         </div>
 
-        <form class="container-fluid" autocomplete="off" [formGroup]="form_principal" (ngSubmit)="Buscar_placa()">
+        <form class="container-fluid" autocomplete="off" [formGroup]="form_principal" (ngSubmit)="guardar_proceso()">
             <div class="row">
                 <div class="col-md-8">
                     <!-- Datos del Propietario -->
@@ -30,7 +30,7 @@
                         <fieldset>
                             <legend>
                                 Datos del propietario
-                                <mat-slide-toggle color="warn" style="margin-left: 20px;">¿representante?</mat-slide-toggle>
+                                <mat-slide-toggle (change)="mismo_representante($event.checked)" color="warn" style="margin-left: 20px;">¿representante?</mat-slide-toggle>
                             </legend>
                             <div class="container-fielset">
                                 <div class="misma-linea">
@@ -160,8 +160,9 @@
                                             <label>Tipo&nbsp;Documento:</label>
                                             <mat-form-field appearance="outline" style="width: 340px;">
                                                 <mat-select formControlName="tipo_documento_repre" name="tipo_documento_repre" type="text">
-                                                    <mat-option value="option">DNI</mat-option>
-                                                    <mat-option value="option">Carnet Extranjería</mat-option>
+                                                    <mat-option value="00">(Seleccionar)</mat-option>
+                                                    <mat-option value="01">DNI</mat-option>
+                                                    <mat-option value="06">Carnet Extranjería</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </div>
@@ -172,7 +173,7 @@
                                             <mat-form-field appearance="outline" class="input-small">
                                                 <input formControlName="nro_documento_repre" name="nro_documento_repre" type="text" matInput>
                                             </mat-form-field>
-                                            <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
+                                            <button type="button" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px; display: none;">
                                                 <mat-icon>search</mat-icon>
                                             </button>
                                         </div>
@@ -225,7 +226,7 @@
                                         </div>
                                     </div>
                                     <div class="ml-50">
-                                        <div class="misma-linea">
+                                        <!-- <div class="misma-linea">
                                             <label>Pgm. Chatarreo:</label>
                                             <mat-form-field appearance="outline" style="width: 311px;">
                                                 <input formControlName="pgm_chatarreo" name="pgm_chatarreo" type="text" matInput>
@@ -233,10 +234,23 @@
                                             <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
                                                 <mat-icon>more_vert</mat-icon>
                                             </button>
+                                        </div> -->
+                                        <div class="misma-linea">
+                                            <label>Pgm. Chatarreo:</label>
+                                            <mat-form-field appearance="outline" style="width: 311px;">
+                                                <mat-select formControlName="pgm_chatarreo" name="pgm_chatarreo">
+                                                    <mat-option value="">(Seleccionar)</mat-option>
+                                                    <mat-option value="O">Obligatorio</mat-option>
+                                                    <mat-option value="V">Voluntario</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px; display: none;">
+                                                <mat-icon>more_vert</mat-icon>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="misma-linea">
+                                <div class="misma-linea ocultar">
                                     <div>
                                         <div class="misma-linea">
                                             <label>Ent.&nbsp;Promotora:</label>
@@ -273,16 +287,35 @@
                             </legend>
                             <div class="container-fielset">
                                 <div style="height: 250px; overflow: auto;">
-                                    <div class="misma-linea">
-                                        <mat-checkbox color="warn">Documento 1</mat-checkbox>
-                                        <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
-                                            <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                                                <mat-icon>remove_circle_outline</mat-icon>
-                                              </button>
+                                    <div *ngIf="archivos_etapa">
+                                        <div *ngFor="let archivo of archivos_etapa; let i = index" class="misma-linea">
+                                            <div>
+                                                <button *ngIf="archivo.archivo_adjunto" type="button" mat-icon-button style="margin-top: -7px; position: absolute;">
+                                                    <mat-icon (click)="quitar_archivo(i)" style="font-size: 23px;" color="warn">highlight_off</mat-icon>
+                                                </button>
+                                                <button *ngIf="!archivo.archivo_adjunto" type="button" mat-icon-button style="margin-top: -7px; position: absolute;">
+                                                    <mat-icon (click)="adjuntar_archivo(archivo)" style="font-size: 23px;" color="warn">add_circle</mat-icon>
+                                                </button>
+
+
+                                                <mat-checkbox style="margin-left: 35px;" color="warn" [checked]="archivo.archivo_adjunto" disabled>
+                                                    {{ (archivo.Descripcion.length>50)? (archivo.Descripcion | slice:0:50)+'..':(archivo.Descripcion) }}
+                                                    <!-- <img width="20px" src="assets/img/icons-form/pdf.svg"> -->
+
+                                                    <!-- <mat-icon>highlight_off</mat-icon> -->
+                                                </mat-checkbox>
+
+                                            </div>
+
+                                            <!-- <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
+                                                <img width="20px" src="assets/img/icons-form/pdf.svg">
+                                                <button type="button" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                    <mat-icon>remove_circle_outline</mat-icon>
+                                                </button>
+                                            </div> -->
                                         </div>
                                     </div>
-                                    <div class="misma-linea">
+                                    <!-- <div class="misma-linea">
                                         <mat-checkbox color="warn">Documento 2</mat-checkbox>
                                         <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
                                             <img width="20px" src="assets/img/icons-form/pdf.svg">
@@ -317,7 +350,7 @@
                                                 <mat-icon>remove_circle_outline</mat-icon>
                                               </button>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
 
@@ -328,14 +361,14 @@
                     <div class="card">
                         <mat-tab-group color="warn">
                             <mat-tab label="Obervaciones">
-                                <div style="height: 283px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
-                                    <mat-radio-group color="warn">
-                                        <mat-radio-button value="1">Desactivado</mat-radio-button>
-                                        <mat-radio-button value="2">Observado</mat-radio-button>
-                                        <mat-radio-button value="2">Subsanado</mat-radio-button>
+                                <div style="height: 291px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
+                                    <mat-radio-group color="warn" (change)="obtener_estado_observacion($event.value)" [value]="tipo_observacion">
+                                        <mat-radio-button value="D">Desactivado</mat-radio-button>
+                                        <mat-radio-button value="O">Observado</mat-radio-button>
+                                        <mat-radio-button value="S">Subsanado</mat-radio-button>
                                     </mat-radio-group>
                                     <mat-form-field appearance="outline" class="w100p">
-                                        <textarea matInput rows="13"></textarea>
+                                        <textarea id="obs_desc" matInput rows="13"></textarea>
                                     </mat-form-field>
                                 </div>
                             </mat-tab>
@@ -347,10 +380,10 @@
                                             <mat-icon>add</mat-icon>
                                         </button>
                                         <!-- <input #selectorImagen (change)="seleccionImagen( $event.target.files[0] )" style="display: none;" type="file" multiple> -->
-                                        <input #selectorImagen (change)="onSelectFile($event)" style="display: none;" type="file" multiple>
+                                        <input #selectorImagen style="display: none;" type="file" multiple>
                                         <img *ngIf="imagenTemp" [src]="imagenTemp" class="w120 m-b-40 m-t-40">
                                     </div>
-                                    <div style="height: 200px; overflow: auto;display: flex; flex-wrap: wrap;">
+                                    <div style="height: 208px; overflow: auto;display: flex; flex-wrap: wrap;">
                                         <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
                                             <img style="width: 100%;height: 90px;object-fit: cover;" [lightbox]="i" [gallery]="'anotherLightbox'" [src]="item.data.thumb">
                                             <a href="javascript:void(0)" style="position: absolute; top:0; right: 0;"><img style="width: 20px;" src="assets/img/icons-form/delete.svg"></a>
@@ -370,18 +403,7 @@
                                 <button class="btn-block" mat-stroked-button color="warn">Cancelar</button>
                             </div>
                             <div class="col-md-6">
-                                <button class="btn-block" mat-raised-button color="warn">Guardar</button>
-                            </div>
-                        </div>
-                        <div class="row ocultar">
-                            <div class="col-md-4" style="margin-right: -20px;">
-                                <button class="btn-block" mat-stroked-button color="warn">Cancelar</button>
-                            </div>
-                            <div class="col-md-4" style="margin-right: -20px;">
-                                <button (click)="abrirModal_aprobar()" class="btn-block" mat-raised-button color="warn">Aprobar</button>
-                            </div>
-                            <div class="col-md-4">
-                                <button (click)="abrirModal_observar()" class="btn-block" mat-raised-button color="warn">Observar</button>
+                                <button type="submit" class="btn-block" mat-raised-button color="warn">Guardar</button>
                             </div>
                         </div>
                     </div>

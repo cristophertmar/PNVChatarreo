@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Adjuntar Documento</h1>
+<div mat-dialog-content>
+
+
+    <div align="center">
+        <h4>Extensiones permitidas:</h4>
+        <div *ngIf="extensiones_permitidas">
+            <img *ngFor="let extension of extensiones_permitidas" width="50px" [src]="obtener_ubicacion_extension(extension)">
+            <!-- <img width="50px" src="assets/img/icons-form/docx.svg">
+            <img width="50px" src="assets/img/icons-form/jpg.svg">
+            <img width="50px" src="assets/img/icons-form/png.svg"> -->
+        </div>
+        <h4>Peso máximo:</h4>
+        <h6>200Kb</h6>
+        <br>
+        <button (click)="pulsarCambio()" type="button" class="btn-block" mat-raised-button color="warn">Seleccionar archivo</button>
+        <!-- <button (click)="pulsarCambio()" type="button" class="btn btn-outline-default btn-sm mt-2">Seleccionar archivo</button> -->
+        <input #btn_select_doc class="ocultar" (change)="seleccion_archivo($event.target.files[0])" type="file">
+        <input #btncerrarmodal #btn_select_doc mat-dialog-close class="ocultar" type="button">
+    </div>
+</div>

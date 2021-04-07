@@ -30,6 +30,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatTabsModule} from '@angular/material/tabs';
 import { CargarNumerosComponent } from './modals/cargar-numeros/cargar-numeros.component';
 import { MantenimientoPcoComponent } from './modals/mantenimiento-pco/mantenimiento-pco.component';
+import { ArchivoAdjuntarComponent } from './modals/archivo-adjuntar/archivo-adjuntar.component';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { MantenimientoPcoComponent } from './modals/mantenimiento-pco/mantenimie
     AprobarVerificacionFisicaComponent,
     MantenimientoPchComponent,
     CargarNumerosComponent,
-    MantenimientoPcoComponent
+    MantenimientoPcoComponent,
+    ArchivoAdjuntarComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

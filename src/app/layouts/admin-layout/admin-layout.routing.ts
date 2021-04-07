@@ -25,6 +25,7 @@ import { ProgramaChatarreoComponent } from '../../pages/programa-chatarreo/progr
 import { ChatarreoObligatorioComponent } from '../../pages/chatarreo-obligatorio/chatarreo-obligatorio.component';
 import { ChatarreoObligatorioEntidadComponent } from '../../pages/chatarreo-obligatorio-entidad/chatarreo-obligatorio-entidad.component';
 import { ChatarreoObligatorioAdminComponent } from 'app/pages/chatarreo-obligatorio-admin/chatarreo-obligatorio-admin.component';
+import { EtapaComponent } from '../../pages/etapa/etapa.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: HomeComponent },
@@ -36,6 +37,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'notifications',  component: NotificationsComponent },
     { path: 'upgrade',        component: UpgradeComponent },
 
+    { path: 'etapa/:nom_etapa',                 component: EtapaComponent },
     { path: 'evaluacion-documentaria',          component: EvaluacionDocumentariaComponent },
     { path: 'verificacion-fisica',              component: VerificacionFisicaComponent },
     { path: 'eliminacion-fluidos',              component: EliminacionFluidosComponent },
@@ -43,12 +45,12 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'compactacion',                     component: CompactacionComponent },
     { path: 'emision-cdv',                      component: EmisionCdvComponent },
 
-    { path: 'evaluacion-documentaria/:id',      component: EvaluacionDocumentariaEditarComponent },
-    { path: 'verificacion-fisica/:id',          component: VerificacionFisicaEditarComponent },
-    { path: 'eliminacion-fluidos/:id',          component: EliminacionFluidosEditarComponent },
-    { path: 'desguace-vehicular/:id',           component: DesguaceVehicularEditarComponent },
-    { path: 'compactacion/:id',                 component:  CompactacionEditarComponent},
-    { path: 'emision-cdv/:id',                  component: EmisionCdvEditarComponent },
+    { path: 'evaluacion-documentaria/:token',      component: EvaluacionDocumentariaEditarComponent },
+    { path: 'verificacion-fisica/:token',          component: VerificacionFisicaEditarComponent },
+    { path: 'eliminacion-fluidos/:token',          component: EliminacionFluidosEditarComponent },
+    { path: 'desguace-vehicular/:token',           component: DesguaceVehicularEditarComponent },
+    { path: 'compactacion/:token',                 component:  CompactacionEditarComponent},
+    { path: 'emision-cdv/:token',                  component: EmisionCdvEditarComponent },
 
     { path: 'programa-chatarreo',               component: ProgramaChatarreoComponent },
     { path: 'chatarreo-obligatorio',            component: ChatarreoObligatorioComponent },

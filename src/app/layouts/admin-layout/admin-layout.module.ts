@@ -45,6 +45,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatTabsModule} from '@angular/material/tabs';
 
+
+
 // Galery
 import { GalleryModule } from '@ngx-gallery/core';
 import { LightboxModule } from '@ngx-gallery/lightbox';
@@ -52,6 +54,7 @@ import { ProgramaChatarreoComponent } from '../../pages/programa-chatarreo/progr
 import { ChatarreoObligatorioComponent } from '../../pages/chatarreo-obligatorio/chatarreo-obligatorio.component';
 import { ChatarreoObligatorioEntidadComponent } from '../../pages/chatarreo-obligatorio-entidad/chatarreo-obligatorio-entidad.component';
 import { ChatarreoObligatorioAdminComponent } from 'app/pages/chatarreo-obligatorio-admin/chatarreo-obligatorio-admin.component';
+import { EtapaComponent } from '../../pages/etapa/etapa.component';
 
 
 
@@ -104,7 +107,8 @@ import { ChatarreoObligatorioAdminComponent } from 'app/pages/chatarreo-obligato
     ProgramaChatarreoComponent,
     ChatarreoObligatorioComponent,
     ChatarreoObligatorioEntidadComponent,
-    ChatarreoObligatorioAdminComponent
+    ChatarreoObligatorioAdminComponent,
+    EtapaComponent
   ]
 })
 
