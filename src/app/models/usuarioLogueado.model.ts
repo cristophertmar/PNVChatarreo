@@ -13,8 +13,8 @@ export class UsuarioLogueado{
         public Estado?: string,
         public AccessToken?: string ,
         public Empresa?: Empresa,
-        public empresaLocal?: EmpresaLocal,
-        public roles?: Rol[]
+        public EmpresaLocal?: EmpresaLocal,
+        public Roles?: Rol[]
     ){}
 
 }

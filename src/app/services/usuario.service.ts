@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { URL_SERVICIOS } from 'app/config/config';
 import { catchError, map } from 'rxjs/operators';
@@ -15,16 +15,17 @@ export class UsuarioService {
 
   usuario: UsuarioLogueado;
   token: string;
-  loading: boolean = false;
+  loading: boolean;
 
   constructor(
     private _http: HttpClient,
     private _router: Router
     ) {
+    this.loading = false;
     this.cargarStorage();
    }
 
-   limpiarAcceso() {
+  limpiarAcceso() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     this.token = '';
@@ -33,13 +34,12 @@ export class UsuarioService {
 
   cargarStorage() {
 
-    if ( localStorage.getItem('token'))  {
+    if (localStorage.getItem('token'))  {
       this.token = localStorage.getItem('token');
       this.usuario = JSON.parse( localStorage.getItem('usuario') );
     } else {
       this.limpiarAcceso();
     }
-
   }
 
   guardarStorage( token: string, usuario: UsuarioLogueado ) {
@@ -52,7 +52,7 @@ export class UsuarioService {
 
   }
 
-  logout() {
+  cerrar_sesion() {
     this.limpiarAcceso();
     this._router.navigate(['/login']);
   }
@@ -60,12 +60,12 @@ export class UsuarioService {
   login(usuario: Usuario, recordar: boolean = false){
 
     this.loading = true;
-    if ( recordar ) {
-      localStorage.setItem( 'nomusuario_remember', usuario.Usuario );
-      localStorage.setItem( 'contrasena_remember', usuario.Contrasenia );
+    if (recordar) {
+      localStorage.setItem( 'nomusuario_recuerda', usuario.Usuario );
+      localStorage.setItem( 'contrasena_recuerda', usuario.Contrasenia );
     } else {
-      localStorage.removeItem( 'nomusuario_remember' );
-      localStorage.removeItem( 'contrasena_remember' );
+      localStorage.removeItem( 'nomusuario_recuerda' );
+      localStorage.removeItem( 'contrasena_recuerda' );
     }
     
     let url: string;
@@ -81,12 +81,8 @@ export class UsuarioService {
         return true;
       }),
       catchError(err => {
-        /* console.log(err.error); */
-        /* console.log(err.status); */
-        /* console.log(err.error.message); */
         this.loading = false;
         Swal.fire({
-          //text: err.error.message,
           text: err.error,
           width: 350,
           padding: 15,

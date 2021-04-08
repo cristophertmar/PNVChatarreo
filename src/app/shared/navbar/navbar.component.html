@@ -111,15 +111,15 @@
                 <li class="dropdown">
                     <div style="padding-top: 9px; padding-right: 15px;">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: #fff;">
-                         Usuario de Prueba                      
+                         {{ _usuarioService.usuario.NombreCompleto| titlecase }}                      
                         <b class="caret"></b>
                     </a>
-                        <div style="font-size: 13px;">Empresa - / Local: 0</div>
+                        <div style="font-size: 13px;">Empresa {{ _usuarioService.usuario.Empresa.NombreCentro }} / Local: {{ _usuarioService.usuario.EmpresaLocal.CodigoLocal }} </div>
                         <ul class="dropdown-menu">
                             <li><a href="#">Editar perfil</a></li>
                             <li><a href="#">Cambiar contraseña</a></li>
                             <li class="divider"></li>
-                            <li><a [routerLink]="['/login']" href="javascript:void(0)">Cerrar Sesión</a></li>
+                            <li><a (click)="_usuarioService.cerrar_sesion()" href="javascript:void(0)">Cerrar Sesión</a></li>
                         </ul>
                     </div>
                 </li>

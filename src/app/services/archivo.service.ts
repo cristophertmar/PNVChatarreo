@@ -4,6 +4,7 @@ import { URL_SERVICIOS } from 'app/config/config';
 import { Subject } from 'rxjs';
 import { ArchivoEtapa } from '../models/archivoEtapa.model';
 import { IArchivoRequest } from '../models/iarchivoRequest.model';
+import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,14 @@ export class ArchivoService {
   archivo_evaluar: ArchivoEtapa;
   archivos_aprobados: ArchivoEtapa[] = [];
   lista_archivos_enviar = new Subject<any>();
+  token: string;
 
   constructor(
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _usuarioService: UsuarioService
   ) {
     this.cargar_archivo_evaluar();
-    // this.cargar_archivos_aprobados();
+    this.token = this._usuarioService.token;
    }
 
   obtener_archivo_etapa(etapa: number = 1, tipo_proceso: string = 'O') {
@@ -27,7 +30,7 @@ export class ArchivoService {
     url = URL_SERVICIOS + 'api/etapa/archivo/tipo?idEtapa=' + etapa + '&tipoProceso=' + tipo_proceso;
 
     const headers = new HttpHeaders({
-        'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+        'x-api-key': this.token
     });
 
     return this._http.get(url, {headers});
@@ -62,7 +65,7 @@ export class ArchivoService {
     url = URL_SERVICIOS + 'api/proceso/etapa/archivo';
 
     const headers = new HttpHeaders({
-        'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+        'x-api-key': this.token
     });
 
     return this._http.post(url, iarchivo_request, {headers});
@@ -73,7 +76,7 @@ export class ArchivoService {
     url = URL_SERVICIOS + 'api/archivo?id=' + token;
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': this.token
     });
 
     const cuerpo = { documento }

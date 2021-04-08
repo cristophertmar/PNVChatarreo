@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { URL_SERVICIOS } from 'app/config/config';
 import { ProcesoRequest } from '../models/procesoRequest.model';
+import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,14 @@ import { ProcesoRequest } from '../models/procesoRequest.model';
 export class ProcesoService {
 
   loading: boolean =  false;
+  token: string;
 
   constructor(
-    private _http: HttpClient
-  ) { }
+    private _http: HttpClient,
+    private _usuarioService: UsuarioService
+  ) {
+    this.token = this._usuarioService.token;
+  }
 
   guardar_proceso(proceso_request: ProcesoRequest) {
     
@@ -20,7 +25,7 @@ export class ProcesoService {
     url = URL_SERVICIOS + 'api/proceso';
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': this.token
     });
 
     return this._http.post(url, proceso_request, { headers });
@@ -33,7 +38,7 @@ export class ProcesoService {
     url = URL_SERVICIOS + 'api/proceso?idEtapa='+ id_etapa +'&Estado=' + estado + '&Anio=' + periodo;
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': this.token
     });
 
     return this._http.get(url, { headers });
@@ -45,7 +50,7 @@ export class ProcesoService {
     url = URL_SERVICIOS + 'api/proceso?token=' + token;
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': this.token
     });
 
     return this._http.get(url, { headers });

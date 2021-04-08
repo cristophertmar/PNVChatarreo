@@ -4,15 +4,21 @@ import { URL_SERVICIOS } from 'app/config/config';
 import { FinEtapaRequest } from 'app/models/fEtapaRequest.model';
 import { ObservacionRequest } from 'app/models/observacionRequest.model';
 import { InitEtapaRequest } from '../models/itEtapaRequest.model';
+import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProcesoEtapaService {
 
+  token: string;
+
   constructor(
-    private _http: HttpClient
-  ) { }
+    private _http: HttpClient,
+    private _usuarioService: UsuarioService
+  ){ 
+    this.token = this._usuarioService.token;
+  }
 
   iniciar_etapa(etapa_request: InitEtapaRequest) {
 
@@ -20,7 +26,7 @@ export class ProcesoEtapaService {
     url = URL_SERVICIOS + 'api/proceso/etapa';
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': this.token
     });
 
     return this._http.put(url, etapa_request, { headers });
@@ -32,7 +38,7 @@ export class ProcesoEtapaService {
     url = URL_SERVICIOS + 'api/proceso/etapa';
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': this.token
     });
 
     return this._http.put(url, festapa_request, { headers });
@@ -45,7 +51,7 @@ export class ProcesoEtapaService {
     url = URL_SERVICIOS + 'api/proceso/etapa';
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': this.token
     });
 
     return this._http.put(url, observacion_request, { headers });
@@ -54,10 +60,11 @@ export class ProcesoEtapaService {
 
   descargar_informe(id_etapa: number, token: string) {
     let url: string;
-    url = URL_SERVICIOS + 'api/proceso/informe?IdEtapa='+ id_etapa +'&token=' + token;
+    /* url = URL_SERVICIOS + 'api/proceso/informe?IdEtapa='+ id_etapa +'&token=' + token; */
+    url = URL_SERVICIOS + 'api/proceso/informe?IdEtapa=1&token=vVpEwleIxbtuDjvk/cn5Xg==';
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': this.token
     });
 
     return this._http.get(url, { headers, responseType: 'arraybuffer' });

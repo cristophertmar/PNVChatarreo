@@ -3,6 +3,8 @@ import { ROUTES } from '../../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ObservacionComponent } from '../../modals/observacion/observacion.component';
+import { UsuarioService } from '../../services/usuario.service';
+import { UsuarioLogueado } from 'app/models/usuarioLogueado.model';
 
 @Component({
     // moduleId: module.id,
@@ -11,14 +13,20 @@ import { ObservacionComponent } from '../../modals/observacion/observacion.compo
 })
 
 export class NavbarComponent implements OnInit{
+
     private listTitles: any[];
     location: Location;
     private toggleButton: any;
-    private sidebarVisible: boolean;
+    private sidebarVisible: boolean;    
 
-    constructor(location: Location,  private element: ElementRef, public _dialog: MatDialog) {
-      this.location = location;
-          this.sidebarVisible = false;
+    constructor(
+        location: Location,  
+        private element: ElementRef, 
+        private _dialog: MatDialog,
+        public _usuarioService: UsuarioService) 
+    {
+        this.location = location;
+        this.sidebarVisible = false;
     }
 
     ngOnInit(){
@@ -26,6 +34,7 @@ export class NavbarComponent implements OnInit{
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
     }
+
     sidebarOpen() {
         const toggleButton = this.toggleButton;
         const body = document.getElementsByTagName('body')[0];
