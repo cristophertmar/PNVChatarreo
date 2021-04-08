@@ -33,6 +33,7 @@ export class NavbarComponent implements OnInit{
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
+      console.log(this._usuarioService.usuario);
     }
 
     sidebarOpen() {

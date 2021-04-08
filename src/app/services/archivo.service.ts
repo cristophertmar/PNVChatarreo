@@ -30,11 +30,7 @@ export class ArchivoService {
     url = URL_SERVICIOS + 'api/etapa/archivo/tipo?idEtapa=' + etapa + '&tipoProceso=' + tipo_proceso;
 
     const headers = new HttpHeaders({
-<<<<<<< HEAD
-        'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
-=======
         'x-api-key': this.token
->>>>>>> f9b66fc3be8c599705727aa0db5d10c5f42245bc
     });
 
     return this._http.get(url, {headers});
@@ -69,11 +65,7 @@ export class ArchivoService {
     url = URL_SERVICIOS + 'api/proceso/etapa/archivo';
 
     const headers = new HttpHeaders({
-<<<<<<< HEAD
-        'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
-=======
         'x-api-key': this.token
->>>>>>> f9b66fc3be8c599705727aa0db5d10c5f42245bc
     });
 
     return this._http.post(url, iarchivo_request, {headers});
@@ -84,11 +76,7 @@ export class ArchivoService {
     url = URL_SERVICIOS + 'api/archivo?id=' + token;
 
     const headers = new HttpHeaders({
-<<<<<<< HEAD
-      'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
-=======
       'x-api-key': this.token
->>>>>>> f9b66fc3be8c599705727aa0db5d10c5f42245bc
     });
 
     const cuerpo = { documento }

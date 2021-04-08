@@ -27,11 +27,7 @@ export class VehiculoService {
     url = URL_SERVICIOS + 'api/vehiculo?placa=' + placa;
 
     const headers = new HttpHeaders({
-<<<<<<< HEAD
-        'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
-=======
         'x-api-key': this.token
->>>>>>> f9b66fc3be8c599705727aa0db5d10c5f42245bc
     });
 
     return this._http.get(url, {headers}).pipe(
