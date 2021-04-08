@@ -39,11 +39,11 @@
     </div>
     <div class="container-fluid">
         <div class="card" style="min-height: 750px;">
-            <div *ngIf="!(procesos.length > 0)" style="width: 400px; margin: auto; text-align: center; padding-top: 130px;">
+            <div *ngIf="procesos && !(procesos.length > 0)" style="width: 400px; margin: auto; text-align: center; padding-top: 130px;">
                 <img width="300px" src="assets/img/icons-form/no-data.svg">
                 <h3 style="margin-top: -20px;">No se encontraron resultados</h3>
             </div>
-            <div *ngIf="procesos.length > 0" class="content table-responsive" style="width: 90%; margin: auto; margin-bottom: -10px;">
+            <div *ngIf="procesos && procesos.length > 0" class="content table-responsive" style="width: 90%; margin: auto; margin-bottom: -10px;">
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
