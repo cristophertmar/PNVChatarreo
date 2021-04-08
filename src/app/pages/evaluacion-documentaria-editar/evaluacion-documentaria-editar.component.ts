@@ -444,7 +444,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
                       showConfirmButton: false,
                       icon: 'success'
                     }).then( result => {
-                      this._router.navigate(['etapa/evaluacion-documentaria']);
+                      this._router.navigate(['/etapa/evaluacion-documentaria']);
                     });
                     
                   })
@@ -486,8 +486,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   descargar_informe(id_etapa: number, token: string = '1qS15XA9exYmrgSO7HUWrw%3D%3D', id_proceso: number) {
     
-    /* id_etapa, encodeURIComponent(token) */
-      this._procesoEtapaService.descargar_informe().
+      this._procesoEtapaService.descargar_informe( id_etapa, encodeURIComponent(token)).
       subscribe(resp => {
       
         const blob_data = new Blob([resp], { type: 'application/pdf' });
