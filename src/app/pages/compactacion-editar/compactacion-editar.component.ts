@@ -39,7 +39,7 @@ export class CompactacionEditarComponent implements OnInit {
       this.checklist_request = [];
       this.ietapa = {};
       this.fetapa = {};
-     }
+  }
 
   ngOnInit(): void {
     // 1. Create gallery items

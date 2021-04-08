@@ -20,7 +20,7 @@ export class ProcesoService {
     url = URL_SERVICIOS + 'api/proceso';
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
     });
 
     return this._http.post(url, proceso_request, { headers });
@@ -33,7 +33,7 @@ export class ProcesoService {
     url = URL_SERVICIOS + 'api/proceso?idEtapa='+ id_etapa +'&Estado=' + estado + '&Anio=' + periodo;
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
     });
 
     return this._http.get(url, { headers });
@@ -45,7 +45,7 @@ export class ProcesoService {
     url = URL_SERVICIOS + 'api/proceso?token=' + token;
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
     });
 
     return this._http.get(url, { headers });

@@ -20,7 +20,7 @@ export class VehiculoService {
     url = URL_SERVICIOS + 'api/vehiculo?placa=' + placa;
 
     const headers = new HttpHeaders({
-        'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+        'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
     });
 
     return this._http.get(url, {headers}).pipe(

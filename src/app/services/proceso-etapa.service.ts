@@ -15,12 +15,11 @@ export class ProcesoEtapaService {
   ) { }
 
   iniciar_etapa(etapa_request: InitEtapaRequest) {
-
     let url: string;
     url = URL_SERVICIOS + 'api/proceso/etapa';
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
     });
 
     return this._http.put(url, etapa_request, { headers });
@@ -32,7 +31,7 @@ export class ProcesoEtapaService {
     url = URL_SERVICIOS + 'api/proceso/etapa';
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
     });
 
     return this._http.put(url, festapa_request, { headers });
@@ -45,7 +44,7 @@ export class ProcesoEtapaService {
     url = URL_SERVICIOS + 'api/proceso/etapa';
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
     });
 
     return this._http.put(url, observacion_request, { headers });
@@ -57,7 +56,7 @@ export class ProcesoEtapaService {
     url = URL_SERVICIOS + 'api/proceso/informe?IdEtapa='+ id_etapa +'&token=' + token;
 
     const headers = new HttpHeaders({
-      'x-api-key': 'kQuxX6z9tkFt16VeYxFp94/6lJx5W2JExgVqYOgyKuo='
+      'x-api-key': '4gPdECZxTIK5DgcZ2X3dUENd91Wif/DhhLu3DuOwT8I='
     });
 
     return this._http.get(url, { headers, responseType: 'arraybuffer' });
