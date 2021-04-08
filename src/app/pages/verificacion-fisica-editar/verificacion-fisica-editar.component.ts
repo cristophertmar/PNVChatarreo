@@ -47,9 +47,8 @@ export class VerificacionFisicaEditarComponent implements OnInit {
       this.token = params.get('token');
       this.obtener_proceso_token(this.token);
     }); 
+
     this.checklist_request = [];
-    console.log(this.checklist_request);
-   
   }
 
   obtener_proceso_token(token: string) {
@@ -65,8 +64,8 @@ export class VerificacionFisicaEditarComponent implements OnInit {
 
   guardar_etapa() {
 
-    console.log(this.checklist_request.length);
-    console.log(this.checklist.length);
+    //console.log(this.checklist_request.length);
+    //console.log(this.checklist.length);
 
     if(this.form_etapa.invalid) {
       Swal.fire({
@@ -123,13 +122,17 @@ export class VerificacionFisicaEditarComponent implements OnInit {
           showConfirmButton: false,
           icon: 'success'
         }).then( result => {
-          this._router.navigate(['/etapa/verificacion-fisica']);
+          this.volverEtapa();
         });
         
       })
 
     })
 
+  }
+
+  volverEtapa(){
+    this._router.navigate(['/etapa/verificacion-fisica']);
   }
 
   obtener_fecha_inicial() {
