@@ -57,7 +57,8 @@ export class ProcesoEtapaService {
 
   }
 
-  descargar_informe(id_etapa: number, token: string) {
+  descargar_informe() {
+    /* id_etapa: number, token: string */
     let url: string;
     /* url = URL_SERVICIOS + 'api/proceso/informe?IdEtapa='+ id_etapa +'&token=' + token; */
     url = URL_SERVICIOS + 'api/proceso/informe?IdEtapa=1&token=vVpEwleIxbtuDjvk/cn5Xg==';

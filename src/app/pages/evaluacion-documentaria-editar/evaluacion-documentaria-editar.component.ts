@@ -409,7 +409,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
         }
 
         for(let i = 0; i < this.archivos_etapa.length; i++) {
-
+        
           this.iarchivo_request = {};
           this.iarchivo_request.IdProceso = resp_crea.IdProceso;
           this.iarchivo_request.IdEtapa = resp_ini.IdEtapa;
@@ -423,6 +423,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
                 
                 if( i === (this.archivos_etapa.length - 1)){
                   
+                  
                   this.festapa_request.IdProceso = resp_crea.IdProceso;
                   this.festapa_request.IdEtapa = resp_ini.IdEtapa;
                   this.festapa_request.FechaInicio = this.ietapa_request.FechaInicio;
@@ -432,7 +433,8 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
           
                   this._procesoEtapaService.finalizar_etapa(this.festapa_request)
                   .subscribe( resp => {
-                    this.descargar_informe(resp_ini.IdEtapa, encodeURIComponent(this.proceso_token), resp_crea.IdProceso);
+                    /* this.descargar_informe(resp_ini.IdEtapa, encodeURIComponent(this.proceso_token), resp_crea.IdProceso); */
+                    /* this.descargar_informe(resp_ini.IdEtapa, encodeURIComponent(this.proceso_token), resp_crea.IdProceso); */
                     Swal.fire({
                       text: 'Proceso de etapa 01 finalizado',
                       width: 350,
@@ -483,7 +485,9 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
   
 
   descargar_informe(id_etapa: number, token: string = '1qS15XA9exYmrgSO7HUWrw%3D%3D', id_proceso: number) {
-      this._procesoEtapaService.descargar_informe(id_etapa, encodeURIComponent(token)).
+    
+    /* id_etapa, encodeURIComponent(token) */
+      this._procesoEtapaService.descargar_informe().
       subscribe(resp => {
       
         const blob_data = new Blob([resp], { type: 'application/pdf' });
