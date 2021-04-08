@@ -1,9 +1,9 @@
 export class Menu{
 
     constructor(
-        public idMenu?: number,
-        public nombre?: string,
-        public direccion?: string
+        public IdMenu?: number,
+        public Nombre?: string,
+        public Direccion?: string
     ){}
 
 }

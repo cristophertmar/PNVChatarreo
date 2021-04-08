@@ -1,9 +1,9 @@
 export class EmpresaLocal{
 
     constructor(
-        public idLocal?: number,
-        public codigoLocal?: number,
-        public nombreLocal?: string
+        public IdLocal?: number,
+        public CodigoLocal?: number,
+        public NombreLocal?: string
     ){}
 
 }

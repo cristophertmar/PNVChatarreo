@@ -368,7 +368,7 @@
                                         <mat-radio-button value="S">Subsanado</mat-radio-button>
                                     </mat-radio-group>
                                     <mat-form-field appearance="outline" class="w100p">
-                                        <textarea id="obs_desc" matInput rows="13"></textarea>
+                                        <textarea id="obs_desc" matInput rows="13" [disabled]='deshabilitar_obs' [value]="descripcion_obs"></textarea>
                                     </mat-form-field>
                                 </div>
                             </mat-tab>

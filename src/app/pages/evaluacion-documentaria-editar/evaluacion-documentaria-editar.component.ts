@@ -20,7 +20,7 @@ import { Proceso } from 'app/models/proceso.model';
 import { ArchivoAdjuntarComponent } from '../../modals/archivo-adjuntar/archivo-adjuntar.component';
 import { FinEtapaRequest } from '../../models/fEtapaRequest.model';
 import { IArchivoRequest } from '../../models/iarchivoRequest.model';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-evaluacion-documentaria-editar',
   templateUrl: './evaluacion-documentaria-editar.component.html',
@@ -55,6 +55,9 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
   cargar_archivos = new Subject<any>();
 
   proceso_token: string;
+  estado_proceso: string;
+  deshabilitar_obs: boolean = false;
+  descripcion_obs: string = '';
 
   @ViewChild('selectorImagen') selectorImagen: ElementRef<HTMLElement>;
 
@@ -77,7 +80,8 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       this.ietapa_request = {};
       this.festapa_request = {};
       this.archivos_aprobados = [];
-      this.iarchivo_request = {};     
+      this.iarchivo_request = {};
+      this.estado_proceso = '';
     }
 
   ngOnInit(): void {
@@ -126,8 +130,10 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     this._procesoService.obtener_proceso_token(encodeURIComponent(token))
     .subscribe( (resp: Proceso) => {
       this.proceso_obtenido = resp;
-      /* console.log(this.proceso_obtenido); */
       this.archivos_etapa = this.proceso_obtenido.Etapa.TipoArchivos;
+      this.estado_proceso = resp.ProcesoEtapa.Estado;
+      this.tipo_observacion = resp.ProcesoEtapa.Estado || 'D';
+      this.obtener_estado_observacion(resp.ProcesoEtapa.Estado || 'D');
       this.setear_datos_proceso(this.proceso_obtenido);
       this.deshabilitarInputs(this.proceso_obtenido);
     });
@@ -339,10 +345,18 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   mismo_representante(seleccion: boolean) {
       this.setear_datos_placa(seleccion);
-  }
+  }  
 
   obtener_estado_observacion(tipo_observacion: string) {
       this.tipo_observacion = tipo_observacion;
+      if((this.tipo_observacion === 'O') && (this.estado_proceso === 'O')) {
+        this.deshabilitar_obs = true;
+        this.descripcion_obs = this.proceso_obtenido.ProcesoEtapa.Observacion;
+        return;
+      }
+      this.deshabilitar_obs = false;
+      this.descripcion_obs = '';
+      
   }
 
   obtener_observacion_desc(evento: any) {
@@ -353,7 +367,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   guardar_proceso() {
 
-    if(this.form_principal.invalid){
+    if(this.form_principal.invalid) {      
       return;
     }
 
@@ -379,10 +393,8 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
       this._procesoEtapaService.iniciar_etapa(this.ietapa_request)
       .subscribe( (resp_ini: InitEtapaResponse) => {
-
-        /* console.log('respuesta iniciar', resp_crea); */
       
-        if(this.tipo_observacion === 'O') {
+        if(this.tipo_observacion === 'O' && !(this.estado_proceso === 'O')) {
 
           this.observacion_request.IdProceso = resp_crea.IdProceso;
           this.observacion_request.IdEtapa = resp_ini.IdEtapa;
@@ -391,8 +403,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
           
           this._procesoEtapaService.observar_etapa(this.observacion_request)
           .subscribe(resp_obs => {
-                /* console.log('respuesta observa',resp_obs); */
-                this._router.navigate(['/evaluacion-documentaria']);
+                this._router.navigate(['/etapa/evaluacion-documentaria']);
                 return;
           });
         }
@@ -431,7 +442,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
                       showConfirmButton: false,
                       icon: 'success'
                     }).then( result => {
-                      this._router.navigate(['/evaluacion-documentaria']);
+                      this._router.navigate(['etapa/evaluacion-documentaria']);
                     });
                     
                   })
@@ -468,8 +479,11 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   }
 
-  descargar_informe(id_etapa: number, token: string, id_proceso: number) {
-      this._procesoEtapaService.descargar_informe(id_etapa, token).
+
+  
+
+  descargar_informe(id_etapa: number, token: string = '1qS15XA9exYmrgSO7HUWrw%3D%3D', id_proceso: number) {
+      this._procesoEtapaService.descargar_informe(id_etapa, encodeURIComponent(token)).
       subscribe(resp => {
       
         const blob_data = new Blob([resp], { type: 'application/pdf' });
