@@ -212,6 +212,7 @@ export class DesguaceVehicularEditarComponent implements OnInit {
       }
     }    
 
+    check.Cumple = 'S';
     this.checklist_request.push(check);   
   }
 

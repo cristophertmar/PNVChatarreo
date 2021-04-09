@@ -367,7 +367,16 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   guardar_proceso() {
 
-    if(this.form_principal.invalid) {      
+    if(this.form_principal.invalid) {    
+      Swal.fire({
+        text: 'Llene todos los campos obligatorios',
+        width: 350,
+        padding: 15,
+        timer: 2000,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        icon: 'error'
+      });  
       return;
     }
 

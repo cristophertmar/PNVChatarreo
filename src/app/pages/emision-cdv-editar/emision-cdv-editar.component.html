@@ -93,14 +93,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="padding-left: 5px; margin-bottom: 5px; margin-top: 25px;">
+                                <br>
+                                <input type="file" formControlName="informe" name="informe" (change)="seleccionImagen($event.target.files[0])">
+
+                                <div style="padding-left: 5px; margin-bottom: 5px; margin-top: 25px;" class="ocultar">
                                     <span>Detalle adicional a ser considerado en el informe final:</span>
                                 </div>
-                                <mat-form-field appearance="outline" class="w100p">
+                                <mat-form-field appearance="outline" class="w100p ocultar">
                                     <textarea formControlName="observacion" name="observacion" matInput rows="8"></textarea>
                                 </mat-form-field>
 
-                                <div class="misma-linea" style="margin-top: 10px;">
+                                <div class="misma-linea ocultar" style="margin-top: 10px;">
                                     <div>
                                         <div class="misma-linea">
                                             <label style="width: auto; margin-right: 10px;">Informe&nbsp;final&nbsp;generado:</label>
@@ -117,17 +120,18 @@
 
                                 <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 80px; margin-bottom: 50px;">
                                     <div class="row">
-                                        <div class="col-md-1"></div>
+
+                                        <div class="col-md-3">
+                                            <button type="button" (click)="descargar_cdv()" class="btn-block" mat-raised-button color="primary">Descargar CDV</button>
+                                        </div>
+                                        <div class="col-md-3"></div>
                                         <div class="col-md-3" style="margin-right: -20px;">
                                             <button type="button" (click)="volverEtapa()" class="btn-block" mat-stroked-button color="warn">Cancelar</button>
                                         </div>
                                         <div class="col-md-3">
-                                            <button type="submit" class="btn-block" mat-raised-button color="warn">Guardar</button>
+                                            <button type="submit" class="btn-block" mat-raised-button color="warn">Finalizar</button>
                                         </div>
-                                        <div class="col-md-3">
-                                            <button type="submit" class="btn-block" mat-raised-button color="warn">Generar informe final</button>
-                                        </div>
-                                        <div class="col-md-2"></div>
+
                                     </div>
                                 </div>
 

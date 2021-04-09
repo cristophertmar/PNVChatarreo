@@ -101,7 +101,7 @@ export class VerificacionFisicaEditarComponent implements OnInit {
     this.fetapa.IdProceso = this.proceso_obtenido.IdProceso;
     this.fetapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
     this.fetapa.ChatarraPeso = Number(this.proceso_obtenido.ProcesoEtapa.VehiculoPeso);
-    this.fetapa.ChatarraPeso = Number(this.form_etapa.value.peso_real);
+    this.fetapa.VehiculoPeso = Number(this.form_etapa.value.peso_real);
     this.fetapa.FechaInicio = this.obtener_fecha_inicial();
     this.fetapa.FechaFin = this.obtener_fecha_final();
     this.fetapa.Estado = 'T';
@@ -222,7 +222,8 @@ export class VerificacionFisicaEditarComponent implements OnInit {
         }
       }
     }    
-
+    
+    check.Cumple = 'S';
     this.checklist_request.push(check);   
     console.log(this.checklist_request);   
 

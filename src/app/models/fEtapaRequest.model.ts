@@ -6,6 +6,7 @@ export class FinEtapaRequest {
         public IdProceso?: number,
         public IdEtapa?: number,
         public ChatarraPeso?: number,
+        public VehiculoPeso?: number,
         public FechaInicio?: string,
         public FechaFin?: string,
         public Estado?: string,

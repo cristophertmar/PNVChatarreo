@@ -65,7 +65,8 @@ export class EmisionCdvEditarComponent implements OnInit {
       // Verificación Física
       fecha_inicio: new FormControl( null, [Validators.required]),
       hora_inicio: new FormControl( null, [Validators.required]),
-      observacion: new FormControl( null, [Validators.required]),
+      informe: new FormControl( null, [Validators.required]),
+      observacion: new FormControl( null),
 
     });
   }
@@ -80,7 +81,8 @@ export class EmisionCdvEditarComponent implements OnInit {
       // Verificación Física
       fecha_inicio: '',
       hora_inicio: '',
-      observacion: proceso.ProcesoEtapa.Observacion,
+      informe: null,
+      observacion: '',
     })
   }
 
@@ -200,6 +202,36 @@ export class EmisionCdvEditarComponent implements OnInit {
     }
     
     );
+  }
+
+  descargar_cdv() {
+
+  }
+
+  seleccionImagen( archivo: File ) {
+
+    console.log(archivo);
+
+    const Toast = Swal.mixin({
+      timer: 2000,
+      width: 350,
+      padding: 15,
+      allowOutsideClick: false,
+      showConfirmButton: false
+    });
+
+    if ( !archivo ) {
+      return;
+    }
+
+    if ( archivo.type.indexOf('application/pdf') < 0 ) {
+      Toast.fire({
+        icon: 'error',
+        title: 'No es un PDF'
+      });
+      return;
+    }
+
   }
 
   generarInforme() {
