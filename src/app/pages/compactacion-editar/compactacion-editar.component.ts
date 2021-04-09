@@ -169,7 +169,7 @@ export class CompactacionEditarComponent implements OnInit {
       subscribe( resp_fetapa => {
         this.descargar_informe();
         Swal.fire({
-          text: 'Verificación Física finalizada',
+          text: 'Compactación finalizada',
           width: 350,
           padding: 15,
           timer: 3000,
@@ -186,7 +186,7 @@ export class CompactacionEditarComponent implements OnInit {
   }
 
   volverEtapa(){
-    this._router.navigate(['/etapa/eliminacion-fluidos']);
+    this._router.navigate(['/etapa/compactacion']);
   }
 
   obtener_fecha_inicial() {
@@ -227,7 +227,7 @@ export class CompactacionEditarComponent implements OnInit {
     let id_proceso = this.proceso_obtenido.IdProceso;
     let token =this.token;
 
-    this._procesoEtapaService.descargar_informe(id_etapa, encodeURI(token)).
+    this._procesoEtapaService.descargar_informe(id_etapa, encodeURIComponent(token)).
     subscribe(resp => {
     
       const blob_data = new Blob([resp], { type: 'application/pdf' });

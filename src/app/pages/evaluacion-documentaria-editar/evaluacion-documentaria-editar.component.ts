@@ -433,10 +433,10 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
           
                   this._procesoEtapaService.finalizar_etapa(this.festapa_request)
                   .subscribe( resp => {
-                    /* this.descargar_informe(resp_ini.IdEtapa, encodeURIComponent(this.proceso_token), resp_crea.IdProceso); */
+                    this.descargar_informe(resp_ini.IdEtapa, encodeURIComponent(resp_crea.Token), resp_crea.IdProceso);
                     /* this.descargar_informe(resp_ini.IdEtapa, encodeURIComponent(this.proceso_token), resp_crea.IdProceso); */
                     Swal.fire({
-                      text: 'Proceso de etapa 01 finalizado',
+                      text: 'Evaluación documentaria finalizada',
                       width: 350,
                       padding: 15,
                       timer: 2000,
@@ -484,21 +484,21 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   
 
-  descargar_informe(id_etapa: number, token: string = '1qS15XA9exYmrgSO7HUWrw%3D%3D', id_proceso: number) {
+  descargar_informe(id_etapa: number, token: string, id_proceso: number) {
     
-      this._procesoEtapaService.descargar_informe( id_etapa, encodeURIComponent(token)).
+      this._procesoEtapaService.descargar_informe( id_etapa, token).
       subscribe(resp => {
       
         const blob_data = new Blob([resp], { type: 'application/pdf' });
         const blob = new Blob([blob_data], { type: 'application/pdf' }); 
         const url = window.URL.createObjectURL(blob);
         const anchor = document.createElement("a");
-        anchor.download = 'evaluación_documentaria_nro_'+ id_proceso +'.pdf';
+        anchor.download = 'evaluación_documentaria_nro_1'+ id_proceso +'.pdf';
         anchor.href = url;
         anchor.click();
       },
       (error) => {
-        console.error(error);
+        console.error('ERROR', error);
         Swal.fire({
           text: 'Error al descargar informe. Intente nuevamente.',
           width: 350,
