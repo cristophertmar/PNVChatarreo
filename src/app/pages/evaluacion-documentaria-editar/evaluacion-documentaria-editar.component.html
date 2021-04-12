@@ -287,6 +287,7 @@
                             </legend>
                             <div class="container-fielset">
                                 <div style="height: 250px; overflow: auto;">
+                                    <h5 class="text-danger">Obligatorio (*)</h5>
                                     <div *ngIf="archivos_etapa">
                                         <div *ngFor="let archivo of archivos_etapa; let i = index" class="misma-linea">
                                             <div>
@@ -298,7 +299,8 @@
                                                 </button>
 
 
-                                                <mat-checkbox style="margin-left: 35px;" color="warn" [checked]="archivo.archivo_adjunto" disabled>
+                                                <mat-checkbox style="margin-left: 35px;" color="warn" [checked]="archivo.archivo_adjunto">
+                                                    <span *ngIf="archivo.Obligatorio === 'S'" class="text-danger">(*)</span>
                                                     {{ (archivo.Descripcion.length>50)? (archivo.Descripcion | slice:0:50)+'..':(archivo.Descripcion) }}
                                                     <!-- <img width="20px" src="assets/img/icons-form/pdf.svg"> -->
 

@@ -158,9 +158,12 @@ export class CompactacionEditarComponent implements OnInit {
     this.fetapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
     this.fetapa.FechaInicio = this.obtener_fecha_inicial();
     this.fetapa.FechaFin = this.obtener_fecha_final();
-    this.fetapa.ChatarraPeso = Number(this.proceso_obtenido.ProcesoEtapa.ChatarraPeso);
+    this.fetapa.ChatarraPeso = Number(this.form_etapa.value.peso_chatarra);
+    this.fetapa.VehiculoPeso = Number(this.form_etapa.value.peso_chatarra);
     this.fetapa.Estado = 'T';
     this.fetapa.Checklist = this.checklist_request;
+
+    console.log('objeto ftepa: ', this.fetapa);
 
     this._procesoEtapaService.iniciar_etapa(this.ietapa).
     subscribe(resp_ietapa => {      

@@ -380,6 +380,22 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       return;
     }
 
+    const arch_aprobados = this.archivos_aprobados;
+    const arch_etapa = this.archivos_etapa;
+
+    if((arch_aprobados.filter(arch => arch.Obligatorio === 'S').length) != (arch_etapa.filter(arch => arch.Obligatorio === 'S').length)) {
+      Swal.fire({
+        text: 'Adjunte todos los documentos obligatorios',
+        width: 350,
+        padding: 15,
+        timer: 2000,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        icon: 'error'
+      });  
+      return;
+    }    
+
     this.proceso_request.Tipo = this.form_principal.value.pgm_chatarreo;
     this.proceso_request.VehiculoPlaca = this.form_busqueda.value.nro_placa;
     this.proceso_request.SolicitanteTipoDI = this.form_principal.value.tipo_documento_repre;
@@ -443,7 +459,6 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
                   this._procesoEtapaService.finalizar_etapa(this.festapa_request)
                   .subscribe( resp => {
                     this.descargar_informe(resp_ini.IdEtapa, encodeURIComponent(resp_crea.Token), resp_crea.IdProceso);
-                    /* this.descargar_informe(resp_ini.IdEtapa, encodeURIComponent(this.proceso_token), resp_crea.IdProceso); */
                     Swal.fire({
                       text: 'Evaluación documentaria finalizada',
                       width: 350,
