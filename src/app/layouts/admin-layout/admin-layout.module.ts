@@ -33,6 +33,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { EvaluacionDocumentariaEditarComponent } from 'app/pages/evaluacion-documentaria-editar/evaluacion-documentaria-editar.component';
 import { VerificacionFisicaEditarComponent } from 'app/pages/verificacion-fisica-editar/verificacion-fisica-editar.component';
 import { CompactacionEditarComponent } from 'app/pages/compactacion-editar/compactacion-editar.component';
@@ -56,7 +57,8 @@ import { ChatarreoObligatorioEntidadComponent } from '../../pages/chatarreo-obli
 import { ChatarreoObligatorioAdminComponent } from 'app/pages/chatarreo-obligatorio-admin/chatarreo-obligatorio-admin.component';
 import { EtapaComponent } from '../../pages/etapa/etapa.component';
 
-
+//Pipes
+import { EstadopchPipe } from "../../pipes/estadopch.pipe";
 
 @NgModule({
   imports: [
@@ -76,6 +78,7 @@ import { EtapaComponent } from '../../pages/etapa/etapa.component';
     MatDialogModule,
     MatSlideToggleModule,
     MatDatepickerModule,
+    MatTooltipModule,
     GalleryModule,
     LightboxModule,
     MatTabsModule,
@@ -108,7 +111,9 @@ import { EtapaComponent } from '../../pages/etapa/etapa.component';
     ChatarreoObligatorioComponent,
     ChatarreoObligatorioEntidadComponent,
     ChatarreoObligatorioAdminComponent,
-    EtapaComponent
+    EtapaComponent,
+
+    EstadopchPipe
   ]
 })
 

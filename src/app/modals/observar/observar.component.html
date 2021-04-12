@@ -1,60 +1,21 @@
 <!-- <h3 mat-dialog-title>Motivo de Observación</h3> -->
 <h3 mat-dialog-title>Motivo de Rechazo</h3>
 <div mat-dialog-content>
-
-
-
-    <div>
-        <div class="misma-linea">
-            <label style="width: 140px; line-height: 2.5; text-align: left;">Fecha&nbsp;Observación:</label>
-            <mat-form-field appearance="outline" style="width: 151px;">
-                <input type="date" matInput>
-            </mat-form-field>
-        </div>
-    </div>
-    <hr>
     <div style="margin-top: 20px;" class="row">
-        <div class="col-md-12">
-            <mat-checkbox color="warn" class="example-margin">Falta documentación técnica</mat-checkbox>
-        </div>
-        <div>
+        <div *ngFor="let o of obs">
             <div class="col-md-12">
-                <mat-checkbox color="warn" class="example-margin">Falta documentación económica</mat-checkbox>
-            </div>
-        </div>
-        <div>
-            <div class="col-md-12">
-                <mat-checkbox color="warn" class="example-margin">Beneficios insuficientes</mat-checkbox>
-            </div>
-        </div>
-        <div>
-            <div class="col-md-12">
-                <mat-checkbox color="warn" class="example-margin">Población indeterminada</mat-checkbox>
-            </div>
-        </div>
-        <div>
-            <div class="col-md-12">
-                <mat-checkbox color="warn" class="example-margin">Impacto medio ambiental</mat-checkbox>
+                <mat-checkbox color="warn" class="example-margin" [(ngModel)]="o.elegido">{{ o.name }}</mat-checkbox>
             </div>
         </div>
     </div>
-
     <hr>
-
     <div class="row">
         <div class="col-md-7"></div>
         <div class="misma-linea" style="padding-right: 15px;">
             <button mat-dialog-close style="width: 200px;" mat-stroked-button color="warn">Cancelar</button>
             <div style="width: 15px;"></div>
-            <button style="width: 200px;" mat-raised-button color="warn">Aceptar</button>
+            <button mat-dialog-close style="width: 200px;" mat-raised-button color="warn" (click)="observar()">Aceptar</button>
         </div>
     </div>
-
-
-
-
-
-
-
 
 </div>

@@ -1,119 +1,122 @@
-<!-- <h3 mat-dialog-title>Mantenimiento PCH</h3> -->
 <h3 mat-dialog-title>Mantenimiento programa de chatarreo</h3>
-<div mat-dialog-content class="text-center">
-
-
-
-    <div>
+<div mat-dialog-content>
+    <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar()">
+        <div>
+            <div class="misma-linea">
+                <label style="width: 120px; line-height: 2.5; text-align: left;">Número&nbsp;de&nbsp;PCH:</label>
+                <h5 style="color: red; margin-top: 9px;">{{ pch.CodigoPCH}}</h5>
+            </div>
+        </div>
         <div class="misma-linea">
-            <label style="width: 120px; line-height: 2.5; text-align: left;">Número&nbsp;de&nbsp;PCH:</label>
-            <h5 style="color: red; margin-top: 9px;">001-PCH-2021/ATU</h5>
-        </div>
-    </div>
-    <div class="misma-linea">
-        <div>
-            <div class="misma-linea">
-                <label style="width: 120px; line-height: 2.5; text-align: left;">Tipo&nbsp;de&nbsp;PCO:</label>
-                <mat-form-field appearance="outline">
-                    <mat-select>
-                        <mat-option value="1">Retiro</mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <div>
+                <div class="misma-linea">
+                    <label style="width: 120px; line-height: 2.5; text-align: left;">Tipo&nbsp;de&nbsp;PCO:</label>
+                    <mat-form-field appearance="outline">
+                        <mat-select formControlName="tipoPch">
+                            <mat-option value="Renovación Vehicular">Renovación Vehicular</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="misma-linea">
-        <div>
-            <div class="misma-linea">
-                <label style="width: 120px; line-height: 2.5; text-align: left;">Fecha&nbsp;Inicio:</label>
-                <mat-form-field appearance="outline">
-                    <input type="date" matInput>
-                </mat-form-field>
+        <div class="misma-linea">
+            <div>
+                <div class="misma-linea">
+                    <label style="width: 120px; line-height: 2.5; text-align: left;">Fecha&nbsp;Inicio:</label>
+                    <mat-form-field appearance="outline">
+                        <input type="date" matInput formControlName="fechaInicio" [readonly]="pch.Estado === 'V'" [class.is-invalid]="fechaInicioNoValido">
+                    </mat-form-field>
+                </div>
+                <small *ngIf="fechaInicioNoValido" class="text-danger">
+                    Seleccione una fecha de inicio
+                </small>
+            </div>
+            <div class="ml-50">
+                <div class="misma-linea">
+                    <label style="width: 100px; line-height: 2.5; text-align: left;">Fecha&nbsp;Fin:</label>
+                    <mat-form-field appearance="outline">
+                        <input type="date" matInput formControlName="fechaFin" [readonly]="pch.Estado === 'V'" [class.is-invalid]="fechaFinNoValido">
+                    </mat-form-field><br/>
+                </div>
+                <small *ngIf="fechaFinNoValido" class="text-danger">
+                    {{ msjFechaFinInvalida }}
+                </small>
             </div>
         </div>
-
-        <div class="ml-50">
-            <div class="misma-linea">
-                <label style="width: 100px; line-height: 2.5; text-align: left;">Fecha&nbsp;Fin:</label>
-                <mat-form-field appearance="outline">
-                    <input type="date" matInput>
-                </mat-form-field>
+        <div class="misma-linea">
+            <div>
+                <div class="misma-linea">
+                    <label style="width: 120px; line-height: 2.5; text-align: left;">Capac.&nbsp;Vehicular:</label>
+                    <mat-form-field appearance="outline">
+                        <input type="number" matInput formControlName="capacidadVehicular" [maxlength]="4" [readonly]="pch.Estado === 'V'" [class.is-invalid]="capacidadVehicularNoValido">
+                    </mat-form-field>
+                </div>
+                <small *ngIf="capacidadVehicularNoValido" class="text-danger">
+                    {{ msjCapacidadVehicularInvalido }}
+                </small>
+            </div>
+            <div class="ml-50">
+                <div class="misma-linea">
+                    <label style="width: 100px; line-height: 2.5; text-align: left;">Capac.&nbsp;Real:</label>
+                    <mat-form-field appearance="outline">
+                        <input type="number" matInput formControlName="capacidadReal" [maxlength]="4" [readonly]="pch.Estado === 'V'" [class.is-invalid]="capacidadRealNoValido">
+                    </mat-form-field>
+                </div>
+                <small *ngIf="capacidadRealNoValido" class="text-danger">
+                    {{ msjCapacidadRealInvalido }}
+                </small>
             </div>
         </div>
-    </div>
-
-    <div class="misma-linea">
-
-        <div>
-            <div class="misma-linea">
-                <label style="width: 120px; line-height: 2.5; text-align: left;">Capac.&nbsp;Vehicular:</label>
-                <mat-form-field appearance="outline">
-                    <input type="text" matInput>
-                </mat-form-field>
+        <div class="misma-linea" style="margin-top: 25px;">
+            <div>
+                <div class="misma-linea">
+                    <label style="width: 120px; line-height: 2.5; text-align: left;">Expediente:</label>
+                    <mat-form-field appearance="outline">
+                        <input type="text" readonly matInput formControlName="nombreExpediente" [(ngModel)]="pch.NombreExpediente" [class.is-invalid]="nombreExpedienteNoValido">
+                    </mat-form-field>
+                    <button *ngIf="pch.Estado === 'V'" type="button" mat-icon-button matTooltip="Descargar archivo">
+                        <mat-icon (click)="descargar_adjunto('E')" style="font-size: 23px;" color="warn">get_app</mat-icon>
+                    </button>
+                    <button *ngIf="pch.Estado === 'N' && !pch.NombreExpediente" type="button" mat-icon-button>
+                        <mat-icon (click)="adjuntar_archivo('E')" style="font-size: 23px;" color="warn">add_circle</mat-icon>
+                    </button>
+                    <button *ngIf="pch.Estado === 'N' && pch.NombreExpediente" type="button" mat-icon-button>
+                        <mat-icon (click)="quitar_archivo('E')" style="font-size: 23px;" color="warn">highlight_off</mat-icon>
+                    </button>
+                </div>
+                <small *ngIf="nombreExpedienteNoValido" class="text-danger">
+                    El expediente es obligatoria y solo en formato PDF
+                </small>
             </div>
         </div>
-
-        <div class="ml-50">
-            <div class="misma-linea">
-                <label style="width: 100px; line-height: 2.5; text-align: left;">Capac.&nbsp;Real:</label>
-                <mat-form-field appearance="outline">
-                    <input type="text" matInput>
-                </mat-form-field>
+        <div class="misma-linea">
+            <div>
+                <div class="misma-linea">
+                    <label style="width: 120px; line-height: 2.5; text-align: left;">Doc.&nbsp;Sustento:</label>
+                    <mat-form-field appearance="outline">
+                        <input type="text" readonly matInput formControlName="nombreSustento" [(ngModel)]="pch.NombreSustento" [class.is-invalid]="nombreSustentoNoValido">
+                    </mat-form-field>
+                    <button *ngIf="pch.Estado === 'V'" type="button" mat-icon-button matTooltip="Descargar archivo">
+                        <mat-icon (click)="descargar_adjunto('S')" style="font-size: 23px;" color="warn">get_app</mat-icon>
+                    </button>
+                    <button *ngIf="pch.Estado === 'N' && !pch.NombreSustento" type="button" mat-icon-button>
+                        <mat-icon (click)="adjuntar_archivo('S')" style="font-size: 23px;" color="warn">add_circle</mat-icon>
+                    </button>
+                    <button *ngIf="pch.Estado === 'N' && pch.NombreSustento" type="button" mat-icon-button>
+                        <mat-icon (click)="quitar_archivo('S')" style="font-size: 23px;" color="warn">highlight_off</mat-icon>
+                    </button>
+                </div>
+                <small *ngIf="nombreSustentoNoValido" class="text-danger">
+                    El sustento es obligatoria y solo en formato PDF
+                </small>
             </div>
         </div>
-
-    </div>
-
-    <div class="misma-linea" style="margin-top: 25px;">
-        <div>
-            <div class="misma-linea">
-                <label style="width: 120px; line-height: 2.5; text-align: left;">Expediente:</label>
-                <mat-form-field appearance="outline">
-                    <input type="text" matInput>
-                </mat-form-field>
-                <button mat-icon-button color="basic" style="margin-left: 5px;">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <img style="margin-left: 10px;" width="20px" src="assets/img/icons-form/pdf.svg">
-                <button mat-icon-button>
-                    <mat-icon>remove_circle_outline</mat-icon>
-                </button>
+        <div class="row">
+            <div class="col-md-7"></div>
+            <div class="misma-linea" style="padding-right: 15px; padding-top: 20px;">
+                <button type="button" style="width: 200px; margin-right: 10px;" mat-stroked-button mat-dialog-close color="warn">Cancelar</button>
+                <button type="submit" style="width: 200px;" *ngIf="pch.Estado == 'N'" mat-raised-button color="warn">Guardar</button>
             </div>
         </div>
-    </div>
-    <div class="misma-linea">
-        <div>
-            <div class="misma-linea">
-                <label style="width: 120px; line-height: 2.5; text-align: left;">Doc.&nbsp;Sustento:</label>
-                <mat-form-field appearance="outline">
-                    <input type="text" matInput>
-                </mat-form-field>
-                <button mat-icon-button color="basic" style="margin-left: 5px;">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <img style="margin-left: 10px;" width="20px" src="assets/img/icons-form/pdf.svg">
-                <button mat-icon-button>
-                    <mat-icon>remove_circle_outline</mat-icon>
-                </button>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-md-7"></div>
-        <div class="misma-linea" style="padding-right: 15px; padding-top: 20px;">
-            <button style="width: 200px; margin-right: 10px;" mat-stroked-button color="warn">Cancelar</button>
-            <button style="width: 200px;" mat-raised-button color="warn">Guardar</button>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
+    </form>
 </div>

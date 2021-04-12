@@ -85,6 +85,14 @@ export class ArchivoService {
 
   }
 
- 
+  descargar_adjunto(token: string) {
+    let url: string = URL_SERVICIOS + 'api/archivo/id=' + token;
+
+    const headers = new HttpHeaders({
+      'x-api-key': this.token
+    });
+
+    return this._http.get(url, { headers, responseType: 'arraybuffer' });
+  }
 
 }

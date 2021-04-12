@@ -1,94 +1,75 @@
 <h3 mat-dialog-title>Carga de números de placa</h3>
 <div mat-dialog-content>
 
+    <form autocomplete="off" [formGroup]="form_csv">
+        <mat-tab-group color="warn" [(selectedIndex)]="tabIndex">
+            <mat-tab label="Carga de Placas">
 
-    <mat-tab-group color="warn">
-        <mat-tab label="Carga de Placas">
+                <div style="margin-top: 20px;">
+                    <div class="misma-linea">
+                        <label style="width: 120px; line-height: 2.5; text-align: left;">Inserte&nbsp;Archivo:</label>
+                        <mat-form-field appearance="outline" style="width: auto;">
+                            <input type="text" matInput formControlName="nombrecsv" name="nombrecsv" [(ngModel)]="nombrecsv" readonly>
+                        </mat-form-field>
+                        <button type="button" mat-icon-button style="margin-top: -3px; margin-left: 8px;">
+                            <mat-icon (click)="pulsarCambio()" style="font-size: 23px;" color="warn">add_circle</mat-icon>
+                        </button>
+                        <input #btn_select_doc class="ocultar" (change)="seleccion_archivo($event.target.files[0])" type="file">
+                    </div>
 
-            <div style="margin-top: 20px;">
-                <div class="misma-linea">
-                    <label style="width: 120px; line-height: 2.5; text-align: left;">Inserte&nbsp;Archivo:</label>
-                    <mat-form-field appearance="outline" style="width: auto;">
-                        <input type="text" matInput value="Archivo*.CSV">
-                    </mat-form-field>
-                    <button mat-mini-fab color="basic" style="margin-top: -3px; margin-left: 8px;">
-                        <mat-icon>upload</mat-icon>
-                    </button>
-                    <small class="text-danger" style="margin-top: 12px; margin-left: 8px;">Completado!</small>
+                    <br>
+                    <div class="alert alert-danger" role="alert">
+                        Formato de Archivo: <br>Inserte el archivo, formato CSV delimitado por comas. <br> El formato debe indicarse cada placa en una línea.
+                    </div>
 
                 </div>
 
+                <div class="row" style="width: 100%;">
+                    <div class="col-md-9"></div>
+                    <div class="misma-linea" style="padding-right: 15px; padding-top: 10px;">
+                        <button mat-dialog-close style="width: 200px;" mat-stroked-button color="warn">Cancelar</button>
+                    </div>
+                </div>
+
+            </mat-tab>
+
+            <mat-tab label="Validación">
                 <br>
-                <div class="alert alert-danger" role="alert">
-                    Formato de Archivo: <br>Inserte el archivo, formato CSV delimitado por comas. <br> El formato debe indicarse cada placa en una línea.
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nº Placa</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Nro. Chasis</th>
+                            <th>Nro. Motor</th>
+                            <th>Año</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let vehiculo of carga_vehiculo.Vehiculos">
+                            <td>{{ vehiculo.Placa }}</td>
+                            <td>{{ vehiculo.Marca }}</td>
+                            <td>{{ vehiculo.Modelo }}</td>
+                            <td>{{ vehiculo.NroChasis }}</td>
+                            <td>{{ vehiculo.NroMotor }}</td>
+                            <td>{{ vehiculo.AnoFabricacion }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <span class="text-danger" *ngIf="respuesta" [innerHTML]="respuesta | nl2br"></span>
+
+                <div class="row" style="width: 100%;">
+                    <div class="col-md-1"></div>
+                    <div class="misma-linea" style="padding-right: 15px; padding-top: 10px;">
+                        <button type="button" mat-dialog-close style="width: 200px;" mat-stroked-button color="warn">Cancelar</button>
+                        <div style="width: 15px;"></div>
+                        <button type="button" *ngIf="carga_vehiculo.Vehiculos" (click)="mantenimientoPCO()" style="width: 200px;" mat-raised-button color="warn">Registrar PCO</button>
+                    </div>
                 </div>
 
-            </div>
+            </mat-tab>
 
-            <div class="row" style="width: 100%;">
-                <div class="col-md-9"></div>
-                <div class="misma-linea" style="padding-right: 15px; padding-top: 10px;">
-                    <button mat-dialog-close style="width: 200px;" mat-stroked-button color="warn">Cancelar</button>
-                </div>
-            </div>
-
-        </mat-tab>
-
-        <mat-tab label="Validación">
-            <br>
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th>Nº Placa</th>
-                        <th>Propietario</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Año</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <tr>
-                        <td>ABC-123</td>
-                        <td>Giacomo Guilizzo</td>
-                        <td>Toyota</td>
-                        <td>Corolla</td>
-                        <td>1975</td>
-                        <td>Ok</td>
-                    </tr>
-                    <tr>
-                        <td>ABC-123</td>
-                        <td>Giacomo Guilizzo</td>
-                        <td>Toyota</td>
-                        <td>Corolla</td>
-                        <td>1975</td>
-                        <td>Ok</td>
-                    </tr>
-                    <tr>
-                        <td>ABC-123</td>
-                        <td>Giacomo Guilizzo</td>
-                        <td>Toyota</td>
-                        <td>Corolla</td>
-                        <td>1975</td>
-                        <td>Ok</td>
-                    </tr>
-
-
-                </tbody>
-            </table>
-            <span class="text-danger">Existe observaciones al archivo. Favor de verificar</span>
-            <br><br>
-
-            <div class="row" style="width: 100%;">
-                <div class="col-md-1"></div>
-                <div class="misma-linea" style="padding-right: 15px; padding-top: 10px;">
-                    <button mat-dialog-close style="width: 200px;" mat-stroked-button color="warn">Cancelar</button>
-                    <div style="width: 15px;"></div>
-                    <button style="width: 200px;" mat-raised-button color="warn">Guardar</button>
-                </div>
-            </div>
-
-        </mat-tab>
-
-    </mat-tab-group>
+        </mat-tab-group>
+    </form>
+</div>
