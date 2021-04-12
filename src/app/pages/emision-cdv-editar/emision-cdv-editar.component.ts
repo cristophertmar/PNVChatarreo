@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition, ImageSize } from '@ngx-gallery/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ProcesoService } from '../../services/proceso.service';
@@ -9,6 +9,8 @@ import { ProcesoEtapaService } from 'app/services/proceso-etapa.service';
 import { FinEtapaRequest } from '../../models/fEtapaRequest.model';
 
 import Swal from 'sweetalert2';
+import { ArchivoService } from 'app/services/archivo.service';
+import { IArchivoRequest } from 'app/models/iarchivoRequest.model';
 
 @Component({
   selector: 'app-emision-cdv-editar',
@@ -22,12 +24,18 @@ export class EmisionCdvEditarComponent implements OnInit {
   proceso_obtenido: Proceso;
   ietapa: InitEtapaRequest;
   fetapa: FinEtapaRequest;
+  iarchivo_request: IArchivoRequest;
+
+  informe_cdv: File;
+
+  @ViewChild('select_file_cdv') select_file_cdv: ElementRef;
   
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _procesoService: ProcesoService,
     private _procesoEtapaService : ProcesoEtapaService,
     private _router: Router,
+    private _archivoService: ArchivoService,
     public gallery: Gallery) {
       this.token = '';
       this.proceso_obtenido = {};
@@ -99,7 +107,8 @@ export class EmisionCdvEditarComponent implements OnInit {
     this.form_etapa.controls['pgm_chatarreo'].disable();
   }
 
-  guardar_etapa(){
+  guardar_etapa(){   
+    
     if(this.form_etapa.invalid) {
       Swal.fire({
         text: 'Debe de llenar correctamente el formulario',
@@ -111,7 +120,19 @@ export class EmisionCdvEditarComponent implements OnInit {
         icon: 'error'
       })
       return;
+    } else if (!(this.select_file_cdv.nativeElement.value)) {
+      Swal.fire({
+        text: 'Debe adjuntar el informe cdv',
+        width: 350,
+        padding: 15,
+        timer: 2000,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        icon: 'error'
+      })
+      return;
     }
+    
 
     // Request Object Iniciar Etapa
     this.ietapa.IdProceso = this.proceso_obtenido.IdProceso;
@@ -128,27 +149,40 @@ export class EmisionCdvEditarComponent implements OnInit {
     this.fetapa.Checklist = [];
     
     this._procesoEtapaService.iniciar_etapa(this.ietapa).
-    subscribe(resp_ietapa => {      
-      console.log(resp_ietapa);
-      this._procesoEtapaService.finalizar_etapa(this.fetapa).
-      subscribe( resp_fetapa => {
-        console.log(resp_fetapa);
-        //this.descargar_informe();
-        Swal.fire({
-          text: 'Emisión del CVD finalizada',
-          width: 350,
-          padding: 15,
-          timer: 3000,
-          allowOutsideClick: false,
-          showConfirmButton: false,
-          icon: 'success'
-        }).then( result => {
-          this.volverEtapa();
-        });
-        
-      })
+    subscribe(resp_ietapa => {   
+      
+        console.log(resp_ietapa);
 
-    })
+        this._archivoService.cargar_archivo(encodeURIComponent(this.proceso_obtenido.IdCdv), this.informe_cdv).
+        subscribe( resp_carga => {
+
+          console.log(resp_carga);
+          
+          this._procesoEtapaService.finalizar_etapa(this.fetapa).
+          subscribe( resp_fetapa => {
+            console.log(resp_fetapa);
+            this.descargar_informe();
+            Swal.fire({
+              text: 'Emisión del CVD finalizada',
+              width: 350,
+              padding: 15,
+              timer: 3000,
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              icon: 'success'
+            }).then( result => {
+              this.volverEtapa();
+            });
+            
+          });
+              
+        },
+        (error: any) => {
+          console.log(error);
+        }
+        );       
+
+    });
   }
 
   volverEtapa(){
@@ -206,31 +240,61 @@ export class EmisionCdvEditarComponent implements OnInit {
 
   descargar_cdv() {
 
+    let id_proceso = this.proceso_obtenido.IdProceso;
+    let token =this.token;
+    
+    this._procesoEtapaService.descargar_cdv(encodeURIComponent(token)).
+    subscribe(resp => {
+      const blob_data = new Blob([resp], { type: 'application/pdf' });
+      const blob = new Blob([blob_data], { type: 'application/pdf' }); 
+      const url = window.URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.download = 'informe_cdv'+ id_proceso +'.pdf';
+      anchor.href = url;
+      anchor.click();
+    },
+    (error) => {
+      console.error(error);
+      Swal.fire({
+        text: 'Error al descargar informe cdv. Intente nuevamente.',
+        width: 350,
+        padding: 15,
+        timer: 2000,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        icon: 'error'
+      });
+    }
+    
+    );
+
   }
 
-  seleccionImagen( archivo: File ) {
+  seleccionImagen(archivo: File) {
 
     console.log(archivo);
 
-    const Toast = Swal.mixin({
-      timer: 2000,
-      width: 350,
-      padding: 15,
-      allowOutsideClick: false,
-      showConfirmButton: false
-    });
-
     if ( !archivo ) {
+      this.informe_cdv = null;
       return;
     }
 
     if ( archivo.type.indexOf('application/pdf') < 0 ) {
-      Toast.fire({
-        icon: 'error',
-        title: 'No es un PDF'
-      });
+      Swal.fire({
+        text: 'No es un PDF',
+        width: 350,
+        padding: 15,
+        timer: 2000,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        icon: 'error'
+      })
+      this.select_file_cdv.nativeElement.value = null;
+      this.informe_cdv = null;
       return;
     }
+
+    this.informe_cdv = archivo;
 
   }
 

@@ -69,4 +69,17 @@ export class ProcesoEtapaService {
     return this._http.get(url, { headers, responseType: 'arraybuffer' });
   }
 
+  descargar_cdv(token: string) {
+    let url: string;
+    url = URL_SERVICIOS + 'api/proceso/cdv?token=' + token;
+
+    const headers = new HttpHeaders({
+      'x-api-key': this.token
+    });
+
+    return this._http.get(url, { headers, responseType: 'arraybuffer' });
+  }
+
+
+
 }

@@ -94,7 +94,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <input type="file" formControlName="informe" name="informe" (change)="seleccionImagen($event.target.files[0])">
+                                <input #select_file_cdv type="file" formControlName="informe" name="informe" (change)="seleccionImagen($event.target.files[0])">
 
                                 <div style="padding-left: 5px; margin-bottom: 5px; margin-top: 25px;" class="ocultar">
                                     <span>Detalle adicional a ser considerado en el informe final:</span>
