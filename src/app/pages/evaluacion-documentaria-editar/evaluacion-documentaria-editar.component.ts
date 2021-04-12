@@ -383,7 +383,10 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     const arch_aprobados = this.archivos_aprobados;
     const arch_etapa = this.archivos_etapa;
 
-    if((arch_aprobados.filter(arch => arch.Obligatorio === 'S').length) != (arch_etapa.filter(arch => arch.Obligatorio === 'S').length)) {
+    console.log(arch_aprobados.filter(arch => arch.Obligatorio === 'S'));
+    console.log(arch_etapa.filter(arch => arch.Obligatorio === 'S'));
+
+    if((arch_aprobados.filter(arch => arch.Obligatorio === 'S').length) < (arch_etapa.filter(arch => arch.Obligatorio === 'S').length)) {
       Swal.fire({
         text: 'Adjunte todos los documentos obligatorios',
         width: 350,
@@ -433,20 +436,20 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
           });
         }
 
-        for(let i = 0; i < this.archivos_etapa.length; i++) {
+        for(let i = 0; i < this.archivos_aprobados.length; i++) {
         
           this.iarchivo_request = {};
           this.iarchivo_request.IdProceso = resp_crea.IdProceso;
           this.iarchivo_request.IdEtapa = resp_ini.IdEtapa;
-          this.iarchivo_request.IdTipoArchivo = this.archivos_etapa[i].IdTipoArchivo;
-          this.iarchivo_request.Nombre = this.archivos_etapa[i].archivo_adjunto.name;
+          this.iarchivo_request.IdTipoArchivo = this.archivos_aprobados[i].IdTipoArchivo;
+          this.iarchivo_request.Nombre = this.archivos_aprobados[i].archivo_adjunto.name;
 
           this._archivoService.insertar_archivo(this.iarchivo_request)
           .subscribe((resp_token: string) => {
-              this._archivoService.cargar_archivo(encodeURIComponent(resp_token), this.archivos_etapa[i].archivo_adjunto).
+              this._archivoService.cargar_archivo(encodeURIComponent(resp_token), this.archivos_aprobados[i].archivo_adjunto).
               subscribe(resp => {
                 
-                if( i === (this.archivos_etapa.length - 1)){
+                if( i === (this.archivos_aprobados.length - 1)){
                   
                   
                   this.festapa_request.IdProceso = resp_crea.IdProceso;
@@ -478,7 +481,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
               },
               (error: any) => {
                 Swal.fire({
-                  text: 'Ocurrió un problema al cargar el archivo ' + this.archivos_etapa[i].archivo_adjunto.name,
+                  text: 'Ocurrió un problema al cargar el archivo ' + this.archivos_aprobados[i].archivo_adjunto.name,
                   width: 350,
                   padding: 15,
                   timer: 2000,

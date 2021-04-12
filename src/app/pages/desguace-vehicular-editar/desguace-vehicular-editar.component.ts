@@ -84,7 +84,8 @@ export class DesguaceVehicularEditarComponent implements OnInit {
       fecha_inicio: new FormControl( null, [Validators.required]),
       hora_inicio: new FormControl( null, [Validators.required]),
       fecha_fin: new FormControl( null, [Validators.required]),
-      hora_fin: new FormControl( null, [Validators.required])
+      hora_fin: new FormControl( null, [Validators.required]),
+      motivo: new FormControl( null, [Validators.required])
 
     });
   }
@@ -101,6 +102,7 @@ export class DesguaceVehicularEditarComponent implements OnInit {
       hora_inicio: '',
       fecha_fin: '',
       hora_fin: '',
+      motivo: ''
     })
   }
 
@@ -155,6 +157,7 @@ export class DesguaceVehicularEditarComponent implements OnInit {
     this.fetapa.FechaFin = this.obtener_fecha_final();
     this.fetapa.Estado = 'T';
     this.fetapa.Checklist = this.checklist_request;
+    this.fetapa.Observacion = this.form_etapa.value.motivo;
 
     this._procesoEtapaService.iniciar_etapa(this.ietapa).
     subscribe(resp_ietapa => {      
@@ -229,7 +232,7 @@ export class DesguaceVehicularEditarComponent implements OnInit {
       const blob = new Blob([blob_data], { type: 'application/pdf' }); 
       const url = window.URL.createObjectURL(blob);
       const anchor = document.createElement("a");
-      anchor.download = 'verificacion_fisica_nro_'+ id_proceso +'.pdf';
+      anchor.download = 'desguace_vehicular_nro_'+ id_proceso +'.pdf';
       anchor.href = url;
       anchor.click();
     },

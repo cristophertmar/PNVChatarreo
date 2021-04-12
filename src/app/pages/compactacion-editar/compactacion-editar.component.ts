@@ -89,6 +89,7 @@ export class CompactacionEditarComponent implements OnInit {
       fecha_fin: new FormControl( null, [Validators.required]),
       hora_fin: new FormControl( null, [Validators.required]),
       peso_chatarra: new FormControl( null, [Validators.required]),
+      motivo: new FormControl( null, [Validators.required])
 
     });
   }
@@ -106,6 +107,7 @@ export class CompactacionEditarComponent implements OnInit {
       fecha_fin: '',
       hora_fin: '',
       peso_chatarra: proceso.ProcesoEtapa.ChatarraPeso,
+      motivo: ''
     })
   }
 
@@ -162,6 +164,7 @@ export class CompactacionEditarComponent implements OnInit {
     this.fetapa.VehiculoPeso = Number(this.form_etapa.value.peso_chatarra);
     this.fetapa.Estado = 'T';
     this.fetapa.Checklist = this.checklist_request;
+    this.fetapa.Observacion = this.form_etapa.value.motivo;
 
     console.log('objeto ftepa: ', this.fetapa);
 
@@ -238,7 +241,7 @@ export class CompactacionEditarComponent implements OnInit {
       const blob = new Blob([blob_data], { type: 'application/pdf' }); 
       const url = window.URL.createObjectURL(blob);
       const anchor = document.createElement("a");
-      anchor.download = 'verificacion_fisica_nro_'+ id_proceso +'.pdf';
+      anchor.download = 'compactacion_nro_'+ id_proceso +'.pdf';
       anchor.href = url;
       anchor.click();
     },

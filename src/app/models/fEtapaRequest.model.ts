@@ -10,7 +10,8 @@ export class FinEtapaRequest {
         public FechaInicio?: string,
         public FechaFin?: string,
         public Estado?: string,
-        public Checklist?: ArchivoEtapa[]
+        public Checklist?: ArchivoEtapa[],
+        public Observacion?: string
     ){}
 
 }

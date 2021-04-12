@@ -86,7 +86,8 @@ export class EliminacionFluidosEditarComponent implements OnInit {
       fecha_inicio: new FormControl( null, [Validators.required]),
       hora_inicio: new FormControl( null, [Validators.required]),
       fecha_fin: new FormControl( null, [Validators.required]),
-      hora_fin: new FormControl( null, [Validators.required])
+      hora_fin: new FormControl( null, [Validators.required]),
+      motivo: new FormControl( null, [Validators.required])
 
     });
   }
@@ -103,6 +104,7 @@ export class EliminacionFluidosEditarComponent implements OnInit {
       hora_inicio: '',
       fecha_fin: '',
       hora_fin: '',
+      motivo: ''
     })
   }
 
@@ -120,6 +122,8 @@ export class EliminacionFluidosEditarComponent implements OnInit {
   }
 
   guardar_etapa(){
+
+
     if(this.form_etapa.invalid) {
       Swal.fire({
         text: 'Debe de llenar correctamente el formulario',
@@ -157,9 +161,10 @@ export class EliminacionFluidosEditarComponent implements OnInit {
     this.fetapa.FechaFin = this.obtener_fecha_final();
     this.fetapa.Estado = 'T';
     this.fetapa.Checklist = this.checklist_request;
+    this.fetapa.Observacion = this.form_etapa.value.motivo;
 
     this._procesoEtapaService.iniciar_etapa(this.ietapa).
-    subscribe(resp_ietapa => {      
+    subscribe(resp_ietapa => {    
       
       this._procesoEtapaService.finalizar_etapa(this.fetapa).
       subscribe( resp_fetapa => {
@@ -178,7 +183,8 @@ export class EliminacionFluidosEditarComponent implements OnInit {
         
       })
 
-    })
+    });
+
   }
 
   volverEtapa(){
