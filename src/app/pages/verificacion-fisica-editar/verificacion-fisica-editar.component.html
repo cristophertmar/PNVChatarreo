@@ -141,7 +141,7 @@
                                         <div class="col-md-12" style="margin-top: 0px; margin-bottom: 114px;">
                                             <span>Peso real del vehículo (kg):</span>&nbsp;&nbsp;&nbsp;&nbsp;
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input formControlName="peso_real" name="peso_real" type="number" matInput>
+                                                <input formControlName="peso_real" name="peso_real" type="number" min="1" matInput>
                                             </mat-form-field>
                                             &nbsp;Kg.
                                         </div>
@@ -268,7 +268,7 @@
                                 <div class="gallerize-example">
                                     <div class="misma-linea" style="margin-bottom: 8px;">
                                         <h4>Agregar imagen</h4>
-                                        <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: 25px;">
+                                        <button type="button" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: 25px;">
                                             <mat-icon>add</mat-icon>
                                         </button>
                                     </div>

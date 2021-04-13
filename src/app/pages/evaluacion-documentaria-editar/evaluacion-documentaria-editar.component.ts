@@ -59,6 +59,9 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
   deshabilitar_obs: boolean = false;
   descripcion_obs: string = '';
 
+  fecha_maxima: string = '2021-01-01';
+  long_nro_documento = 0;
+
   @ViewChild('selectorImagen') selectorImagen: ElementRef<HTMLElement>;
 
   constructor(
@@ -86,6 +89,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   ngOnInit(): void {
     this.crearFormularios();
+    this.obtener_fecha_maxima();
     this._activatedRoute.params.subscribe( ({token}) => {
       if(token != 'nuevo') {
         this.proceso_token = token;
@@ -96,8 +100,34 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       }       
     } );
     
-    this.recibir_lista_archivos();    
+    this.recibir_lista_archivos();  
+    this.tipo_documento_repre_listener();  
     
+  }
+
+  obtener_fecha_maxima() {
+    const today = new Date();
+    this.fecha_maxima = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+  }
+
+  tipo_documento_repre_listener() {
+    this.form_principal.get('tipo_documento_repre').valueChanges.subscribe( (valor: string) => {
+      
+      this.form_principal.get('nro_documento_repre').reset();
+      
+      switch (valor) {
+        case '01':
+          this.long_nro_documento = 8;
+          break;
+        case '06':
+          this.long_nro_documento = 9;
+          break;
+        default:
+          this.long_nro_documento = 0;
+          break;
+      }
+      
+    });
   }
 
   recibir_lista_archivos() {
@@ -226,15 +256,15 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       categoria_veh: new FormControl( null, [Validators.required]),
 
       // Datos del representante
-      tipo_documento_repre: new FormControl( "00", [Validators.required]),
+      tipo_documento_repre: new FormControl( "00", [Validators.required, Validators.pattern('^(?!.*00).*$')]),
       nro_documento_repre: new FormControl( null, [Validators.required]),
       nombre_repre: new FormControl( null, [Validators.required]),
-      correo_repre: new FormControl( null, [Validators.required]),
+      correo_repre: new FormControl( null, [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]),
       celular_repre: new FormControl( null, [Validators.required]),
 
       // Datos de la solicitud
       fecha_solicitud: new FormControl( null, [Validators.required]),
-      pgm_chatarreo: new FormControl( '', [Validators.required]),
+      pgm_chatarreo: new FormControl( 'V', [Validators.required]),
       ent_promotora: new FormControl( null ),
       distrito_solicitud: new FormControl( null )
 
@@ -271,10 +301,13 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     this.form_principal.controls['marca_veh'].disable();
     this.form_principal.controls['anio_veh'].disable();
     this.form_principal.controls['combustible_veh'].disable();
-    this.form_principal.controls['categoria_veh'].disable();
-    
+    this.form_principal.controls['categoria_veh'].disable();  
     
 
+  }
+
+  volverEtapa(){
+    this._router.navigate(['/etapa/evaluacion-documentaria']);
   }
   
   Buscar_placa() {
@@ -366,10 +399,24 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
   }
 
   guardar_proceso() {
-
-    if(this.form_principal.invalid) {    
+    debugger;
+    if(this.form_principal.invalid || this.form_busqueda.invalid) {    
+      Object.values( this.form_busqueda.controls).forEach( control => {
+        control.markAsTouched();
+      });
       Swal.fire({
         text: 'Llene todos los campos obligatorios',
+        width: 350,
+        padding: 15,
+        timer: 2000,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        icon: 'error'
+      });  
+      return;
+    } else if ((document.getElementById("tipo_documento_prop") as HTMLInputElement).value.length < 1) {
+      Swal.fire({
+        text: 'Debe enviar los datos del propietario y del vehículo',
         width: 350,
         padding: 15,
         timer: 2000,
@@ -431,7 +478,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
           
           this._procesoEtapaService.observar_etapa(this.observacion_request)
           .subscribe(resp_obs => {
-                this._router.navigate(['/etapa/evaluacion-documentaria']);
+                this.volverEtapa();
                 return;
           });
         }
@@ -471,7 +518,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
                       showConfirmButton: false,
                       icon: 'success'
                     }).then( result => {
-                      this._router.navigate(['/etapa/evaluacion-documentaria']);
+                      this.volverEtapa();
                     });
                     
                   })

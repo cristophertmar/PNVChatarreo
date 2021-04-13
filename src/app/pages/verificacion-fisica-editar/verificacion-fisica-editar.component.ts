@@ -161,7 +161,7 @@ export class VerificacionFisicaEditarComponent implements OnInit {
       fecha_fin: new FormControl( null, [Validators.required]),
       hora_fin: new FormControl( null, [Validators.required]),
       peso_estimado: new FormControl( null, [Validators.required]),
-      peso_real: new FormControl( null, [Validators.required])
+      peso_real: new FormControl( null, [Validators.required, Validators.pattern('^[1-9][0-9]*$')])
 
     });
   }

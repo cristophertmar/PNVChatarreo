@@ -38,7 +38,7 @@
                                         <div class="misma-linea">
                                             <label>Tipo&nbsp;Documento:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input formControlName="tipo_documento_prop" name="tipo_documento_prop" type="text" matInput>
+                                                <input id="tipo_documento_prop" formControlName="tipo_documento_prop" name="tipo_documento_prop" type="text" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -171,7 +171,7 @@
                                         <div class="misma-linea">
                                             <label>Nº&nbsp;Documento:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input formControlName="nro_documento_repre" name="nro_documento_repre" type="text" matInput>
+                                                <input formControlName="nro_documento_repre" name="nro_documento_repre" type="number" [maxlength]="long_nro_documento" matInput oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                                             </mat-form-field>
                                             <button type="button" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px; display: none;">
                                                 <mat-icon>search</mat-icon>
@@ -200,7 +200,7 @@
                                         <div class="misma-linea">
                                             <label style="width: 55px;">Celular:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input formControlName="celular_repre" name="celular_repre" type="text" matInput>
+                                                <input formControlName="celular_repre" min="900000000" name="celular_repre" type="number" maxlength="9" matInput oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -221,7 +221,7 @@
                                         <div class="misma-linea">
                                             <label>Fecha Solicitud:</label>
                                             <mat-form-field appearance="outline" style="width: 151px;">
-                                                <input formControlName="fecha_solicitud" name="fecha_solicitud" type="date" matInput>
+                                                <input formControlName="fecha_solicitud" name="fecha_solicitud" type="date" [max]="fecha_maxima" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -283,11 +283,11 @@
                     <div class="card">
                         <fieldset>
                             <legend>
-                                Documentación requerida
+                                Documentación requerida <small class="text-danger">(*)</small>
                             </legend>
                             <div class="container-fielset">
-                                <div style="height: 250px; overflow: auto;">
-                                    <h5 class="text-danger">Obligatorio (*)</h5>
+                                <div style="height: 270px; overflow: auto;">
+                                    <!-- <h5 style="margin-top: -2px;" class="text-danger">Obligatorio (*)</h5> -->
                                     <div *ngIf="archivos_etapa">
                                         <div *ngFor="let archivo of archivos_etapa; let i = index" class="misma-linea">
                                             <div>
@@ -300,59 +300,12 @@
 
 
                                                 <mat-checkbox style="margin-left: 35px;" color="warn" [checked]="archivo.archivo_adjunto">
-                                                    <span *ngIf="archivo.Obligatorio === 'S'" class="text-danger">(*)</span>
-                                                    {{ (archivo.Descripcion.length>50)? (archivo.Descripcion | slice:0:50)+'..':(archivo.Descripcion) }}
-                                                    <!-- <img width="20px" src="assets/img/icons-form/pdf.svg"> -->
-
-                                                    <!-- <mat-icon>highlight_off</mat-icon> -->
+                                                    <span *ngIf="archivo.Obligatorio === 'S'" class="text-danger">(*)</span> {{ (archivo.Descripcion.length>50)? (archivo.Descripcion | slice:0:50)+'..':(archivo.Descripcion) }}
                                                 </mat-checkbox>
 
                                             </div>
-
-                                            <!-- <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
-                                                <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                                <button type="button" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                                                    <mat-icon>remove_circle_outline</mat-icon>
-                                                </button>
-                                            </div> -->
                                         </div>
                                     </div>
-                                    <!-- <div class="misma-linea">
-                                        <mat-checkbox color="warn">Documento 2</mat-checkbox>
-                                        <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
-                                            <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                                                <mat-icon>remove_circle_outline</mat-icon>
-                                              </button>
-                                        </div>
-                                    </div>
-                                    <div class="misma-linea">
-                                        <mat-checkbox color="warn">Documento 3</mat-checkbox>
-                                        <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
-                                            <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                                                <mat-icon>remove_circle_outline</mat-icon>
-                                              </button>
-                                        </div>
-                                    </div>
-                                    <div class="misma-linea">
-                                        <mat-checkbox color="warn">Documento 4</mat-checkbox>
-                                        <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
-                                            <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                                                <mat-icon>remove_circle_outline</mat-icon>
-                                              </button>
-                                        </div>
-                                    </div>
-                                    <div class="misma-linea">
-                                        <mat-checkbox color="warn">Documento 5</mat-checkbox>
-                                        <div class="misma-linea" style="margin-left: 25px; margin-top: -7px;">
-                                            <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                                                <mat-icon>remove_circle_outline</mat-icon>
-                                              </button>
-                                        </div>
-                                    </div> -->
                                 </div>
 
 
@@ -363,14 +316,14 @@
                     <div class="card">
                         <mat-tab-group color="warn">
                             <mat-tab label="Obervaciones">
-                                <div style="height: 291px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
+                                <div style="height: 271px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
                                     <mat-radio-group color="warn" (change)="obtener_estado_observacion($event.value)" [value]="tipo_observacion">
                                         <mat-radio-button value="D">Desactivado</mat-radio-button>
                                         <mat-radio-button value="O">Observado</mat-radio-button>
                                         <mat-radio-button value="S">Subsanado</mat-radio-button>
                                     </mat-radio-group>
                                     <mat-form-field appearance="outline" class="w100p">
-                                        <textarea id="obs_desc" matInput rows="13" [disabled]='deshabilitar_obs' [value]="descripcion_obs"></textarea>
+                                        <textarea id="obs_desc" matInput rows="12" [disabled]='deshabilitar_obs' [value]="descripcion_obs"></textarea>
                                     </mat-form-field>
                                 </div>
                             </mat-tab>
@@ -385,7 +338,7 @@
                                         <input #selectorImagen style="display: none;" type="file" multiple>
                                         <img *ngIf="imagenTemp" [src]="imagenTemp" class="w120 m-b-40 m-t-40">
                                     </div>
-                                    <div style="height: 208px; overflow: auto;display: flex; flex-wrap: wrap;">
+                                    <div style="height: 188px; overflow: auto;display: flex; flex-wrap: wrap;">
                                         <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
                                             <img style="width: 100%;height: 90px;object-fit: cover;" [lightbox]="i" [gallery]="'anotherLightbox'" [src]="item.data.thumb">
                                             <a href="javascript:void(0)" style="position: absolute; top:0; right: 0;"><img style="width: 20px;" src="assets/img/icons-form/delete.svg"></a>
@@ -402,7 +355,7 @@
                     <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 20px;">
                         <div class="row">
                             <div class="col-md-6" style="margin-right: -20px;">
-                                <button class="btn-block" mat-stroked-button color="warn">Cancelar</button>
+                                <button type="button" (click)="volverEtapa()" class="btn-block" mat-stroked-button color="warn">Cancelar</button>
                             </div>
                             <div class="col-md-6">
                                 <button type="submit" class="btn-block" mat-raised-button color="warn">Guardar</button>
