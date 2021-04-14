@@ -32,6 +32,8 @@ import { CargarNumerosComponent } from './modals/cargar-numeros/cargar-numeros.c
 import { MantenimientoPcoComponent } from './modals/mantenimiento-pco/mantenimiento-pco.component';
 import { ArchivoAdjuntarComponent } from './modals/archivo-adjuntar/archivo-adjuntar.component';
 
+import { Nl2brPipe } from './pipes/nl2br.pipe';
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -63,7 +65,9 @@ import { ArchivoAdjuntarComponent } from './modals/archivo-adjuntar/archivo-adju
     MantenimientoPchComponent,
     CargarNumerosComponent,
     MantenimientoPcoComponent,
-    ArchivoAdjuntarComponent
+    ArchivoAdjuntarComponent,
+
+    Nl2brPipe
   ],
   providers: [],
   bootstrap: [AppComponent]

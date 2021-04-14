@@ -7,10 +7,10 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes =[
-  { path: '', redirectTo: 'etapa/evaluacion-documentaria', pathMatch: 'full'}, 
+  { path: '', redirectTo: 'programa-chatarreo', pathMatch: 'full'}, 
   { path: 'login', component: LoginComponent },
   { path: '', component: AdminLayoutComponent, children: [ { path: '', loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'}]},
-  { path: '**', redirectTo: 'etapa/evaluacion-documentaria'}
+  { path: '**', redirectTo: 'programa-chatarreo'}
 ];
 
 @NgModule({

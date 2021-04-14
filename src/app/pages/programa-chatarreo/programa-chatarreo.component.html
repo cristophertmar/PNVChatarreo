@@ -1,46 +1,43 @@
 <div class="main-content">
     <div style="padding-left: 20px; padding-right: 20px;">
-        <div class="misma-linea" style="margin-bottom: 15px;">
-            <div>
-                <div class="misma-linea">
-                    <label style="line-height: 2.7; margin-right: 10px;">Periodo:</label>
-                    <mat-form-field appearance="outline" style="width: 80px;" color="warn">
-                        <mat-select>
-                            <mat-option value="one">2020</mat-option>
-                            <mat-option value="two">2021</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+        <form autocomplete="off" [formGroup]="form_busqueda" (ngSubmit)="obtenerPCH()">
+            <div class="misma-linea" style="margin-bottom: 15px;">
+                <div>
+                    <div class="misma-linea">
+                        <label style="line-height: 2.7; margin-right: 10px;">Estado:</label>
+                        <mat-form-field appearance="outline" style="width: 150px;" color="warn">
+                            <mat-select formControlName="estado" name="estado">
+                                <mat-option [value]="edo.codigo" *ngFor="let edo of edopch">{{ edo.descripcion }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div style="margin-left: 65px;">
+                    <div class="misma-linea">
+                        <label style="line-height: 2.7; margin-right: 10px;">Entidad:</label>
+                        <mat-form-field appearance="outline" style="width: 250px;" color="warn">
+                            <mat-select formControlName="entidad" name="entidad">
+                                <mat-option [value]="entidad.idEntidad" *ngFor="let entidad of entidades">{{ entidad.nombre }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button style="display: none;" class="btn-block" mat-raised-button color="basic">Buscar</button>
+                        <button type="submit" style="margin-left: 25px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="warn">Buscar</button>
+                        <button type="button" (click)="limpiar()" style="margin-left: 10px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="basic">Limpiar</button>
+                    </div>
+                </div>
+                <div style="margin-left: 100px;">
+                    <div class="misma-linea">
+                        <button mat-mini-fab color="warn" style="margin-top: -5px;">
+                            <mat-icon (click)="nuevoPch()">add</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div style="margin-left: 65px;">
-                <div class="misma-linea">
-                    <mat-form-field appearance="outline" style="width: 150px;" color="warn">
-                        <mat-select value="0">
-                            <mat-option value="0">Filtrar por</mat-option>
-                            <mat-option value="1">Nº Solicitud</mat-option>
-                            <mat-option value="2">Nº Placa</mat-option>
-                            <mat-option value="3">Marca</mat-option>
-                            <mat-option value="4">Modelo</mat-option>
-                            <mat-option value="5">Propietario</mat-option>
-                            <mat-option value="6">Tipo de chatarreo</mat-option>
-                            <mat-option value="7">Estado</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" style="margin-left: 15px;">
-                        <input type="text" matInput>
-                    </mat-form-field>
-                    <button style="display: none;" class="btn-block" mat-raised-button color="basic">Buscar</button>
-                    <button style="margin-left: 25px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="warn">Buscar</button>
-                    <button style="margin-left: 10px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="basic">Limpiar</button>
-
-                </div>
-            </div>
-        </div>
+        </form>
     </div>
     <div class="container-fluid">
         <div class="card">
             <div class="content table-responsive" style="width: 90%; margin: auto; margin-bottom: -10px;">
-
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
@@ -56,279 +53,39 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-
+                    <tbody *ngIf="sinRegistros">
                         <tr>
-                            <td>001-2021-pch-mlince</td>
-                            <td>Retiro/Renovación</td>
-                            <td>99/99/9999</td>
-                            <td>99/99/9999</td>
-                            <td>400</td>
-                            <td>500</td>
-                            <td>Por aprobar</td>
+                            <td colspan="10" style="text-align: center;">No hay registros</td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="!sinRegistros">
+                        <tr *ngFor="let pch of pchs">
+                            <td>{{ pch.CodigoPCH }}</td>
+                            <td>{{ pch.TipoPCH }}</td>
+                            <td>{{ pch.FechaInicio | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ pch.FechaFin | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ pch.CapacidadVehicular }}</td>
+                            <td>{{ pch.CapacidadReal }}</td>
+                            <td>{{ pch.Estado | estadopch }}</td>
                             <td>
                                 <div class="misma-linea">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
+                                    <img width="20px" (click)="descargar_adjunto(pch,'E')" src="assets/img/icons-form/pdf.svg" style="cursor: pointer;" title="Expediente">
+                                    <img width="20px" (click)="descargar_adjunto(pch,'S')" src="assets/img/icons-form/pdf.svg" style="cursor: pointer; margin-left:5px;" title="Sustento">
                                 </div>
                             </td>
-                            <td>...</td>
+                            <td>{{ pch.Motivo }}</td>
                             <td>
                                 <button mat-mini-fab color="warn">
-                                    <mat-icon (click)="abrirModal_mantenimiento()">edit</mat-icon>
+                                    <mat-icon (click)="modificarPch(pch)">search</mat-icon>
                                 </button>
                                 <button mat-mini-fab color="basic" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_aprobar()">done</mat-icon>
+                                    <mat-icon (click)="abrirModal_aprobar(pch)">done</mat-icon>
                                 </button>
                                 <button mat-mini-fab color="primary" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_rechazar()">clear</mat-icon>
+                                    <mat-icon (click)="abrirModal_rechazar(pch)">clear</mat-icon>
                                 </button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>001-2021-pch-mlince</td>
-                            <td>Retiro/Renovación</td>
-                            <td>99/99/9999</td>
-                            <td>99/99/9999</td>
-                            <td>400</td>
-                            <td>500</td>
-                            <td>Por aprobar</td>
-                            <td>
-                                <div class="misma-linea">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                </div>
-                            </td>
-                            <td>...</td>
-                            <td>
-                                <button mat-mini-fab color="warn">
-                                    <mat-icon (click)="abrirModal_mantenimiento()">edit</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_aprobar()">done</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_rechazar()">clear</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>001-2021-pch-mlince</td>
-                            <td>Retiro/Renovación</td>
-                            <td>99/99/9999</td>
-                            <td>99/99/9999</td>
-                            <td>400</td>
-                            <td>500</td>
-                            <td>Por aprobar</td>
-                            <td>
-                                <div class="misma-linea">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                </div>
-                            </td>
-                            <td>...</td>
-                            <td>
-                                <button mat-mini-fab color="warn">
-                                    <mat-icon (click)="abrirModal_mantenimiento()">edit</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_aprobar()">done</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_rechazar()">clear</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>001-2021-pch-mlince</td>
-                            <td>Retiro/Renovación</td>
-                            <td>99/99/9999</td>
-                            <td>99/99/9999</td>
-                            <td>400</td>
-                            <td>500</td>
-                            <td>Por aprobar</td>
-                            <td>
-                                <div class="misma-linea">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                </div>
-                            </td>
-                            <td>...</td>
-                            <td>
-                                <button mat-mini-fab color="warn">
-                                    <mat-icon (click)="abrirModal_mantenimiento()">edit</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_aprobar()">done</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_rechazar()">clear</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>001-2021-pch-mlince</td>
-                            <td>Retiro/Renovación</td>
-                            <td>99/99/9999</td>
-                            <td>99/99/9999</td>
-                            <td>400</td>
-                            <td>500</td>
-                            <td>Por aprobar</td>
-                            <td>
-                                <div class="misma-linea">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                </div>
-                            </td>
-                            <td>...</td>
-                            <td>
-                                <button mat-mini-fab color="warn">
-                                    <mat-icon (click)="abrirModal_mantenimiento()">edit</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_aprobar()">done</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_rechazar()">clear</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>001-2021-pch-mlince</td>
-                            <td>Retiro/Renovación</td>
-                            <td>99/99/9999</td>
-                            <td>99/99/9999</td>
-                            <td>400</td>
-                            <td>500</td>
-                            <td>Por aprobar</td>
-                            <td>
-                                <div class="misma-linea">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                </div>
-                            </td>
-                            <td>...</td>
-                            <td>
-                                <button mat-mini-fab color="warn">
-                                    <mat-icon (click)="abrirModal_mantenimiento()">edit</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_aprobar()">done</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_rechazar()">clear</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>001-2021-pch-mlince</td>
-                            <td>Retiro/Renovación</td>
-                            <td>99/99/9999</td>
-                            <td>99/99/9999</td>
-                            <td>400</td>
-                            <td>500</td>
-                            <td>Por aprobar</td>
-                            <td>
-                                <div class="misma-linea">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                </div>
-                            </td>
-                            <td>...</td>
-                            <td>
-                                <button mat-mini-fab color="warn">
-                                    <mat-icon (click)="abrirModal_mantenimiento()">edit</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_aprobar()">done</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_rechazar()">clear</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>001-2021-pch-mlince</td>
-                            <td>Retiro/Renovación</td>
-                            <td>99/99/9999</td>
-                            <td>99/99/9999</td>
-                            <td>400</td>
-                            <td>500</td>
-                            <td>Por aprobar</td>
-                            <td>
-                                <div class="misma-linea">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                </div>
-                            </td>
-                            <td>...</td>
-                            <td>
-                                <button mat-mini-fab color="warn">
-                                    <mat-icon (click)="abrirModal_mantenimiento()">edit</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_aprobar()">done</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_rechazar()">clear</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>001-2021-pch-mlince</td>
-                            <td>Retiro/Renovación</td>
-                            <td>99/99/9999</td>
-                            <td>99/99/9999</td>
-                            <td>400</td>
-                            <td>500</td>
-                            <td>Por aprobar</td>
-                            <td>
-                                <div class="misma-linea">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                </div>
-                            </td>
-                            <td>...</td>
-                            <td>
-                                <button mat-mini-fab color="warn">
-                                    <mat-icon (click)="abrirModal_mantenimiento()">edit</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_aprobar()">done</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_rechazar()">clear</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>001-2021-pch-mlince</td>
-                            <td>Retiro/Renovación</td>
-                            <td>99/99/9999</td>
-                            <td>99/99/9999</td>
-                            <td>400</td>
-                            <td>500</td>
-                            <td>Por aprobar</td>
-                            <td>
-                                <div class="misma-linea">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                    <img width="20px" src="assets/img/icons-form/pdf.svg">
-                                </div>
-                            </td>
-                            <td>...</td>
-                            <td>
-                                <button mat-mini-fab color="warn">
-                                    <mat-icon (click)="abrirModal_mantenimiento()">edit</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_aprobar()">done</mat-icon>
-                                </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
-                                    <mat-icon (click)="abrirModal_rechazar()">clear</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-
                     </tbody>
                 </table>
 
