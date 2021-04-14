@@ -31,7 +31,7 @@ export class EtapaComponent implements OnInit {
       this.nom_etapa = params.get('nom_etapa');
       this.obtener_id_etapa();
       this.buscar_proceso();
-    }); 
+    });     
     
   }
 
@@ -56,7 +56,7 @@ export class EtapaComponent implements OnInit {
         this.id_etapa = 6;
         break;
     }
-    console.log(this.id_etapa);
+    
   }
 
   crearFormulario() {

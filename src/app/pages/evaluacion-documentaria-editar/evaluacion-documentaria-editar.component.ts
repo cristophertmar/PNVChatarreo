@@ -95,7 +95,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
         this.deshabilitarInputs();
         this.listar_archivos_etapa(); 
       }       
-    } );
+    } );    
     
     this.recibir_lista_archivos();  
     this.tipo_documento_repre_listener(); 
@@ -400,7 +400,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
   }
 
   guardar_proceso() {
-    debugger;
+    
     if(this.form_principal.invalid || this.form_busqueda.invalid) {    
       Object.values( this.form_busqueda.controls).forEach( control => {
         control.markAsTouched();
@@ -428,13 +428,13 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       return;
     }
 
-    const arch_aprobados = this.archivos_aprobados;
-    const arch_etapa = this.archivos_etapa;
+    const arch_aprobados = this.archivos_aprobados.filter(arch => arch.Obligatorio === 'S');
+    const arch_etapa = this.archivos_etapa.filter(arch => arch.Obligatorio === 'S');
 
-    console.log(arch_aprobados.filter(arch => arch.Obligatorio === 'S'));
-    console.log(arch_etapa.filter(arch => arch.Obligatorio === 'S'));
+    console.log(arch_aprobados);
+    console.log(arch_etapa);
 
-    if((arch_aprobados.filter(arch => arch.Obligatorio === 'S').length) < (arch_etapa.filter(arch => arch.Obligatorio === 'S').length)) {
+    if((arch_aprobados.length) < (arch_etapa.length)) {
       Swal.fire({
         text: 'Adjunte todos los documentos obligatorios',
         width: 350,
@@ -453,15 +453,16 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     this.proceso_request.SolicitanteNumeroDI = this.form_principal.value.nro_documento_repre;
     this.proceso_request.SolicitanteNombre = this.form_principal.value.nombre_repre;
     this.proceso_request.SolicitanteCorreo = this.form_principal.value.correo_repre;
-    this.proceso_request.SolicitanteTelefono = this.form_principal.value.celular_repre;
+    this.proceso_request.SolicitanteTelefono = this.form_principal.value.celular_repre + '';
     this.proceso_request.PropietarioTipoDI = "01";
     this.proceso_request.PropietarioNumeroDI = this.form_principal.getRawValue().nro_documento_prop;
     this.proceso_request.PropietarioNombre = this.form_principal.getRawValue().nombre_prop;
+    
 
     this._procesoService.guardar_proceso(this.proceso_request).
     subscribe( (resp_crea: ProcesoResponse) => {
       this.proceso_response = resp_crea;
-
+      
       this.ietapa_request.IdProceso = resp_crea.IdProceso;
       this.ietapa_request.IdEtapa = resp_crea.Etapa.IdEtapa;
       this.ietapa_request.FechaInicio = this.obtenerFecha_actual();

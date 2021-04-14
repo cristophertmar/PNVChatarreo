@@ -35,8 +35,8 @@ export class CompactacionEditarComponent implements OnInit {
   observacion_request: ObservacionRequest;
 
   items: GalleryItem[];
-  archivos_etapa: ArchivoEtapa[];
-  archivos_aprobados: ArchivoEtapa[];
+  archivos_etapa: ArchivoEtapa[] = [];
+  archivos_aprobados: ArchivoEtapa[] = [];
   checklist: Checklist[];
   checklist_request: Checklist[];
   
@@ -211,34 +211,7 @@ export class CompactacionEditarComponent implements OnInit {
           .subscribe((resp_token: string) => {
             this._archivoService.cargar_archivo(encodeURIComponent(resp_token), this.archivos_aprobados[i].archivo_adjunto)
               .subscribe(resp => {
-                if( i === (this.archivos_aprobados.length - 1)){
-                  // Request Object Finalizar Etapa
-                  this.fetapa.IdProceso = this.proceso_obtenido.IdProceso;
-                  this.fetapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
-                  this.fetapa.FechaInicio = this.obtener_fecha_inicial();
-                  this.fetapa.FechaFin = this.obtener_fecha_final();
-                  this.fetapa.ChatarraPeso = Number(this.form_etapa.value.peso_chatarra);
-                  this.fetapa.Estado = 'T';
-                  this.fetapa.Checklist = this.checklist_request;
-                  this.fetapa.Observacion = this.form_etapa.value.descripcion_obs;
-
-                  this._procesoEtapaService.finalizar_etapa(this.fetapa).
-                    subscribe( resp_fetapa => {
-                      this.descargar_informe();
-                      Swal.fire({
-                        text: 'Compactación finalizada',
-                        width: 350,
-                        padding: 15,
-                        timer: 3000,
-                        allowOutsideClick: false,
-                        showConfirmButton: false,
-                        icon: 'success'
-                      }).then( result => {
-                        this.volverEtapa();
-                      });
-                      
-                    });
-                }
+                console.log('atchivo cargado...');
               },
               (error: any) => {
                 Swal.fire({
@@ -254,6 +227,34 @@ export class CompactacionEditarComponent implements OnInit {
               });
           });
       }
+
+      // Request Object Finalizar Etapa
+      this.fetapa.IdProceso = this.proceso_obtenido.IdProceso;
+      this.fetapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
+      this.fetapa.FechaInicio = this.obtener_fecha_inicial();
+      this.fetapa.FechaFin = this.obtener_fecha_final();
+      this.fetapa.ChatarraPeso = Number(this.form_etapa.value.peso_chatarra);
+      this.fetapa.Estado = 'T';
+      this.fetapa.Checklist = this.checklist_request;
+      this.fetapa.Observacion = this.form_etapa.value.descripcion_obs;
+
+      this._procesoEtapaService.finalizar_etapa(this.fetapa).
+      subscribe( resp_fetapa => {
+        this.descargar_informe();
+        Swal.fire({
+          text: 'Compactación finalizada',
+          width: 350,
+          padding: 15,
+          timer: 3000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'success'
+        }).then( result => {
+          this.volverEtapa();
+        });
+        
+      });
+
     })
   }
 

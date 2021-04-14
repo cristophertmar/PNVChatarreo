@@ -38,7 +38,7 @@ export class VerificacionFisicaEditarComponent implements OnInit {
 
   items: GalleryItem[];
   archivos_etapa: ArchivoEtapa[];
-  archivos_aprobados: ArchivoEtapa[];
+  archivos_aprobados: ArchivoEtapa[] = [];
   checklist: Checklist[];
   checklist_request: Checklist[];
 
@@ -58,6 +58,7 @@ export class VerificacionFisicaEditarComponent implements OnInit {
     private _procesoEtapaService : ProcesoEtapaService,
     private _router: Router
   ) {
+    console.clear();
     this.tipo_observacion = 'D';
     this.proceso_token = '';
     this.estado_proceso = '';
@@ -187,34 +188,7 @@ export class VerificacionFisicaEditarComponent implements OnInit {
           .subscribe((resp_token: string) => {
             this._archivoService.cargar_archivo(encodeURIComponent(resp_token), this.archivos_aprobados[i].archivo_adjunto)
               .subscribe(resp => {
-                if( i === (this.archivos_aprobados.length - 1)){
-                  // Request Object Finalizar Etapa
-                  this.fetapa.IdProceso = this.proceso_obtenido.IdProceso;
-                  this.fetapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
-                  this.fetapa.ChatarraPeso = Number(this.proceso_obtenido.ProcesoEtapa.VehiculoPeso);
-                  this.fetapa.VehiculoPeso = Number(this.form_etapa.value.peso_real);
-                  this.fetapa.FechaInicio = this.obtener_fecha_inicial();
-                  this.fetapa.FechaFin = this.obtener_fecha_final();
-                  this.fetapa.Estado = 'T';
-                  this.fetapa.Checklist = this.checklist_request;
-
-                  this._procesoEtapaService.finalizar_etapa(this.fetapa).
-                    subscribe( resp_fetapa => {
-                      this.descargar_informe();
-                      Swal.fire({
-                        text: 'Verificación Física finalizada',
-                        width: 350,
-                        padding: 15,
-                        timer: 3000,
-                        allowOutsideClick: false,
-                        showConfirmButton: false,
-                        icon: 'success'
-                      }).then( result => {
-                        this.volverEtapa();
-                      });
-                      
-                    });
-                }
+                console.log('archivo cargado...');
               },
               (error: any) => {
                 Swal.fire({
@@ -230,7 +204,35 @@ export class VerificacionFisicaEditarComponent implements OnInit {
               });
           });
       }
-    })
+
+      // Request Object Finalizar Etapa
+      this.fetapa.IdProceso = this.proceso_obtenido.IdProceso;
+      this.fetapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
+      this.fetapa.ChatarraPeso = Number(this.proceso_obtenido.ProcesoEtapa.VehiculoPeso);
+      this.fetapa.VehiculoPeso = Number(this.form_etapa.value.peso_real);
+      this.fetapa.FechaInicio = this.obtener_fecha_inicial();
+      this.fetapa.FechaFin = this.obtener_fecha_final();
+      this.fetapa.Estado = 'T';
+      this.fetapa.Checklist = this.checklist_request;
+
+      this._procesoEtapaService.finalizar_etapa(this.fetapa).
+      subscribe( resp_fetapa => {
+        this.descargar_informe();
+        Swal.fire({
+          text: 'Verificación Física finalizada',
+          width: 350,
+          padding: 15,
+          timer: 3000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'success'
+        }).then( result => {
+          this.volverEtapa();
+        });
+        
+      });
+
+    });
 
   }
 
