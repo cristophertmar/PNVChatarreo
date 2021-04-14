@@ -1,13 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition, ImageSize } from '@ngx-gallery/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { ProcesoService } from '../../services/proceso.service';
-import { Proceso } from 'app/models/proceso.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Checklist } from '../../models/checklist.model';
-import { InitEtapaRequest } from '../../models/itEtapaRequest.model';
+import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition, ImageSize } from '@ngx-gallery/core';
+
+import { ArchivoAdjuntarComponent } from 'app/modals/archivo-adjuntar/archivo-adjuntar.component';
+
+import { ProcesoService } from 'app/services/proceso.service';
+import { ArchivoService } from 'app/services/archivo.service';
 import { ProcesoEtapaService } from 'app/services/proceso-etapa.service';
-import { FinEtapaRequest } from '../../models/fEtapaRequest.model';
+
+import { Proceso } from 'app/models/proceso.model';
+import { ArchivoEtapa } from 'app/models/archivoEtapa.model';
+import { Checklist } from 'app/models/checklist.model';
+import { InitEtapaRequest } from 'app/models/itEtapaRequest.model';
+import { FinEtapaRequest } from 'app/models/fEtapaRequest.model';
+import { IArchivoRequest } from 'app/models/iarchivoRequest.model';
+import { ObservacionRequest } from 'app/models/observacionRequest.model';
 
 import Swal from 'sweetalert2';
 
@@ -19,59 +28,89 @@ import Swal from 'sweetalert2';
 })
 export class EliminacionFluidosEditarComponent implements OnInit {
   form_etapa: FormGroup;
-  token: string;
   proceso_obtenido: Proceso;
-  checklist: Checklist[];
-  checklist_request: Checklist[];
   ietapa: InitEtapaRequest;
   fetapa: FinEtapaRequest;
+  iarchivo_request: IArchivoRequest;
+  observacion_request: ObservacionRequest;
+
   items: GalleryItem[];
+  archivos_etapa: ArchivoEtapa[];
+  archivos_aprobados: ArchivoEtapa[];
+  checklist: Checklist[];
+  checklist_request: Checklist[];
+  
+  proceso_token: string;
+  estado_proceso: string;
+  descripcion_obs: string = '';
+  mostrar_boton_add_img: boolean = true;
 
   constructor(
+    public gallery: Gallery,
+    public _dialog: MatDialog,
     private _activatedRoute: ActivatedRoute,
     private _procesoService: ProcesoService,
+    private _archivoService: ArchivoService,
     private _procesoEtapaService : ProcesoEtapaService,
-    private _router: Router,
-    public gallery: Gallery) {
-      this.token = '';
-      this.proceso_obtenido = {};
-      this.checklist = [];
-      this.checklist_request = [];
-      this.ietapa = {};
-      this.fetapa = {};
-     }
+    private _router: Router
+  ) {
+    this.proceso_token = '';
+    this.estado_proceso = '';
+    this.proceso_obtenido = {};
+    this.ietapa = {};
+    this.fetapa = {};
+    this.iarchivo_request = {};
+    this.observacion_request = {};
+    this.checklist = [];
+    this.checklist_request = [];
+    this.items = [];
+  }
 
   ngOnInit(): void {
-    // 1. Create gallery items
-    this.items = data.map(item =>
-      new ImageItem({ src: item.srcUrl, thumb: item.previewUrl })
-    );
-
     this.crear_formulario();
 
     this._activatedRoute.paramMap.subscribe((params: ParamMap) => {
-      this.token = params.get('token');
-      this.obtener_proceso_token(this.token);
+      this.proceso_token = params.get('token');
+      this.obtener_proceso_token(this.proceso_token);
     }); 
-    
+
     this.checklist_request = [];
+    this.recibir_lista_archivos();
 
-    // Load items into the lightbox
-    this.basicLightboxExample();
-
-    // Load item into different lightbox instance
-    // With custom gallery config
-    this.withCustomGalleryConfig();
+    this.basicLightboxExample(); // Load items into the lightbox
+    this.withCustomGalleryConfig(); // Load item into different lightbox instance with custom gallery config
   }
 
   obtener_proceso_token(token: string) {
     this._procesoService.obtener_proceso_token(encodeURIComponent(token))
     .subscribe( (resp: Proceso) => {
       this.proceso_obtenido = resp;
+      this.archivos_etapa = this.proceso_obtenido.Etapa.TipoArchivos;
+      this.estado_proceso = this.proceso_obtenido.ProcesoEtapa.Estado;
       this.checklist = this.proceso_obtenido.ProcesoEtapa.Checklist;
       this.setear_formulario(this.proceso_obtenido);
       this.deshabilitar_inputs();
+      this.setImagenes();
     });
+  }
+
+  recibir_lista_archivos() {
+    this._archivoService.lista_archivos_enviar.subscribe({
+      next: (resp) => {
+        this.archivos_aprobados = resp
+        const ultimo_archivo_aprobado: ArchivoEtapa = this.archivos_aprobados[this.archivos_aprobados.length - 1];
+
+        this.archivos_etapa.map( archivo => {
+            if(archivo.Descripcion === ultimo_archivo_aprobado.Descripcion) {
+                archivo.archivo_adjunto = ultimo_archivo_aprobado.archivo_adjunto;
+                if(ultimo_archivo_aprobado.Subtipo === 'E'){
+                  this.previewImage(ultimo_archivo_aprobado);
+                }
+            }
+        });
+
+      }
+    })
   }
 
   crear_formulario() {
@@ -87,8 +126,9 @@ export class EliminacionFluidosEditarComponent implements OnInit {
       hora_inicio: new FormControl( null, [Validators.required]),
       fecha_fin: new FormControl( null, [Validators.required]),
       hora_fin: new FormControl( null, [Validators.required]),
-      motivo: new FormControl( null, [Validators.required])
 
+      // Datos del estado de la etapa
+      descripcion_obs: new FormControl( null, [Validators.required])
     });
   }
 
@@ -104,7 +144,9 @@ export class EliminacionFluidosEditarComponent implements OnInit {
       hora_inicio: '',
       fecha_fin: '',
       hora_fin: '',
-      motivo: ''
+
+      // Datos del estado de la etapa
+      descripcion_obs: this.descripcion_obs
     })
   }
 
@@ -122,8 +164,6 @@ export class EliminacionFluidosEditarComponent implements OnInit {
   }
 
   guardar_etapa(){
-
-
     if(this.form_etapa.invalid) {
       Swal.fire({
         text: 'Debe de llenar correctamente el formulario',
@@ -154,37 +194,64 @@ export class EliminacionFluidosEditarComponent implements OnInit {
     this.ietapa.FechaInicio = this.obtener_fecha_inicial();
     this.ietapa.Estado = 'A';
 
-    // Request Object Finalizar Etapa
-    this.fetapa.IdProceso = this.proceso_obtenido.IdProceso;
-    this.fetapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
-    this.fetapa.FechaInicio = this.obtener_fecha_inicial();
-    this.fetapa.FechaFin = this.obtener_fecha_final();
-    this.fetapa.Estado = 'T';
-    this.fetapa.Checklist = this.checklist_request;
-    this.fetapa.Observacion = this.form_etapa.value.motivo;
-
     this._procesoEtapaService.iniciar_etapa(this.ietapa).
-    subscribe(resp_ietapa => {    
+    subscribe(resp_ietapa => {
       
-      this._procesoEtapaService.finalizar_etapa(this.fetapa).
-      subscribe( resp_fetapa => {
-        this.descargar_informe();
-        Swal.fire({
-          text: 'Eliminación de finalizada',
-          width: 350,
-          padding: 15,
-          timer: 3000,
-          allowOutsideClick: false,
-          showConfirmButton: false,
-          icon: 'success'
-        }).then( result => {
-          this.volverEtapa();
-        });
-        
-      })
+      for(let i = 0; i < this.archivos_aprobados.length; i++) {
+        this.iarchivo_request = {};
+        this.iarchivo_request.IdProceso = this.proceso_obtenido.IdProceso;
+        this.iarchivo_request.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
+        this.iarchivo_request.IdTipoArchivo = this.archivos_aprobados[i].IdTipoArchivo;
+        this.iarchivo_request.Nombre = this.archivos_aprobados[i].archivo_adjunto.name;
 
-    });
+        this._archivoService.insertar_archivo(this.iarchivo_request)
+          .subscribe((resp_token: string) => {
+            this._archivoService.cargar_archivo(encodeURIComponent(resp_token), this.archivos_aprobados[i].archivo_adjunto)
+              .subscribe(resp => {
+                if( i === (this.archivos_aprobados.length - 1)){
+                  // Request Object Finalizar Etapa
+                  this.fetapa.IdProceso = this.proceso_obtenido.IdProceso;
+                  this.fetapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
+                  this.fetapa.FechaInicio = this.obtener_fecha_inicial();
+                  this.fetapa.FechaFin = this.obtener_fecha_final();
+                  this.fetapa.Estado = 'T';
+                  this.fetapa.Checklist = this.checklist_request;
+                  this.fetapa.Observacion = this.form_etapa.value.descripcion_obs
 
+                  this._procesoEtapaService.finalizar_etapa(this.fetapa).
+                    subscribe( resp_fetapa => {
+                      this.descargar_informe();
+                      Swal.fire({
+                        text: 'Eliminación de Fluidos finalizada',
+                        width: 350,
+                        padding: 15,
+                        timer: 3000,
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        icon: 'success'
+                      }).then( result => {
+                        this.volverEtapa();
+                      });
+                      
+                    });
+                }
+              },
+              (error: any) => {
+                Swal.fire({
+                  text: 'Ocurrió un problema al cargar el archivo ' + this.archivos_aprobados[i].archivo_adjunto.name,
+                  width: 350,
+                  padding: 15,
+                  timer: 2000,
+                  allowOutsideClick: false,
+                  showConfirmButton: false,
+                  icon: 'error'
+                });
+                return;
+              });
+          });
+      }
+
+    })
   }
 
   volverEtapa(){
@@ -227,7 +294,7 @@ export class EliminacionFluidosEditarComponent implements OnInit {
 
     let id_etapa = this.proceso_obtenido.Etapa.IdEtapa;
     let id_proceso = this.proceso_obtenido.IdProceso;
-    let token =this.token;
+    let token =this.proceso_token;
 
     this._procesoEtapaService.descargar_informe(id_etapa, encodeURIComponent(token)).
     subscribe(resp => {
@@ -256,6 +323,90 @@ export class EliminacionFluidosEditarComponent implements OnInit {
     );
   }
 
+  quitarImagen(idxImg: number){
+    for(let i=0; i<this.archivos_etapa.length; i++){
+      if(this.archivos_etapa[i].Subtipo === "E" && this.archivos_etapa[i].IdTipoArchivo === (idxImg + 1)){
+        this.archivos_etapa[i].archivo_adjunto = null;
+        this.items[idxImg].data.src = "../../../assets/img/image_default.png";
+        this.items[idxImg].data.thumb = "../../../assets/img/image_default.png";
+        this.mostrar_boton_add_img = true;
+
+        break;
+      }
+    }
+  }
+
+  setImagenes(){
+    for(let i=0; i<this.archivos_etapa.length; i++){
+      if(this.archivos_etapa[i].Subtipo === "E"){
+        const urlImg = this.archivos_etapa[i].Token ? "../../../assets/img/image_default.png" : "../../../assets/img/image_default.png";
+        this.items.push(new ImageItem({ src: urlImg, thumb: urlImg }));
+      }
+    }
+
+    this.mostrarBotonAgregarImg();
+  }
+
+  previewImage(uplImg: ArchivoEtapa){
+    var idx: number = 0;
+    var reader = new FileReader();
+
+    for(let i=0; i<this.items.length; i++){
+      var src: string = this.items[i].data.src as string;
+      if(src.endsWith('image_default.png')){
+        idx = i;
+        break;
+      }
+    }
+    
+    reader.onloadend = () => {
+      this.items[idx].data.src = reader.result;
+      this.items[idx].data.thumb = reader.result;
+
+      this.mostrarBotonAgregarImg();
+    }
+
+    reader.readAsDataURL(uplImg.archivo_adjunto);
+  }
+
+  mostrarBotonAgregarImg(){
+    this.mostrar_boton_add_img = false;
+    for(let i=0; i<this.items.length; i++){
+      var src: string = this.items[i].data.src as string;
+      if(src.endsWith('image_default.png')){
+        this.mostrar_boton_add_img = true;
+
+        break;
+      }
+    }
+  }
+
+  adjuntar_imagen(){
+    var idx: number = 0;
+    
+    for(let i=0; i<this.items.length; i++){
+      var src: string = this.items[i].data.src as string;
+      if(src.endsWith('image_default.png')){
+        idx = i;
+        break;
+      }
+    }
+
+    for(let i=0; i<this.archivos_etapa.length; i++){
+      if(this.archivos_etapa[i].Subtipo === "E"){
+        if(this.archivos_etapa[i].IdTipoArchivo === (idx + 1)){
+          this._archivoService.obtener_archivo_evaluar(this.archivos_etapa[i]);
+
+          const dialogRef = this._dialog.open(ArchivoAdjuntarComponent, {
+              width: '700px'
+          });
+
+          break;
+        }
+      }
+    }
+  }
+
   basicLightboxExample() {
     this.gallery.ref().load(this.items);
   }
@@ -274,16 +425,4 @@ export class EliminacionFluidosEditarComponent implements OnInit {
     // 3. Load the items into the lightbox
     lightboxGalleryRef.load(this.items);
   }
-
 }
-
-const data = [
-  {
-    srcUrl: 'https://preview.ibb.co/jrsA6R/img12.jpg',
-    previewUrl: 'https://preview.ibb.co/jrsA6R/img12.jpg'
-  },
-  {
-    srcUrl: 'https://preview.ibb.co/kPE1D6/clouds.jpg',
-    previewUrl: 'https://preview.ibb.co/kPE1D6/clouds.jpg'
-  }
-];

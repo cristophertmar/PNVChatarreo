@@ -9,7 +9,8 @@ export class ArchivoEtapa{
         public Multiple?: string,
         public Extension?: string,
         public ValidaRepresentante?: string,
-        public archivo_adjunto?: File
+        public archivo_adjunto?: File,
+        public Token?: string
     ){}
 
 }

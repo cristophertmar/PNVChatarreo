@@ -254,39 +254,36 @@
                         <mat-tab-group color="warn">
                             <mat-tab label="Obervaciones">
                                 <div style="height: 190px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
-                                    <mat-radio-group color="warn">
+                                    <mat-radio-group color="warn" (change)="obtener_estado_observacion($event.value)" [value]="tipo_observacion">
                                         <mat-radio-button value="D">Desactivado</mat-radio-button>
                                         <mat-radio-button value="O">Observado</mat-radio-button>
                                         <mat-radio-button value="S">Subsanado</mat-radio-button>
                                     </mat-radio-group>
                                     <mat-form-field appearance="outline" class="w100p">
-                                        <textarea matInput rows="7"></textarea>
+                                        <textarea id="obs_desc" matInput rows="7" [disabled]='deshabilitar_obs' formControlName="descripcion_obs" name="descripcion_obs" [value]="descripcion_obs"></textarea>
                                     </mat-form-field>
                                 </div>
                             </mat-tab>
                             <mat-tab label="Galería de imágenes">
                                 <div class="gallerize-example">
-                                    <div class="misma-linea" style="margin-bottom: 8px;">
+                                    <div class="misma-linea" style="margin-bottom: 8px;" *ngIf="mostrar_boton_add_img">
                                         <h4>Agregar imagen</h4>
-                                        <button type="button" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: 25px;">
-                                            <mat-icon>add</mat-icon>
+                                        <button type="button" mat-icon-button style="margin-left: 10px; margin-top: 25px;">
+                                            <mat-icon (click)="adjuntar_imagen()" style="font-size: 23px;" color="warn">add_circle</mat-icon>
                                         </button>
                                     </div>
-                                    <div style="height: 107px; overflow: auto;display: flex; flex-wrap: wrap;">
-                                        <!-- <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
+                                    <br *ngIf="!mostrar_boton_add_img" />
+                                    <div style="height: 97px; overflow: auto;display: flex; flex-wrap: wrap;">
+                                        <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
                                             <img style="width: 100%;height: 90px;object-fit: cover;" [lightbox]="i" [gallery]="'anotherLightbox'" [src]="item.data.thumb">
-                                            <a href="javascript:void(0)" style="position: absolute; top:0; right: 0;"><img style="width: 20px;" src="assets/img/icons-form/delete.svg"></a>
-                                        </span> -->
+                                            <a href="javascript:void(0)" style="position: absolute; top:0; right: 0;"><img style="width: 20px;" (click)="quitarImagen(i)" src="assets/img/icons-form/delete.svg"></a>
+                                        </span>
                                     </div>
-
                                 </div>
                             </mat-tab>
                         </mat-tab-group>
                     </div>
-
-
                 </div>
-
             </div>
         </div>
 

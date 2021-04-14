@@ -1,26 +1,31 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition, ImageSize } from '@ngx-gallery/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ImagenGaleria } from '../../models/imgGaleria.model';
-import { VehiculoService } from '../../services/vehiculo.service';
-import { Vehiculo } from '../../models/vehiculo.model';
-import { ArchivoService } from '../../services/archivo.service';
+import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition, ImageSize } from '@ngx-gallery/core';
+
+import { ArchivoAdjuntarComponent } from 'app/modals/archivo-adjuntar/archivo-adjuntar.component';
+
+import { ArchivoService } from 'app/services/archivo.service';
+import { ProcesoService } from 'app/services/proceso.service';
+import { VehiculoService } from 'app/services/vehiculo.service';
+import { ProcesoEtapaService } from 'app/services/proceso-etapa.service';
+
+import { Proceso } from 'app/models/proceso.model';
+import { Vehiculo } from 'app/models/vehiculo.model';
 import { ArchivoEtapa } from 'app/models/archivoEtapa.model';
 import { ProcesoRequest } from 'app/models/procesoRequest.model';
-import { ProcesoService } from '../../services/proceso.service';
-import Swal from 'sweetalert2';
-import { ProcesoResponse } from '../../models/procesoResponse.model';
-import { ObservacionRequest } from '../../models/observacionRequest.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProcesoEtapaService } from 'app/services/proceso-etapa.service';
-import { InitEtapaRequest } from '../../models/itEtapaRequest.model';
-import { InitEtapaResponse } from '../../models/iEtapaResponse.model';
-import { Proceso } from 'app/models/proceso.model';
-import { ArchivoAdjuntarComponent } from '../../modals/archivo-adjuntar/archivo-adjuntar.component';
-import { FinEtapaRequest } from '../../models/fEtapaRequest.model';
-import { IArchivoRequest } from '../../models/iarchivoRequest.model';
+import { ProcesoResponse } from 'app/models/procesoResponse.model';
+import { FinEtapaRequest } from 'app/models/fEtapaRequest.model';
+import { IArchivoRequest } from 'app/models/iarchivoRequest.model';
+import { InitEtapaRequest } from 'app/models/itEtapaRequest.model';
+import { InitEtapaResponse } from 'app/models/iEtapaResponse.model';
+import { ObservacionRequest } from 'app/models/observacionRequest.model';
+
 import { Subject } from 'rxjs';
+
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-evaluacion-documentaria-editar',
   templateUrl: './evaluacion-documentaria-editar.component.html',
@@ -31,11 +36,6 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   form_busqueda: FormGroup;
   form_principal: FormGroup;
-
-  imagenGaleria: ImagenGaleria = {};
-  data: ImagenGaleria[] = [];
-  
-  imagenTemp: string;
 
   items: GalleryItem[];
 
@@ -52,17 +52,14 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
   proceso_obtenido: Proceso;
   archivos_aprobados: ArchivoEtapa[];
 
-  cargar_archivos = new Subject<any>();
-
   proceso_token: string;
   estado_proceso: string;
+  mostrar_boton_add_img: boolean = true;
   deshabilitar_obs: boolean = false;
   descripcion_obs: string = '';
 
   fecha_maxima: string = '2021-01-01';
   long_nro_documento = 0;
-
-  @ViewChild('selectorImagen') selectorImagen: ElementRef<HTMLElement>;
 
   constructor(
     public gallery: Gallery, 
@@ -72,8 +69,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     private _procesoService: ProcesoService,
     private _procesoEtapaService: ProcesoEtapaService,
     private _activatedRoute: ActivatedRoute,
-    private _router: Router,
-    private dialog: MatDialog,
+    private _router: Router
     ) {
       this.tipo_observacion = 'D';
       this.vehiculo = {};
@@ -85,6 +81,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       this.archivos_aprobados = [];
       this.iarchivo_request = {};
       this.estado_proceso = '';
+      this.items = [];
     }
 
   ngOnInit(): void {
@@ -101,8 +98,9 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     } );
     
     this.recibir_lista_archivos();  
-    this.tipo_documento_repre_listener();  
-    
+    this.tipo_documento_repre_listener(); 
+    this.basicLightboxExample(); // Load items into the lightbox
+    this.withCustomGalleryConfig(); // Load item into different lightbox instance with custom gallery config
   }
 
   obtener_fecha_maxima() {
@@ -142,6 +140,9 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
         this.archivos_etapa.map( archivo => {
             if(archivo.Descripcion === ultimo_archivo_aprobado.Descripcion) {
                 archivo.archivo_adjunto = ultimo_archivo_aprobado.archivo_adjunto;
+                if(ultimo_archivo_aprobado.Subtipo === 'E'){
+                  this.previewImage(ultimo_archivo_aprobado);
+                }
             }
         });
 
@@ -166,6 +167,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       this.obtener_estado_observacion(resp.ProcesoEtapa.Estado || 'D');
       this.setear_datos_proceso(this.proceso_obtenido);
       this.deshabilitarInputs(this.proceso_obtenido);
+      this.setImagenes();
     });
   }
 
@@ -207,7 +209,10 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
        fecha_solicitud:      this.convertir_fecha(proceso.FechaInicio),
        pgm_chatarreo:        proceso.Tipo,
        ent_promotora:        '',
-       distrito_solicitud:   ''
+       distrito_solicitud:   '',
+
+       // Datos del estado de la etapa
+       descripcion_obs: this. descripcion_obs
 
     });
   }
@@ -218,15 +223,11 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     return fechaInicioFormato;
   }
 
-  seleccionarImagen(){
-    this.selectorImagen.nativeElement.click();
-  }
-
   listar_archivos_etapa(tipo_proceso: string = 'O') {
     this._archivoService.obtener_archivo_etapa(1, tipo_proceso)
     .subscribe( (resp: ArchivoEtapa[]) => {
         this.archivos_etapa = resp;
-        /* console.log(this.archivos_etapa); */
+        this.setImagenes();
     });
   }
 
@@ -266,7 +267,10 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       fecha_solicitud: new FormControl( null, [Validators.required]),
       pgm_chatarreo: new FormControl( 'V', [Validators.required]),
       ent_promotora: new FormControl( null ),
-      distrito_solicitud: new FormControl( null )
+      distrito_solicitud: new FormControl( null ),
+
+      // Datos del estado de la etapa
+      descripcion_obs: new FormControl(null)
 
     });
 
@@ -371,7 +375,10 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
        fecha_solicitud:      this.form_principal.value.fecha_solicitud,
        pgm_chatarreo:        this.form_principal.value.pgm_chatarreo,
        ent_promotora:        this.form_principal.value.ent_promotora,
-       distrito_solicitud:   this.form_principal.value.distrito_solicitud
+       distrito_solicitud:   this.form_principal.value.distrito_solicitud,
+      
+       // Datos del estado de la etapa
+       descripcion_obs:     this.form_principal.value.descripcion_obs
 
     });
   }
@@ -390,12 +397,6 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       this.deshabilitar_obs = false;
       this.descripcion_obs = '';
       
-  }
-
-  obtener_observacion_desc(evento: any) {
-    console.log(evento);
-    /* this.obs_descripcion = obs_descripcion;
-    console.log(this.obs_descripcion); */
   }
 
   guardar_proceso() {
@@ -473,7 +474,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
           this.observacion_request.IdProceso = resp_crea.IdProceso;
           this.observacion_request.IdEtapa = resp_ini.IdEtapa;
-          this.observacion_request.Observacion = (<HTMLInputElement>document.getElementById('obs_desc')).value;
+          this.observacion_request.Observacion = this.form_principal.value.descripcion_obs;
           this.observacion_request.Estado = this.tipo_observacion;
           
           this._procesoEtapaService.observar_etapa(this.observacion_request)
@@ -591,19 +592,111 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
     this._archivoService.obtener_archivo_evaluar(archivo);
 
-    const dialogRef = this.dialog.open(ArchivoAdjuntarComponent, {
+    const dialogRef = this._dialog.open(ArchivoAdjuntarComponent, {
         width: '700px'
     });
-
-    
-    
-
   }
 
+  quitarImagen(idxImg: number){
+    for(let i=0; i<this.archivos_etapa.length; i++){
+      if(this.archivos_etapa[i].Subtipo === "E" && this.archivos_etapa[i].IdTipoArchivo === (idxImg + 1)){
+        this.archivos_etapa[i].archivo_adjunto = null;
+        this.items[idxImg].data.src = "../../../assets/img/image_default.png";
+        this.items[idxImg].data.thumb = "../../../assets/img/image_default.png";
+        this.mostrar_boton_add_img = true;
 
+        break;
+      }
+    }
+  }
 
+  setImagenes(){
+    for(let i=0; i<this.archivos_etapa.length; i++){
+      if(this.archivos_etapa[i].Subtipo === "E"){
+        const urlImg = this.archivos_etapa[i].Token ? "../../../assets/img/image_default.png" : "../../../assets/img/image_default.png";
+        this.items.push(new ImageItem({ src: urlImg, thumb: urlImg }));
+      }
+    }
 
+    this.mostrarBotonAgregarImg();
+  }
+
+  previewImage(uplImg: ArchivoEtapa){
+    var idx: number = 0;
+    var reader = new FileReader();
+
+    for(let i=0; i<this.items.length; i++){
+      var src: string = this.items[i].data.src as string;
+      if(src.endsWith('image_default.png')){
+        idx = i;
+        break;
+      }
+    }
+    
+    reader.onloadend = () => {
+      this.items[idx].data.src = reader.result;
+      this.items[idx].data.thumb = reader.result;
+
+      this.mostrarBotonAgregarImg();
+    }
+
+    reader.readAsDataURL(uplImg.archivo_adjunto);
+  }
+
+  mostrarBotonAgregarImg(){
+    this.mostrar_boton_add_img = false;
+    for(let i=0; i<this.items.length; i++){
+      var src: string = this.items[i].data.src as string;
+      if(src.endsWith('image_default.png')){
+        this.mostrar_boton_add_img = true;
+
+        break;
+      }
+    }
+  }
+
+  adjuntar_imagen(){
+    var idx: number = 0;
+    
+    for(let i=0; i<this.items.length; i++){
+      var src: string = this.items[i].data.src as string;
+      if(src.endsWith('image_default.png')){
+        idx = i;
+        break;
+      }
+    }
+
+    for(let i=0; i<this.archivos_etapa.length; i++){
+      if(this.archivos_etapa[i].Subtipo === "E"){
+        if(this.archivos_etapa[i].IdTipoArchivo === (idx + 1)){
+          this._archivoService.obtener_archivo_evaluar(this.archivos_etapa[i]);
+
+          const dialogRef = this._dialog.open(ArchivoAdjuntarComponent, {
+              width: '700px'
+          });
+
+          break;
+        }
+      }
+    }
+  }
+
+  basicLightboxExample() {
+    this.gallery.ref().load(this.items);
+  }
+
+  withCustomGalleryConfig() {
+
+    // 2. Get a lightbox gallery ref
+    const lightboxGalleryRef = this.gallery.ref('anotherLightbox');
+
+    // (Optional) Set custom gallery config to this lightbox
+    lightboxGalleryRef.setConfig({
+      imageSize: ImageSize.Cover,
+      thumbPosition: ThumbnailsPosition.Top
+    });
+
+    // 3. Load the items into the lightbox
+    lightboxGalleryRef.load(this.items);
+  }
 }
-
-
-

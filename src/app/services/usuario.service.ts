@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { URL_SERVICIOS } from 'app/config/config';
+import { URL_SERVICIOS, ID_ROL } from 'app/config/config';
 import { catchError, map } from 'rxjs/operators';
 import { Usuario } from '../models/usuario.model';
 import Swal from 'sweetalert2';
@@ -69,9 +69,9 @@ export class UsuarioService {
     }
     
     let url: string;
-    url = URL_SERVICIOS + 'api/usuario';
+    url = `${ URL_SERVICIOS }api/usuario?usuario=${ usuario.Usuario }&contrasenia=${ usuario.Contrasenia }&idPerfilSso=${ ID_ROL }`;
 
-    return this._http.post(url, usuario).pipe(
+    return this._http.get(url).pipe(
       map( (resp: UsuarioLogueado) => {
         this.guardarStorage( resp.AccessToken, resp);
         this.usuario = resp;
