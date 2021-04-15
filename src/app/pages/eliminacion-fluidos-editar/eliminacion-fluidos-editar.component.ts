@@ -45,6 +45,11 @@ export class EliminacionFluidosEditarComponent implements OnInit {
   descripcion_obs: string = '';
   mostrar_boton_add_img: boolean = true;
 
+  fecha_maxima: string = '';
+  fecha_minima: string;
+  hora_minima: string;
+  fecha_fin: string;
+
   constructor(
     public gallery: Gallery,
     public _dialog: MatDialog,
@@ -67,6 +72,7 @@ export class EliminacionFluidosEditarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.obtener_fecha_maxima();
     this.crear_formulario();
 
     this._activatedRoute.paramMap.subscribe((params: ParamMap) => {
@@ -79,6 +85,32 @@ export class EliminacionFluidosEditarComponent implements OnInit {
 
     this.basicLightboxExample(); // Load items into the lightbox
     this.withCustomGalleryConfig(); // Load item into different lightbox instance with custom gallery config
+  }
+
+  obtener_fecha_maxima() {
+    const today = new Date();
+    this.fecha_maxima = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+  }
+
+  obtener_fecha_minima() {
+    this.fecha_minima = this.form_etapa.get('fecha_inicio').value;
+    this.fecha_fin = this.fecha_minima;
+  }
+
+  obtener_hora_minima() {
+
+    const fecha_inicio = this.form_etapa.get('fecha_inicio').value;
+    const fecha_fin = this.form_etapa.get('fecha_fin').value;
+    const hora_inicio = this.form_etapa.get('hora_inicio').value;
+    
+    if(fecha_fin === fecha_inicio) {
+      console.log(hora_inicio);
+      this.hora_minima = hora_inicio;
+      return;
+    }
+
+    this.hora_minima = '00:00';
+
   }
 
   obtener_proceso_token(token: string) {
@@ -162,7 +194,13 @@ export class EliminacionFluidosEditarComponent implements OnInit {
     this.form_etapa.controls['pgm_chatarreo'].disable();
   }
 
-  guardar_etapa(){
+  guardar_etapa() {
+
+    const fecha_inicio = this.form_etapa.get('fecha_inicio').value;
+    const fecha_fin = this.form_etapa.get('fecha_fin').value;
+    const hora_inicio = this.form_etapa.get('hora_inicio').value;
+    const hora_fin = this.form_etapa.get('hora_fin').value;
+
     if(this.form_etapa.invalid) {
       Swal.fire({
         text: 'Debe de llenar correctamente el formulario',
@@ -174,6 +212,19 @@ export class EliminacionFluidosEditarComponent implements OnInit {
         icon: 'error'
       })
       return;
+    } else if(fecha_inicio === fecha_fin) {
+      if(hora_fin < hora_inicio) {
+        Swal.fire({
+          text: 'La fecha y hora fin no debe ser menor a la inicial',
+          width: 350,
+          padding: 15,
+          timer: 3000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'error'
+        });
+        return;
+      }
     } else if(this.checklist_request.length !== this.checklist.length) {
       Swal.fire({
         text: 'Debe de seleccionar todos los items del Checklist',

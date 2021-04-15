@@ -80,7 +80,7 @@
                                         <div class="misma-linea">
                                             <label class="label-sm">Fecha&nbsp;Inicio:</label>
                                             <mat-form-field appearance="outline" style="width: 151px; margin-left: 8px;">
-                                                <input formControlName="fecha_inicio" name="fecha_inicio" type="date" matInput>
+                                                <input formControlName="fecha_inicio" name="fecha_inicio" type="date" matInput (change)="obtener_fecha_minima()" [max]="fecha_maxima">
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -93,12 +93,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="misma-linea">
+                                <div *ngIf="fecha_fin" class="misma-linea">
                                     <div>
                                         <div class="misma-linea">
                                             <label class="label-sm">Fecha&nbsp;Fin:</label>
                                             <mat-form-field appearance="outline" style="width: 151px; margin-left: 8px;">
-                                                <input formControlName="fecha_fin" name="fecha_fin" type="date" matInput>
+                                                <input [(ngModel)]="fecha_fin" formControlName="fecha_fin" name="fecha_fin" type="date" matInput [max]="fecha_maxima" [min]="fecha_minima" (change)="obtener_hora_minima()">
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@
                                         <div class="col-md-12" style="margin-top: 30px; margin-bottom: 73px;">
                                             <span>Peso de chatarra: :</span>&nbsp;&nbsp;
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input formControlName="peso_chatarra" name="peso_chatarra" type="number" matInput>
+                                                <input formControlName="peso_chatarra" name="peso_chatarra" type="number" matInput min="1">
                                             </mat-form-field>
                                             &nbsp;Kg.
                                         </div>

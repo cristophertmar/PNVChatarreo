@@ -28,6 +28,8 @@ export class EmisionCdvEditarComponent implements OnInit {
 
   informe_cdv: File;
 
+  fecha_maxima: string = '';
+
   @ViewChild('select_file_cdv') select_file_cdv: ElementRef;
   
   constructor(
@@ -44,12 +46,18 @@ export class EmisionCdvEditarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.obtener_fecha_maxima();
     this.crear_formulario();
 
     this._activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.token = params.get('token');
       this.obtener_proceso_token(this.token);
     }); 
+  }
+
+  obtener_fecha_maxima() {
+    const today = new Date();
+    this.fecha_maxima = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
   }
 
   obtener_proceso_token(token: string) {

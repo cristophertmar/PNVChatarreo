@@ -80,7 +80,7 @@
                                         <div class="misma-linea">
                                             <label class="label-sm">Fecha&nbsp;Informe:</label>
                                             <mat-form-field appearance="outline" style="width: 151px; margin-left: 20px;">
-                                                <input formControlName="fecha_inicio" name="fecha_inicio" type="date" matInput>
+                                                <input formControlName="fecha_inicio" name="fecha_inicio" type="date" matInput [max]="fecha_maxima">
                                             </mat-form-field>
                                         </div>
                                     </div>
