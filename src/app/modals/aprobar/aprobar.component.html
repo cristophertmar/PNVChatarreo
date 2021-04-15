@@ -1,19 +1,12 @@
 <h3 mat-dialog-title>Confirmación de Aprobación</h3>
 <div mat-dialog-content class="text-center">
-
-
-    <!-- <label>¿Desea aprobar el N° de solicitud 12345-2021-00004?</label> -->
-    <!-- <label>¿Desea aprobar la Fase de Eliminación de Fluidos de la solicitud N° 54321-2021-00004 de la empresa ABC SRL / Local 001 XXXXXXXXXXXX?</label> -->
-    <!-- <label>¿Desea aprobar la Fase de Desguace Vehicular de la solicitud N° 54321-2021-00004 de la empresa ABC SRL / Local 001 XXXXXXXXXXXX?</label> -->
-    <!-- <label>¿Desea aprobar la Fase de Compactación Vehicular de la solicitud N° 54321-2021-00004 de la empresa ABC SRL / Local 001 XXXXXXXXXXXX?</label> -->
-    <!--  <label>¿Desea aprobar el N° PCH 001-2021-pch-mlince de la entidad MUNICIPALIDAD DE LINCE?</label> -->
     <label>¿Desea aprobar el N° {{ codigo }} de la entidad?</label>
-
     <div class="row">
         <div class="col-md-7"></div>
         <div class="misma-linea" style="padding-right: 15px; padding-top: 10px;">
-            <button mat-dialog-close style="width: 200px;" mat-stroked-button color="warn">Cancelar</button>
+            <input type="button" #btncerrarAprobar mat-dialog-close class="ocultar">
+            <button type="button" style="width: 200px;" mat-stroked-button color="warn" (click)="cerrar_modal(false)">Cancelar</button>
             <div style="width: 15px;"></div>
-            <button mat-dialog-close style="width: 200px;" mat-raised-button color="warn" (click)="aprobar()">Aprobar</button>
+            <button type="button" style="width: 200px;" mat-raised-button color="warn" (click)="aprobar()">Aprobar</button>
         </div>
     </div>

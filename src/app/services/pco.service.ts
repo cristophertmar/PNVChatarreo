@@ -42,8 +42,6 @@ export class PcoService {
       'x-api-key': this.token
     });
 
-    //const cuerpo = { archivo_csv }
-
     return this._http.post(url, archivo_csv, {headers});
   }
 

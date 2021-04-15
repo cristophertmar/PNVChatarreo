@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
@@ -22,6 +22,8 @@ import Swal from "sweetalert2";
 })
 
 export class MantenimientoPchComponent implements OnInit {
+  @ViewChild('btncerrarmodal') btncerrarmodal: ElementRef<HTMLElement>;
+
   pch: Pch;
   forma: FormGroup;
   msjFechaFinInvalida: string;
@@ -197,14 +199,26 @@ export class MantenimientoPchComponent implements OnInit {
 
         console.log("_token:" + _token);
 
-        this._archivoService.cargar_archivo(encodeURIComponent(this.pch.IdExpediente), this.archivos_etapa[i].archivo_adjunto).
+        this._archivoService.cargar_archivo(encodeURIComponent(_token), this.archivos_etapa[i].archivo_adjunto).
           subscribe(
-            resp => { console.log(resp); },
-            (error: any) => { console.log(error); }
+            resp => { 
+              if( i === (this.archivos_etapa.length - 1) ){
+                Swal.close();
+                this.cerrar_modal(true);
+              }
+
+              console.log(resp);
+            },
+            (error: any) => {
+              if( i === (this.archivos_etapa.length - 1) ){
+                Swal.close();
+                this.cerrar_modal(false);;
+              }
+
+              console.log(error);
+            }
         );
       }
-
-      Swal.close();
     }, (err) => {
       Swal.fire({
         icon: 'error',
@@ -257,8 +271,10 @@ export class MantenimientoPchComponent implements OnInit {
   descargar_adjunto(tipo_archivo: string){
     let idToken: string = (tipo_archivo === 'E') ? this.pch.IdExpediente : this.pch.IdSustento;
     let nombreAdjunto: string = (tipo_archivo === 'E') ? "_adjunto_expediente" : "_adjunto_sustento";
+    
+    //idToken = 'coK6/0vlKtL5IaKcGoBNQvku4s+ekilT9rCSJL7SUvI=';
 
-    this._archivoService.descargar_adjunto( idToken ).
+    this._archivoService.descargar_adjunto( encodeURIComponent(idToken) ).
       subscribe(resp => {
       
         const blob_data = new Blob([resp], { type: 'application/pdf' });
@@ -283,6 +299,16 @@ export class MantenimientoPchComponent implements OnInit {
       }
       
       );
+  }
+
+  cerrar_modal(exito: boolean){
+    localStorage.setItem("cerrarMantPCH","1");
+
+    if (!exito){
+      localStorage.setItem("cerrarMantPCH","2");
+    }
+
+    this.btncerrarmodal.nativeElement.click();
   }
 
 }

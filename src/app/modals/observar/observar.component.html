@@ -12,9 +12,10 @@
     <div class="row">
         <div class="col-md-7"></div>
         <div class="misma-linea" style="padding-right: 15px;">
-            <button mat-dialog-close style="width: 200px;" mat-stroked-button color="warn">Cancelar</button>
+            <input type="button" #btncerrarRechazar mat-dialog-close class="ocultar">
+            <button style="width: 200px;" mat-stroked-button color="warn" (click)="cerrar_modal(false)">Cancelar</button>
             <div style="width: 15px;"></div>
-            <button mat-dialog-close style="width: 200px;" mat-raised-button color="warn" (click)="observar()">Aceptar</button>
+            <button style="width: 200px;" mat-raised-button color="warn" (click)="observar()">Aceptar</button>
         </div>
     </div>
 

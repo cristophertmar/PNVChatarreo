@@ -105,6 +105,16 @@ export class ChatarreoObligatorioComponent implements OnInit {
     this.obtenerPCO();
   }
 
+  abrirModal_carga() {
+    const dialogRef = this._dialog.open(CargarNumerosComponent, {
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.validarAntesDeListar("cerrarCN");
+    });
+  }
+
   abrirModal_mantenimiento(paramPco: Pco) {
     paramPco.Estado = "V";
 
@@ -114,7 +124,7 @@ export class ChatarreoObligatorioComponent implements OnInit {
     
     dialogRef.componentInstance.pco = paramPco;
     dialogRef.afterClosed().subscribe(result => {
-      //
+      this.validarAntesDeListar("cerrarMantPCO");
     });
   }
 
@@ -126,7 +136,7 @@ export class ChatarreoObligatorioComponent implements OnInit {
     dialogRef.componentInstance.codigo = paramPco.Correlativo;
 
     dialogRef.afterClosed().subscribe(result => {
-      this.obtenerPCO();
+      this.validarAntesDeListar("cerrarAprobar");
     });
   }
 
@@ -137,14 +147,18 @@ export class ChatarreoObligatorioComponent implements OnInit {
     dialogRef.componentInstance.tipo = "PCO";
 
     dialogRef.afterClosed().subscribe(result => {
-      this.obtenerPCO();
+      this.validarAntesDeListar("cerrarRechazar");
     });
   }
 
-  abrirModal_carga() {
-    const dialogRef = this._dialog.open(CargarNumerosComponent, {
-      disableClose: true
-    });
+  validarAntesDeListar(strItem: string){
+    let cerrar: string = localStorage.getItem(strItem);
+      
+      if(cerrar === "1"){
+        this.obtenerPCO();
+      }
+      
+      localStorage.removeItem(strItem);
   }
 
   descargar_adjunto(paramPco: Pco, tipo: string){

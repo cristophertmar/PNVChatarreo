@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
@@ -21,6 +21,8 @@ import Swal from "sweetalert2";
   providers : [DatePipe]
 })
 export class MantenimientoPcoComponent implements OnInit {
+  @ViewChild('btncerrarmodal') btncerrarmodal: ElementRef<HTMLElement>;
+
   pco: Pco;
   forma: FormGroup;
   msjFechaFinInvalida: string;
@@ -166,16 +168,33 @@ export class MantenimientoPcoComponent implements OnInit {
       for(let i = 0; i < this.archivos_etapa.length; i++) {
         let _token = (this.archivos_etapa[i].Subtipo === 'E') ? this.pco.IdExpediente : this.pco.IdSustento;
 
-        console.log("_token:" + _token);
-
-        this._archivoService.cargar_archivo(encodeURIComponent(this.pco.IdExpediente), this.archivos_etapa[i].archivo_adjunto).
+        this._archivoService.cargar_archivo(encodeURIComponent(_token), this.archivos_etapa[i].archivo_adjunto).
           subscribe(
-            resp => { console.log(resp); },
-            (error: any) => { console.log(error); }
+            resp => {
+              if( i === (this.archivos_etapa.length - 1) ){
+                this.cerrar_modal(true);
+                Swal.close();
+              }
+              
+              console.log(resp);
+            },
+            (error: any) => { 
+              if( i === (this.archivos_etapa.length - 1) ){
+                Swal.close();
+
+                Swal.fire({
+                  icon: 'error',
+                  text: 'No se pudieron los archivos adjuntos',
+                  showCancelButton: true
+                });
+
+                this.cerrar_modal(false);
+              }
+              
+              console.log(error); 
+            }
         );
       }
-
-      Swal.close();
     }, (err) => {
       console.log(err);
       Swal.fire({
@@ -229,10 +248,10 @@ export class MantenimientoPcoComponent implements OnInit {
   descargar_adjunto(tipo_archivo: string){
     let idToken: string = (tipo_archivo === 'E') ? this.pco.IdExpediente : this.pco.IdSustento;
     let nombreAdjunto: string = (tipo_archivo === 'E') ? "_adjunto_expediente" : "_adjunto_sustento";
-
-    this._archivoService.descargar_adjunto( idToken ).
+    console.log("[descargar]:idToken:" + idToken + ";");
+    this._archivoService.descargar_adjunto( encodeURIComponent(idToken) ).
       subscribe(resp => {
-      
+        console.log(resp);
         const blob_data = new Blob([resp], { type: 'application/pdf' });
         const blob = new Blob([blob_data], { type: 'application/pdf' }); 
         const url = window.URL.createObjectURL(blob);
@@ -255,6 +274,16 @@ export class MantenimientoPcoComponent implements OnInit {
       }
       
       );
+  }
+
+  cerrar_modal(exito: boolean){
+    localStorage.setItem("cerrarMantPCO","1");
+
+    if (!exito){
+      localStorage.setItem("cerrarMantPCO","2");
+    }
+
+    this.btncerrarmodal.nativeElement.click();
   }
 
 }

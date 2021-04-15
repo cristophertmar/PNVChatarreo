@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { Pch } from "../../models/pch.model";
 import { Pco } from '../../models/pco.model';
@@ -15,6 +15,8 @@ import Swal from "sweetalert2";
   ]
 })
 export class AprobarComponent implements OnInit {
+  @ViewChild('btncerrarAprobar') btncerrarAprobar: ElementRef<HTMLElement>;
+
   pch: Pch;
   pco: Pco;
   tipo: string;
@@ -40,29 +42,40 @@ export class AprobarComponent implements OnInit {
     
     if(this.tipo === "PCH"){
       this._pchService.aprobarPch(this.pch).subscribe( resp => {
+        console.log(resp);
         Swal.close();
+        this.cerrar_modal(true);
       }, (err) => {
         console.log(err);
         Swal.fire({
           icon: 'error',
           text: 'Error al autenticar',
           showCancelButton: true
-          /*text: err.error.error.message*/
         });
       });
     } else {
       this._pcoService.aprobarPco(this.pco).subscribe( resp => {
         console.log(resp);
         Swal.close();
+        this.cerrar_modal(true);
       }, (err) => {
         console.log(err);
         Swal.fire({
           icon: 'error',
           text: 'Error al autenticar',
           showCancelButton: true
-          /*text: err.error.error.message*/
         });
       });
     }
+  }
+
+  cerrar_modal(exito: boolean){
+    localStorage.setItem("cerrarAprobar","1");
+
+    if (!exito){
+      localStorage.setItem("cerrarAprobar","2");
+    }
+
+    this.btncerrarAprobar.nativeElement.click();
   }
 }

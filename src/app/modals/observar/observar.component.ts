@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { Pch } from "../../models/pch.model";
 import { Pco } from "../../models/pco.model";
@@ -21,6 +21,8 @@ export interface Observacion {
 })
 
 export class ObservarComponent implements OnInit {
+  @ViewChild('btncerrarRechazar') btncerrarRechazar: ElementRef<HTMLElement>;
+
   pch: Pch;
   pco: Pco;
   tipo: string;
@@ -67,7 +69,9 @@ export class ObservarComponent implements OnInit {
       this.pch.Motivo = motivo;
   
       this._pchService.observarPch(this.pch).subscribe( resp => {
+        console.log(resp);
         Swal.close();
+        this.cerrar_modal(true);
       }, (err) => {
         console.log(err);
         Swal.fire({
@@ -81,7 +85,9 @@ export class ObservarComponent implements OnInit {
       this.pco.Motivo = motivo;
   
       this._pcoService.observarPco(this.pco).subscribe( resp => {
+        console.log(resp);
         Swal.close();
+        this.cerrar_modal(true);
       }, (err) => {
         console.log(err);
         Swal.fire({
@@ -91,6 +97,16 @@ export class ObservarComponent implements OnInit {
         });
       });
     }
+  }
+
+  cerrar_modal(exito: boolean){
+    localStorage.setItem("cerrarRechazar","1");
+
+    if (!exito){
+      localStorage.setItem("cerrarRechazar","2");
+    }
+
+    this.btncerrarRechazar.nativeElement.click();
   }
 
 }

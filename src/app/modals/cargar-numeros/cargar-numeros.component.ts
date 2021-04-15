@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
   ]
 })
 export class CargarNumerosComponent implements OnInit {
-
+  @ViewChild('btncerrarcn') btncerrarcn: ElementRef<HTMLElement>;
   @ViewChild('btn_select_doc') btn_select_doc: ElementRef<HTMLElement>;
 
   archivoCSV: File;
@@ -168,7 +168,20 @@ export class CargarNumerosComponent implements OnInit {
     
     dialogRef.componentInstance.pco = pco;
     dialogRef.afterClosed().subscribe(result => {
-      //
+      let cerrar: string = localStorage.getItem("cerrarMantPCO");
+      if(cerrar === "1"){
+        this.cerrar_modal(true);
+      }
     });
+  }
+
+  cerrar_modal(exito: boolean){
+    localStorage.setItem("cerrarCN","1");
+
+    if (!exito){
+      localStorage.setItem("cerrarCN","2");
+    }
+
+    this.btncerrarcn.nativeElement.click();
   }
 }

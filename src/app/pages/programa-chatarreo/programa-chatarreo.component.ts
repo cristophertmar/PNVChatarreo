@@ -108,6 +108,7 @@ export class ProgramaChatarreoComponent implements OnInit {
   }
 
   modificarPch(paramPch: Pch) {
+    console.log(paramPch);
     paramPch.Estado = "V";
     this.abrirModal_mantenimiento(paramPch);
   }
@@ -119,7 +120,7 @@ export class ProgramaChatarreoComponent implements OnInit {
 
     dialogRef.componentInstance.pch = paramPch;
     dialogRef.afterClosed().subscribe(result => {
-      this.obtenerPCH();
+      this.validarAntesDeListar("cerrarMantPCH");
     });
   }
 
@@ -131,7 +132,7 @@ export class ProgramaChatarreoComponent implements OnInit {
     dialogRef.componentInstance.codigo = paramPch.CodigoPCH;
 
     dialogRef.afterClosed().subscribe(result => {
-      this.obtenerPCH();
+      this.validarAntesDeListar("cerrarAprobar");
     });
   }
 
@@ -142,8 +143,18 @@ export class ProgramaChatarreoComponent implements OnInit {
     dialogRef.componentInstance.tipo = "PCH";
     
     dialogRef.afterClosed().subscribe(result => {
-      this.obtenerPCH();
+      this.validarAntesDeListar("cerrarRechazar");
     });
+  }
+
+  validarAntesDeListar(strItem: string){
+    let cerrar: string = localStorage.getItem(strItem);
+      
+      if(cerrar === "1"){
+        this.obtenerPCH();
+      }
+      
+      localStorage.removeItem(strItem);
   }
 
   descargar_adjunto(paramPch: Pch, tipo: string){

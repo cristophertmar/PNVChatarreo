@@ -72,21 +72,18 @@ export class ArchivoService {
   }
 
   cargar_archivo(token: string, documento: File){
-    let url;
-    url = URL_SERVICIOS + 'api/archivo?id=' + token;
+    let url: string = URL_SERVICIOS + 'api/archivo?id=' + token;
 
     const headers = new HttpHeaders({
       'x-api-key': this.token
     });
 
-    const cuerpo = { documento }
-
-    return this._http.post(url, cuerpo, {headers});
+    return this._http.post(url, documento, {headers});
 
   }
 
   descargar_adjunto(token: string) {
-    let url: string = URL_SERVICIOS + 'api/archivo/id=' + token;
+    let url: string = URL_SERVICIOS + 'api/archivo?id=' + token;
 
     const headers = new HttpHeaders({
       'x-api-key': this.token

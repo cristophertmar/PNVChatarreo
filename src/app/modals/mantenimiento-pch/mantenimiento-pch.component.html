@@ -114,9 +114,10 @@
         <div class="row">
             <div class="col-md-7"></div>
             <div class="misma-linea" style="padding-right: 15px; padding-top: 20px;">
-                <button type="button" style="width: 200px; margin-right: 10px;" mat-stroked-button mat-dialog-close color="warn">Cancelar</button>
+                <button type="button" style="width: 200px; margin-right: 10px;" mat-stroked-button color="warn" (click)="cerrar_modal(false)">Cancelar</button>
                 <button type="submit" style="width: 200px;" *ngIf="pch.Estado == 'N'" mat-raised-button color="warn">Guardar</button>
             </div>
         </div>
     </form>
+    <input #btncerrarmodal #btn_select_doc mat-dialog-close class="ocultar" type="button">
 </div>
