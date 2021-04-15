@@ -33,6 +33,7 @@ import { MantenimientoPcoComponent } from './modals/mantenimiento-pco/mantenimie
 import { ArchivoAdjuntarComponent } from './modals/archivo-adjuntar/archivo-adjuntar.component';
 
 import { Nl2brPipe } from './pipes/nl2br.pipe';
+import { MantenimientoUsuarioComponent } from './modals/mantenimiento-usuario/mantenimiento-usuario.component';
 
 @NgModule({
   imports: [
@@ -66,8 +67,8 @@ import { Nl2brPipe } from './pipes/nl2br.pipe';
     CargarNumerosComponent,
     MantenimientoPcoComponent,
     ArchivoAdjuntarComponent,
-
-    Nl2brPipe
+    Nl2brPipe,
+    MantenimientoUsuarioComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

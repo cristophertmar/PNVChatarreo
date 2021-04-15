@@ -26,7 +26,7 @@
                     <fieldset>
                         <legend>
                             Datos del propietario
-                            <mat-slide-toggle (change)="mismo_representante($event.checked)" color="warn" style="margin-left: 20px;">¿representante?</mat-slide-toggle>
+                            <mat-slide-toggle *ngIf="vehiculo" (change)="mismo_representante($event.checked)" color="warn" style="margin-left: 20px;">¿representante?</mat-slide-toggle>
                         </legend>
                         <div class="container-fielset">
                             <div class="misma-linea">

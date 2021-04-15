@@ -72,7 +72,6 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     private _router: Router
     ) {
       this.tipo_observacion = 'D';
-      this.vehiculo = {};
       this.proceso_request = {};
       this.proceso_response = {};
       this.observacion_request = {};
@@ -261,7 +260,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       nro_documento_repre: new FormControl( null, [Validators.required]),
       nombre_repre: new FormControl( null, [Validators.required]),
       correo_repre: new FormControl( null, [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]),
-      celular_repre: new FormControl( null, [Validators.required]),
+      celular_repre: new FormControl( null, [Validators.required, Validators.min(900000000)]),
 
       // Datos de la solicitud
       fecha_solicitud: new FormControl( null, [Validators.required]),
@@ -322,7 +321,8 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     const placa = this.form_busqueda.value.nro_placa;    
     this._vehiculoService.obtener_vehiculo(placa)
     .subscribe(
-      (resp: Vehiculo) => {      
+      (resp: Vehiculo) => {     
+        this.vehiculo = new Vehiculo(); 
         this.vehiculo = resp;
         /* console.log(this.vehiculo); */
         this.setear_datos_placa();

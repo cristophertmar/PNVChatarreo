@@ -49,6 +49,11 @@ export class VerificacionFisicaEditarComponent implements OnInit {
   mostrar_boton_add_img: boolean = true;
   deshabilitar_obs: boolean = false;
 
+  fecha_maxima: string = '';
+  fecha_minima: string;
+  hora_minima: string;
+  fecha_fin: string;
+
   constructor(
     public gallery: Gallery,
     public _dialog: MatDialog,
@@ -73,6 +78,7 @@ export class VerificacionFisicaEditarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.obtener_fecha_maxima();
     this.crear_formulario();
     this._activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.proceso_token = params.get('token');
@@ -83,6 +89,32 @@ export class VerificacionFisicaEditarComponent implements OnInit {
     this.recibir_lista_archivos();
     this.basicLightboxExample(); // Load items into the lightbox
     this.withCustomGalleryConfig(); // Load item into different lightbox instance with custom gallery config
+  }
+
+  obtener_fecha_maxima() {
+    const today = new Date();
+    this.fecha_maxima = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+  }
+
+  obtener_fecha_minima() {
+    this.fecha_minima = this.form_etapa.get('fecha_inicio').value;
+    this.fecha_fin = this.fecha_minima;
+  }
+
+  obtener_hora_minima() {
+
+    const fecha_inicio = this.form_etapa.get('fecha_inicio').value;
+    const fecha_fin = this.form_etapa.get('fecha_fin').value;
+    const hora_inicio = this.form_etapa.get('hora_inicio').value;
+    
+    if(fecha_fin === fecha_inicio) {
+      console.log(hora_inicio);
+      this.hora_minima = hora_inicio;
+      return;
+    }
+
+    this.hora_minima = '00:00';
+
   }
 
   obtener_proceso_token(token: string) {
