@@ -17,12 +17,6 @@ import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 
-import { EvaluacionDocumentariaComponent } from 'app/pages/evaluacion-documentaria/evaluacion-documentaria.component';
-import { VerificacionFisicaComponent } from 'app/pages/verificacion-fisica/verificacion-fisica.component';
-import { DesguaceVehicularComponent } from 'app/pages/desguace-vehicular/desguace-vehicular.component';
-import { CompactacionComponent } from 'app/pages/compactacion/compactacion.component';
-import { EmisionCdvComponent } from 'app/pages/emision-cdv/emision-cdv.component';
-
 
 // Material Angular
 import {MatIconModule} from '@angular/material/icon';
@@ -39,14 +33,11 @@ import { VerificacionFisicaEditarComponent } from 'app/pages/verificacion-fisica
 import { CompactacionEditarComponent } from 'app/pages/compactacion-editar/compactacion-editar.component';
 import { DesguaceVehicularEditarComponent } from 'app/pages/desguace-vehicular-editar/desguace-vehicular-editar.component';
 import { EmisionCdvEditarComponent } from 'app/pages/emision-cdv-editar/emision-cdv-editar.component';
-import { EliminacionFluidosComponent } from 'app/pages/eliminacion-fluidos/eliminacion-fluidos.component';
 import { EliminacionFluidosEditarComponent } from 'app/pages/eliminacion-fluidos-editar/eliminacion-fluidos-editar.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatTabsModule} from '@angular/material/tabs';
-
-
 
 // Galery
 import { GalleryModule } from '@ngx-gallery/core';
@@ -59,6 +50,12 @@ import { EtapaComponent } from '../../pages/etapa/etapa.component';
 
 //Pipes
 import { EstadopchPipe } from "../../pipes/estadopch.pipe";
+
+// Mantenimiento
+import { UsuarioComponent } from '../../pages/mantenimiento/usuario/usuario.component';
+import { EntidadComponent } from '../../pages/mantenimiento/entidad/entidad.component';
+import { DocumentoComponent } from '../../pages/mantenimiento/documento/documento.component';
+import { ChecklistComponent } from '../../pages/mantenimiento/checklist/checklist.component';
 
 @NgModule({
   imports: [
@@ -93,27 +90,22 @@ import { EstadopchPipe } from "../../pipes/estadopch.pipe";
     MapsComponent,
     NotificationsComponent,
     UpgradeComponent,
-
-    EvaluacionDocumentariaComponent,
-    VerificacionFisicaComponent,
-    DesguaceVehicularComponent,
-    CompactacionComponent,
-    EmisionCdvComponent,
-
     EvaluacionDocumentariaEditarComponent,
     VerificacionFisicaEditarComponent,
     CompactacionEditarComponent,
     DesguaceVehicularEditarComponent,
     EmisionCdvEditarComponent,
-    EliminacionFluidosComponent,
     EliminacionFluidosEditarComponent,
     ProgramaChatarreoComponent,
     ChatarreoObligatorioComponent,
     ChatarreoObligatorioEntidadComponent,
     ChatarreoObligatorioAdminComponent,
     EtapaComponent,
-
-    EstadopchPipe
+    EstadopchPipe,
+    UsuarioComponent,
+    EntidadComponent,
+    DocumentoComponent,
+    ChecklistComponent
   ]
 })
 

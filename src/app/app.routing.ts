@@ -7,7 +7,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes =[
-  { path: '', redirectTo: 'programa-chatarreo', pathMatch: 'full'}, 
+  { path: '', redirectTo: 'mantenimiento/usuario', pathMatch: 'full'}, 
   { path: 'login', component: LoginComponent },
   { path: '', component: AdminLayoutComponent, children: [ { path: '', loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'}]},
   { path: '**', redirectTo: 'programa-chatarreo'}
