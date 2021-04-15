@@ -55,7 +55,6 @@ export class AprobarComponent implements OnInit {
       });
     } else {
       this._pcoService.aprobarPco(this.pco).subscribe( resp => {
-        console.log(resp);
         Swal.close();
         this.cerrar_modal(true);
       }, (err) => {
