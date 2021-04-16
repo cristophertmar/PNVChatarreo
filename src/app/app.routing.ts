@@ -5,12 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './login/login.component';
+import { LoginGuard } from './guards/login.guard';
 
 const routes: Routes =[
-  { path: '', redirectTo: 'mantenimiento/usuario', pathMatch: 'full'}, 
+  { path: '', redirectTo: 'etapa/evaluacion-documentaria', pathMatch: 'full'}, 
   { path: 'login', component: LoginComponent },
-  { path: '', component: AdminLayoutComponent, children: [ { path: '', loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'}]},
-  { path: '**', redirectTo: 'programa-chatarreo'}
+  { path: '', component: AdminLayoutComponent, canActivate: [ LoginGuard ], children: [ { path: '', loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'}]},
+  { path: '**', redirectTo: 'etapa/evaluacion-documentaria'}
 ];
 
 @NgModule({

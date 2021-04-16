@@ -123,8 +123,8 @@ export class VerificacionFisicaEditarComponent implements OnInit {
       this.proceso_obtenido = resp;
       this.archivos_etapa = this.proceso_obtenido.Etapa.TipoArchivos;
       this.estado_proceso = this.proceso_obtenido.ProcesoEtapa.Estado;
-      this.tipo_observacion = this.estado_proceso || 'D';
-      this.obtener_estado_observacion(this.estado_proceso || 'D');
+      this.tipo_observacion ='D';
+      /* this.obtener_estado_observacion(this.estado_proceso || 'D'); */
       this.checklist = this.proceso_obtenido.ProcesoEtapa.Checklist;
       this.setear_formulario(this.proceso_obtenido);
       this.deshabilitar_inputs();
@@ -151,7 +151,7 @@ export class VerificacionFisicaEditarComponent implements OnInit {
     })
   }
 
-  obtener_estado_observacion(tipo_observacion: string) {
+  /* obtener_estado_observacion(tipo_observacion: string) {
       this.tipo_observacion = tipo_observacion;
       if((this.tipo_observacion === 'O') && (this.estado_proceso === 'O')) {
         this.deshabilitar_obs = true;
@@ -160,9 +160,16 @@ export class VerificacionFisicaEditarComponent implements OnInit {
       }
       this.deshabilitar_obs = false;
       this.descripcion_obs = '';
-  }
+  } */
 
   guardar_etapa() {
+
+    const fecha_inicio = this.form_etapa.get('fecha_inicio').value;
+    const fecha_fin = this.form_etapa.get('fecha_fin').value;
+    const hora_inicio = this.form_etapa.get('hora_inicio').value;
+    const hora_fin = this.form_etapa.get('hora_fin').value;
+
+
     if(this.form_etapa.invalid) {
       Swal.fire({
         text: 'Debe de llenar correctamente el formulario',
@@ -174,7 +181,20 @@ export class VerificacionFisicaEditarComponent implements OnInit {
         icon: 'error'
       })
       return;
-    } else if(this.checklist_request.length !== this.checklist.length) {
+    } else if(fecha_inicio === fecha_fin) {
+      if(hora_fin < hora_inicio) {
+        Swal.fire({
+          text: 'La fecha y hora fin no debe ser menor a la inicial',
+          width: 350,
+          padding: 15,
+          timer: 3000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'error'
+        });
+        return;
+      }
+  } else if(this.checklist_request.length !== this.checklist.length) {
       Swal.fire({
         text: 'Debe de seleccionar todos los items del Checklist',
         width: 350,

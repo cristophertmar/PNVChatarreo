@@ -100,6 +100,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     this.tipo_documento_repre_listener(); 
     this.basicLightboxExample(); // Load items into the lightbox
     this.withCustomGalleryConfig(); // Load item into different lightbox instance with custom gallery config
+    this.pgm_chatarreo_listeners()
   }
 
   obtener_fecha_maxima() {
@@ -222,11 +223,21 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     return fechaInicioFormato;
   }
 
-  listar_archivos_etapa(tipo_proceso: string = 'O') {
+  listar_archivos_etapa(tipo_proceso: string = 'V') {
     this._archivoService.obtener_archivo_etapa(1, tipo_proceso)
     .subscribe( (resp: ArchivoEtapa[]) => {
         this.archivos_etapa = resp;
         this.setImagenes();
+    });
+  }
+
+  test(valor: any){
+    console.log(valor);
+  }
+
+  pgm_chatarreo_listeners() {
+    this.form_principal.get('pgm_chatarreo').valueChanges.subscribe( (valor: string) => {
+      this.listar_archivos_etapa(valor);
     });
   }
 
