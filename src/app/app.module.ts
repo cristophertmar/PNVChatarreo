@@ -34,6 +34,8 @@ import { ArchivoAdjuntarComponent } from './modals/archivo-adjuntar/archivo-adju
 
 import { Nl2brPipe } from './pipes/nl2br.pipe';
 import { MantenimientoUsuarioComponent } from './modals/mantenimiento-usuario/mantenimiento-usuario.component';
+import { MantenimientoEntidadComponent } from './modals/mantenimiento-entidad/mantenimiento-entidad.component';
+import { MantenimientoChecklistComponent } from './modals/mantenimiento-checklist/mantenimiento-checklist.component';
 
 @NgModule({
   imports: [
@@ -69,6 +71,8 @@ import { MantenimientoUsuarioComponent } from './modals/mantenimiento-usuario/ma
     ArchivoAdjuntarComponent,
     Nl2brPipe,
     MantenimientoUsuarioComponent,
+    MantenimientoEntidadComponent,
+    MantenimientoChecklistComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

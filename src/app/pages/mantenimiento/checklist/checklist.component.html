@@ -1,1 +1,64 @@
-<p>checklist works!</p>
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-11">
+            <form autocomplete="off" [formGroup]="form_busqueda" (ngSubmit)="obtenerChecklists()" style="padding-left: 20px; padding-right: 20px;">
+                <div class="misma-linea" style="margin-bottom: 15px;">
+                    <div>
+                        <div class="misma-linea">
+                            <label style="line-height: 2.7; margin-right: 10px;">Etapa:</label>
+                            <mat-form-field appearance="outline" style="width: 300px;" color="warn">
+                                <mat-select formControlName="etapa" name="etapa">
+                                    <mat-option [value]="eta.idEtapa" *ngFor="let eta of etapas">{{ eta.descripcion }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <button type="submit" style="margin-left: 25px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="warn">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1">
+            <button (click)="nuevo()" mat-mini-fab color="warn" style="margin-top: -5px;">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <!-- test -->
+        <div class="card" style="min-height: 750px;">
+            <div *ngIf="checklists && !(checklists.length > 0)" style="width: 400px; margin: auto; text-align: center; padding-top: 130px;">
+                <img width="300px" src="/assets/img/icons-form/no-data.svg">
+                <h3 style="margin-top: -20px;">No se encontraron resultados</h3>
+            </div>
+            <div *ngIf="checklists && checklists.length > 0" class="content table-responsive" style="width: 90%; margin: auto; margin-bottom: -10px;">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Etapa</th>
+                            <th>Orden</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let cls of checklists">
+                            <td>{{ cls.IdEtapa | etapachk }}</td>
+                            <td>{{ cls.Orden }}</td>
+                            <td>{{ cls.Descripcion }}</td>
+                            <td>{{ cls.Estado | estadochk }}</td>
+                            <td>
+                                <button type="button" (click)="editar(cls)" type="button" mat-mini-fab color="warn">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button type="button" *ngIf="cls.Estado === 'A'" (click)="eliminar(cls)" mat-mini-fab color="primary" style="margin-left: 5px;">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

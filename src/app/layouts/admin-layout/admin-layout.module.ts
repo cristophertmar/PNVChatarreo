@@ -50,6 +50,10 @@ import { EtapaComponent } from '../../pages/etapa/etapa.component';
 
 //Pipes
 import { EstadopchPipe } from "../../pipes/estadopch.pipe";
+import { EstadousuPipe } from "../../pipes/estadousu.pipe";
+import { TipoEntPipe } from "../../pipes/tipoent.pipe";
+import { EtapachkPipe } from "../../pipes/etapachk.pipe";
+import { EstadochkPipe } from "../../pipes/estadochk.pipe";
 
 // Mantenimiento
 import { UsuarioComponent } from '../../pages/mantenimiento/usuario/usuario.component';
@@ -102,6 +106,10 @@ import { ChecklistComponent } from '../../pages/mantenimiento/checklist/checklis
     ChatarreoObligatorioAdminComponent,
     EtapaComponent,
     EstadopchPipe,
+    EstadousuPipe,
+    TipoEntPipe,
+    EtapachkPipe,
+    EstadochkPipe,
     UsuarioComponent,
     EntidadComponent,
     DocumentoComponent,

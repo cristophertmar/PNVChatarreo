@@ -17,7 +17,7 @@
                         <label style="line-height: 2.7; margin-right: 10px;">Entidad:</label>
                         <mat-form-field appearance="outline" style="width: 250px;" color="warn">
                             <mat-select formControlName="entidad" name="entidad">
-                                <mat-option [value]="entidad.idEntidad" *ngFor="let entidad of entidades">{{ entidad.nombre }}</mat-option>
+                                <mat-option [value]="entidad.IdEntidad" *ngFor="let entidad of entidades">{{ entidad.Nombre }}</mat-option>
                             </mat-select>
                         </mat-form-field>
                         <button style="display: none;" class="btn-block" mat-raised-button color="basic">Buscar</button>
@@ -37,7 +37,11 @@
     </div>
     <div class="container-fluid">
         <div class="card">
-            <div class="content table-responsive" style="width: 90%; margin: auto; margin-bottom: -10px;">
+            <div *ngIf="pcos && !(pcos.length > 0)" style="width: 400px; margin: auto; text-align: center; padding-top: 130px;">
+                <img width="300px" src="/assets/img/icons-form/no-data.svg">
+                <h3 style="margin-top: -20px;">No se encontraron resultados</h3>
+            </div>
+            <div *ngIf="pcos && pcos.length > 0" class="content table-responsive" style="width: 90%; margin: auto; margin-bottom: -10px;">
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
@@ -50,12 +54,7 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody *ngIf="sinRegistros">
-                        <tr>
-                            <td colspan="7" style="text-align: center;">No hay registros</td>
-                        </tr>
-                    </tbody>
-                    <tbody *ngIf="!sinRegistros">
+                    <tbody>
                         <tr *ngFor="let pco of pcos">
                             <td>{{ pco.Correlativo }}</td>
                             <td>{{ pco.FechaInicio | date:'dd/MM/yyyy' }}</td>

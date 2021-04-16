@@ -1,8 +1,7 @@
-export class Entidad{
+export class EntidadRequest{
 
     constructor(
         public IdEntidad?: number,
-        public Correlativo?: string,
         public Tipo?: string,
         public Nombre?: string,
         public IdPadre?: string

@@ -1,0 +1,41 @@
+<h3 mat-dialog-title>Mantenimiento Checklist</h3>
+<div mat-dialog-content>
+    <form autocomplete="off" [formGroup]="form_checklist" (ngSubmit)="guardar()">
+        <div>
+            <div>
+                <label style="width: 120px; line-height: 2.5; text-align: left;">Etapa:</label>
+                <mat-form-field appearance="outline" style="width: 200px;" color="warn">
+                    <mat-select formControlName="etapa" name="etapa" [class.is-invalid]="etapaNoValido">
+                        <mat-option value="">(Seleccionar)</mat-option>
+                        <mat-option [(value)]="eta.idEtapa" *ngFor="let eta of etapas">{{ eta.descripcion }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <small *ngIf="etapaNoValido" class="text-danger">
+                Seleccione una Etapa
+            </small>
+            <div class="misma-linea">
+                <div>
+                    <div class="misma-linea">
+                        <label style="width: 120px; line-height: 2.5; text-align: left;">Nombre</label>
+                        <mat-form-field appearance="outline">
+                            <input type="text" matInput formControlName="descripcion" name="descripcion" [class.is-invalid]="descripcionNoValido">
+                        </mat-form-field>
+                    </div>
+                    <small *ngIf="descripcionNoValido" class="text-danger">
+                        Ingrese una descripción
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7"></div>
+            <div class="misma-linea" style="padding-right: 15px; padding-top: 30px;">
+                <button type="button" style="width: 200px; margin-right: 5px;" mat-stroked-button color="warn" (click)="cerrar_modal(false)">Cancelar</button>
+                <button type="submit" style="width: 200px;" mat-raised-button color="warn">Guardar</button>
+            </div>
+        </div>
+    </form>
+    <input type="button" #btncerrarChecklist mat-dialog-close class="ocultar">
+</div>

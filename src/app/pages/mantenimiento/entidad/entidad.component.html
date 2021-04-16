@@ -1,1 +1,59 @@
-<p>entidad works!</p>
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-11">
+            <form autocomplete="off" [formGroup]="form_busqueda" (ngSubmit)="obtenerEntidades()" style="padding-left: 20px; padding-right: 20px;">
+                <div class="misma-linea" style="margin-bottom: 15px;">
+                    <div>
+                        <div class="misma-linea">
+                            <label style="line-height: 2.7; margin-right: 10px;">Tipo:</label>
+                            <mat-form-field appearance="outline" style="width: 150px;" color="warn">
+                                <mat-select formControlName="tipo" name="tipo">
+                                    <mat-option [value]="tip.codigo" *ngFor="let tip of tipos">{{ tip.descripcion }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <button type="submit" style="margin-left: 25px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="warn">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1">
+            <button (click)="nuevo()" mat-mini-fab color="warn" style="margin-top: -5px;">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <!-- test -->
+        <div class="card" style="min-height: 750px;">
+            <div *ngIf="entidades && !(entidades.length > 0)" style="width: 400px; margin: auto; text-align: center; padding-top: 130px;">
+                <img width="300px" src="/assets/img/icons-form/no-data.svg">
+                <h3 style="margin-top: -20px;">No se encontraron resultados</h3>
+            </div>
+            <div *ngIf="entidades && entidades.length > 0" class="content table-responsive" style="width: 90%; margin: auto; margin-bottom: -10px;">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Correlativo</th>
+                            <th>Tipo</th>
+                            <th>Nombre</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ent of entidades">
+                            <td>{{ ent.Correlativo }}</td>
+                            <td>{{ ent.Tipo | tipoent }}</td>
+                            <td>{{ ent.Nombre }}</td>
+                            <td>
+                                <button type="button" (click)="editar(ent)" type="button" mat-mini-fab color="warn">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

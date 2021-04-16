@@ -1,34 +1,36 @@
 <h3 mat-dialog-title>Asignar Entidad Promotora</h3>
 <div mat-dialog-content>
-    <form autocomplete="off">
+    <form autocomplete="off" [formGroup]="form_usuario" (ngSubmit)="guardar()">
         <div>
             <div>
                 <label style="width: 70px; line-height: 2.5; text-align: left;">Código:</label>
-                <span style="margin-top: 8px;">72920465</span>
+                <span style="margin-top: 8px;">{{ usuario.Codigo }}</span>
             </div>
             <div>
                 <label style="width: 70px; line-height: 2.5; text-align: left;">Nombre:</label>
-                <span style="margin-top: 8px;">TORRES MARTINEZ CRISTOPHER JUNIOR</span>
+                <span style="margin-top: 8px;">{{ usuario.NombreCompleto }}</span>
             </div>
             <div class="misma-linea">
                 <label style="width: 70px; line-height: 2.5; text-align: left;">Entidad:</label>
                 <mat-form-field appearance="outline" style="width: 200px;" color="warn">
-                    <mat-select>
+                    <mat-select formControlName="entidad" name="entidad" [class.is-invalid]="entidadNoValido">
                         <mat-option value="">(Seleccionar)</mat-option>
+                        <mat-option [(value)]="ent.IdEntidad" *ngFor="let ent of entidades">{{ ent.Nombre }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
+            <small *ngIf="entidadNoValido" class="text-danger">
+                Seleccione una Entidad
+            </small>
         </div>
-
-
-
 
         <div class="row">
             <div class="col-md-7"></div>
             <div class="misma-linea" style="padding-right: 15px; padding-top: 30px;">
-                <button type="button" style="width: 200px; margin-right: 5px;" mat-stroked-button mat-dialog-close color="warn">Cancelar</button>
+                <button type="button" style="width: 200px; margin-right: 5px;" mat-stroked-button color="warn" (click)="cerrar_modal(false)">Cancelar</button>
                 <button type="submit" style="width: 200px;" mat-raised-button color="warn">Asignar</button>
             </div>
         </div>
     </form>
+    <input type="button" #btncerrarUsuario mat-dialog-close class="ocultar">
 </div>

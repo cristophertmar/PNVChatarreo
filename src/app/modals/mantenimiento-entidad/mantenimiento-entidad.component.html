@@ -1,0 +1,41 @@
+<h3 mat-dialog-title>Mantenimiento Entidad Promotora</h3>
+<div mat-dialog-content>
+    <form autocomplete="off" [formGroup]="form_entidad" (ngSubmit)="guardar()">
+        <div>
+            <div>
+                <label style="width: 120px; line-height: 2.5; text-align: left;">Tipo:</label>
+                <mat-form-field appearance="outline" style="width: 200px;" color="warn">
+                    <mat-select formControlName="tipo" name="entidad" [class.is-invalid]="tipoNoValido">
+                        <mat-option value="">(Seleccionar)</mat-option>
+                        <mat-option [(value)]="tip.codigo" *ngFor="let tip of tipos">{{ tip.descripcion }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <small *ngIf="tipoNoValido" class="text-danger">
+                Seleccione un Tipo de Entidad
+            </small>
+            <div class="misma-linea">
+                <div>
+                    <div class="misma-linea">
+                        <label style="width: 120px; line-height: 2.5; text-align: left;">Nombre</label>
+                        <mat-form-field appearance="outline">
+                            <input type="text" matInput formControlName="nombre" [class.is-invalid]="nombreNoValido">
+                        </mat-form-field>
+                    </div>
+                    <small *ngIf="nombreNoValido" class="text-danger">
+                        Ingrese el nombre de la Entidad
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7"></div>
+            <div class="misma-linea" style="padding-right: 15px; padding-top: 30px;">
+                <button type="button" style="width: 200px; margin-right: 5px;" mat-stroked-button color="warn" (click)="cerrar_modal(false)">Cancelar</button>
+                <button type="submit" style="width: 200px;" mat-raised-button color="warn">Guardar</button>
+            </div>
+        </div>
+    </form>
+    <input type="button" #btncerrarEntidad mat-dialog-close class="ocultar">
+</div>

@@ -6,6 +6,7 @@ export class UsuarioLogueado{
 
     constructor(
         public IdUsuario?: number,
+        public IdEntidad?: number,
         public Tipo?: string,
         public Codigo?: string,
         public Correo?: string,

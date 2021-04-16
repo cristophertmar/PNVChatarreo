@@ -29,7 +29,6 @@ export class ProgramaChatarreoComponent implements OnInit {
   pchs : Pch[] = [];
   form_busqueda: FormGroup;
   entidades : Entidad[] = [];
-  sinRegistros : boolean = true;
   
   edopch: Estados[] = [
       {codigo: "N", descripcion: "Nuevo"},
@@ -73,8 +72,6 @@ export class ProgramaChatarreoComponent implements OnInit {
   }
 
   obtenerPCH(){
-    this.sinRegistros = true;
-
     Swal.fire({
       allowOutsideClick: false,
       showConfirmButton: false,
@@ -88,10 +85,6 @@ export class ProgramaChatarreoComponent implements OnInit {
     this._pchService.getPCH(this.form_busqueda.value.estado, idEntidad)
           .subscribe((data : any) => {
             this.pchs = data;
-
-            if(this.pchs.length > 0){
-              this.sinRegistros = false;
-            }
 
             Swal.close();
           });

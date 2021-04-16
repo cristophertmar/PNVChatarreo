@@ -1,29 +1,26 @@
 <div class="main-content">
     <div class="row">
         <div class="col-md-11">
-            <form style="padding-left: 20px; padding-right: 20px;">
+            <form autocomplete="off" [formGroup]="form_busqueda" (ngSubmit)="obtenerUsuarios()" style="padding-left: 20px; padding-right: 20px;">
                 <div class="misma-linea" style="margin-bottom: 15px;">
                     <div>
                         <div class="misma-linea">
-                            <label style="line-height: 2.7; margin-right: 10px;">Tipo:</label>
-                            <mat-form-field appearance="outline" style="width: 80px;" color="warn">
-                                <mat-select value="H">
-                                    <mat-option value='H'>PCH</mat-option>
-                                    <mat-option value='O'>PCO</mat-option>
+                            <label style="line-height: 2.7; margin-right: 10px;">Estado:</label>
+                            <mat-form-field appearance="outline" style="width: 150px;" color="warn">
+                                <mat-select formControlName="estado" name="estado">
+                                    <mat-option [value]="edo.codigo" *ngFor="let edo of estados">{{ edo.descripcion }}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
                     </div>
                     <div style="margin-left: 20px;">
                         <div class="misma-linea">
-                            <label style="line-height: 2.7; margin-right: 10px;">Estado:</label>
+                            <label style="line-height: 2.7; margin-right: 10px;">Tipo:</label>
                             <mat-form-field appearance="outline" style="width: 150px;" color="warn">
-                                <mat-select value="A">
-                                    <mat-option value="A">Asignado</mat-option>
-                                    <mat-option value="N">No asignado</mat-option>
+                                <mat-select formControlName="tipo" name="tipo">
+                                    <mat-option [value]="tip.codigo" *ngFor="let tip of tipos">{{ tip.descripcion }}</mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <button style="display: none;" class="btn-block" mat-raised-button color="basic">Buscar</button>
                             <button type="submit" style="margin-left: 25px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="warn">Buscar</button>
                         </div>
                     </div>
@@ -37,11 +34,11 @@
     <div class="container-fluid">
         <!-- test -->
         <div class="card" style="min-height: 750px;">
-            <!-- <div style="width: 400px; margin: auto; text-align: center; padding-top: 130px;">
-                <img width="300px" src="assets/img/icons-form/no-data.svg">
+            <div *ngIf="usuarios && !(usuarios.length > 0)" style="width: 400px; margin: auto; text-align: center; padding-top: 130px;">
+                <img width="300px" src="/assets/img/icons-form/no-data.svg">
                 <h3 style="margin-top: -20px;">No se encontraron resultados</h3>
-            </div> -->
-            <div class="content table-responsive" style="width: 90%; margin: auto; margin-bottom: -10px;">
+            </div>
+            <div *ngIf="usuarios && usuarios.length > 0" class="content table-responsive" style="width: 90%; margin: auto; margin-bottom: -10px;">
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
@@ -53,23 +50,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>72920465</td>
-                            <td>CRISTOPHER.TMAR@GMAIL.COM</td>
-                            <td>TORRES MARTINEZ CRISTOPHER JUNIOR</td>
-                            <td>ASIGNADO</td>
+                        <tr *ngFor="let usu of usuarios">
+                            <td>{{ usu.Codigo }}</td>
+                            <td>{{ usu.Correo }}</td>
+                            <td>{{ usu.NombreCompleto }}</td>
+                            <td>{{ usu.Estado | estadousu }}</td>
                             <td>
-                                <button (click)="editar()" type="button" mat-mini-fab color="warn">
+                                <button type="button" (click)="editar(usu)" type="button" mat-mini-fab color="warn">
                                     <mat-icon>edit</mat-icon>
                                 </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
+                                <button type="button" *ngIf="usu.Estado === 'A'" (click)="eliminar(usu)" mat-mini-fab color="primary" style="margin-left: 5px;">
                                     <mat-icon>clear</mat-icon>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>

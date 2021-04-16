@@ -1,12 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { URL_SERVICIOS, ID_ROL } from 'app/config/config';
-import { catchError, map } from 'rxjs/operators';
-import { Usuario } from '../models/usuario.model';
-import Swal from 'sweetalert2';
-import { throwError } from 'rxjs';
-import { UsuarioLogueado } from '../models/usuarioLogueado.model';
 import { Router } from '@angular/router';
+
+import { throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
+import { URL_SERVICIOS, ID_ROL } from 'app/config/config';
+
+import { Usuario } from '../models/usuario.model';
+import { UsuarioLogueado } from '../models/usuarioLogueado.model';
+import { UsuarioRequest } from '../models/usuarioRequest.model';
+
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +60,28 @@ export class UsuarioService {
   cerrar_sesion() {
     this.limpiarAcceso();
     this._router.navigate(['/login']);
+  }
+
+  getMantenimientoQuery( query: string ) {
+    const url = `${ URL_SERVICIOS }api/mantenimiento/usuario?${ query }`;
+    const headers = new HttpHeaders({
+      'x-api-key': this.token
+    });
+
+    return this._http.get(url, { headers });
+  }
+
+  getUsuarios(tipo : string, estado: string){
+    return this.getMantenimientoQuery( `tipo=${tipo}&estado=${estado}` );
+  }
+
+  modificarUsuario(usu: UsuarioRequest){
+    const url = `${ URL_SERVICIOS }api/mantenimiento/usuario`;
+    const headers = new HttpHeaders({
+      'x-api-key': this.token
+    });
+
+    return this._http.put(url, usu, { headers });
   }
 
   login(usuario: Usuario, recordar: boolean = false){

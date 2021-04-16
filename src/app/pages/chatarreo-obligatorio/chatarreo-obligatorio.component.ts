@@ -31,7 +31,6 @@ export class ChatarreoObligatorioComponent implements OnInit {
   pcos : Pco[] = [];
   form_busqueda: FormGroup;
   entidades : Entidad[] = [];
-  sinRegistros : boolean = true;
   
   edopco: Estados[] = [
       {codigo: "N", descripcion: "Nuevo"},
@@ -75,8 +74,6 @@ export class ChatarreoObligatorioComponent implements OnInit {
   }
 
   obtenerPCO(){
-    this.sinRegistros = true;
-
     Swal.fire({
       allowOutsideClick: false,
       showConfirmButton: false,
@@ -91,10 +88,6 @@ export class ChatarreoObligatorioComponent implements OnInit {
       .subscribe((data : any) => {
         this.pcos = data;
         console.log(this.pcos);
-
-        if(this.pcos.length > 0){
-          this.sinRegistros = false;
-        }
 
         Swal.close();
       });
