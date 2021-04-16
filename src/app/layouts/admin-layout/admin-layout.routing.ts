@@ -25,10 +25,17 @@ import { ProgramaChatarreoComponent } from '../../pages/programa-chatarreo/progr
 import { ChatarreoObligatorioComponent } from '../../pages/chatarreo-obligatorio/chatarreo-obligatorio.component';
 import { ChatarreoObligatorioEntidadComponent } from '../../pages/chatarreo-obligatorio-entidad/chatarreo-obligatorio-entidad.component';
 import { ChatarreoObligatorioAdminComponent } from 'app/pages/chatarreo-obligatorio-admin/chatarreo-obligatorio-admin.component';
-import { UsuarioComponent } from '../../pages/mantenimiento/usuario/usuario.component';
-import { EntidadComponent } from '../../pages/mantenimiento/entidad/entidad.component';
-import { DocumentoComponent } from '../../pages/mantenimiento/documento/documento.component';
-import { ChecklistComponent } from '../../pages/mantenimiento/checklist/checklist.component';
+
+// Mantenimiento
+import { UsuarioComponent } from 'app/pages/mantenimiento/usuario/usuario.component';
+import { EntidadComponent } from 'app/pages/mantenimiento/entidad/entidad.component';
+import { DocumentoComponent } from 'app/pages/mantenimiento/documento/documento.component';
+import { ChecklistComponent } from 'app/pages/mantenimiento/checklist/checklist.component';
+import { EtapasGuard } from '../../guards/etapas.guard';
+import { MantenimientoGuard } from 'app/guards/mantenimiento.guard';
+import { PcoGuard } from '../../guards/pco.guard';
+import { PchGuard } from '../../guards/pch.guard';
+
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -41,23 +48,23 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'notifications',  component: NotificationsComponent },
     { path: 'upgrade',        component: UpgradeComponent },
 
-    { path: 'etapa/:nom_etapa',                    component: EtapaComponent },
+    { path: 'etapa/:nom_etapa',                    component: EtapaComponent, canActivate: [EtapasGuard] },
 
-    { path: 'evaluacion-documentaria/:token',      component: EvaluacionDocumentariaEditarComponent },
-    { path: 'verificacion-fisica/:token',          component: VerificacionFisicaEditarComponent },
-    { path: 'eliminacion-fluidos/:token',          component: EliminacionFluidosEditarComponent },
-    { path: 'desguace-vehicular/:token',           component: DesguaceVehicularEditarComponent },
-    { path: 'compactacion/:token',                 component:  CompactacionEditarComponent},
-    { path: 'emision-cdv/:token',                  component: EmisionCdvEditarComponent },
+    { path: 'evaluacion-documentaria/:token',      component: EvaluacionDocumentariaEditarComponent, canActivate: [EtapasGuard] },
+    { path: 'verificacion-fisica/:token',          component: VerificacionFisicaEditarComponent, canActivate: [EtapasGuard] },
+    { path: 'eliminacion-fluidos/:token',          component: EliminacionFluidosEditarComponent, canActivate: [EtapasGuard] },
+    { path: 'desguace-vehicular/:token',           component: DesguaceVehicularEditarComponent, canActivate: [EtapasGuard] },
+    { path: 'compactacion/:token',                 component:  CompactacionEditarComponent, canActivate: [EtapasGuard] },
+    { path: 'emision-cdv/:token',                  component: EmisionCdvEditarComponent , canActivate: [EtapasGuard]},
 
-    { path: 'programa-chatarreo',                  component: ProgramaChatarreoComponent },
-    { path: 'chatarreo-obligatorio',               component: ChatarreoObligatorioComponent },
-    { path: 'pco-entidad-promotora',               component: ChatarreoObligatorioEntidadComponent },
-    { path: 'pco-admin',                           component: ChatarreoObligatorioAdminComponent },
+    { path: 'programa-chatarreo',                  component: ProgramaChatarreoComponent, canActivate: [PchGuard] },
+    { path: 'chatarreo-obligatorio',               component: ChatarreoObligatorioComponent, canActivate: [PcoGuard] },
+    { path: 'pco-entidad-promotora',               component: ChatarreoObligatorioEntidadComponent, canActivate: [PcoGuard] },
+    { path: 'pco-admin',                           component: ChatarreoObligatorioAdminComponent, canActivate: [PcoGuard] },
 
-    { path: 'mantenimiento/usuario',               component: UsuarioComponent },
-    { path: 'mantenimiento/entidad-promotora',     component: EntidadComponent },
-    { path: 'mantenimiento/tipo-documentos',       component: DocumentoComponent },
-    { path: 'mantenimiento/checklist',             component: ChecklistComponent }
+    { path: 'mantenimiento/usuario',               component: UsuarioComponent, canActivate: [MantenimientoGuard] },
+    { path: 'mantenimiento/entidad-promotora',     component: EntidadComponent, canActivate: [MantenimientoGuard] },
+    { path: 'mantenimiento/tipo-documentos',       component: DocumentoComponent, canActivate: [MantenimientoGuard] },
+    { path: 'mantenimiento/checklist',             component: ChecklistComponent, canActivate: [MantenimientoGuard] }
 
 ];
