@@ -23,8 +23,6 @@ import { EmisionCdvEditarComponent } from 'app/pages/emision-cdv-editar/emision-
 
 import { ProgramaChatarreoComponent } from '../../pages/programa-chatarreo/programa-chatarreo.component';
 import { ChatarreoObligatorioComponent } from '../../pages/chatarreo-obligatorio/chatarreo-obligatorio.component';
-import { ChatarreoObligatorioEntidadComponent } from '../../pages/chatarreo-obligatorio-entidad/chatarreo-obligatorio-entidad.component';
-import { ChatarreoObligatorioAdminComponent } from 'app/pages/chatarreo-obligatorio-admin/chatarreo-obligatorio-admin.component';
 
 // Mantenimiento
 import { UsuarioComponent } from 'app/pages/mantenimiento/usuario/usuario.component';
@@ -59,8 +57,6 @@ export const AdminLayoutRoutes: Routes = [
 
     { path: 'programa-chatarreo',                  component: ProgramaChatarreoComponent, canActivate: [PchGuard] },
     { path: 'chatarreo-obligatorio',               component: ChatarreoObligatorioComponent, canActivate: [PcoGuard] },
-    { path: 'pco-entidad-promotora',               component: ChatarreoObligatorioEntidadComponent, canActivate: [PcoGuard] },
-    { path: 'pco-admin',                           component: ChatarreoObligatorioAdminComponent, canActivate: [PcoGuard] },
 
     { path: 'mantenimiento/usuario',               component: UsuarioComponent, canActivate: [MantenimientoGuard] },
     { path: 'mantenimiento/entidad-promotora',     component: EntidadComponent, canActivate: [MantenimientoGuard] },

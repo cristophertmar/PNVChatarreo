@@ -12,6 +12,7 @@ import { EntidadService } from "../../services/entidad.service";
 import { ArchivoService } from "../../services/archivo.service";
 
 import Swal from "sweetalert2";
+import { UsuarioService } from '../../services/usuario.service';
 
 export interface Estados {
   codigo: string;
@@ -37,11 +38,13 @@ export class ProgramaChatarreoComponent implements OnInit {
       {codigo: "O", descripcion: "Observado"}
     ];
 
-  constructor(public _dialog: MatDialog,
-      private fb: FormBuilder,
-      private _pchService : PchService,
+  constructor(
+      public _dialog          : MatDialog,
+      private fb              : FormBuilder,
+      private _pchService     : PchService,
       private _entidadService : EntidadService,
-      private _archivoService : ArchivoService
+      private _archivoService : ArchivoService,
+      public _usuarioService : UsuarioService
   ) { 
     
   }

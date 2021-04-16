@@ -160,6 +160,14 @@ export class UsuarioService {
 
   }
 
+  esaprobador() {
+    return this.usuario.Roles[0].IdRol ===  1273 ? true : false;
+  }
+
+  esconsultor() {
+    return this.usuario.Roles[0].IdRol ===  1274 ? true : false;
+  }
+
   limpiarAcceso() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');

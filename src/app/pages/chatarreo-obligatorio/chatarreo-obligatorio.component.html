@@ -25,7 +25,7 @@
                         <button type="button" (click)="limpiar()" style="margin-left: 10px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="basic">Limpiar</button>
                     </div>
                 </div>
-                <div style="margin-left: 100px;">
+                <div *ngIf="!(_usuarioService.esaprobador())" style="margin-left: 100px;">
                     <div class="misma-linea">
                         <button mat-mini-fab color="warn" style="margin-top: -5px;">
                             <mat-icon (click)="abrirModal_carga()">upload</mat-icon>
@@ -72,10 +72,10 @@
                                 <button mat-mini-fab color="warn">
                                     <mat-icon (click)="abrirModal_mantenimiento(pco)">search</mat-icon>
                                 </button>
-                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
+                                <button *ngIf="_usuarioService.esaprobador()" mat-mini-fab color="basic" style="margin-left: 5px;">
                                     <mat-icon (click)="abrirModal_aprobar(pco)">done</mat-icon>
                                 </button>
-                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
+                                <button *ngIf="_usuarioService.esaprobador()" mat-mini-fab color="primary" style="margin-left: 5px;">
                                     <mat-icon (click)="abrirModal_rechazar(pco)">clear</mat-icon>
                                 </button>
                             </td>
