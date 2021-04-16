@@ -14,6 +14,7 @@ import { EntidadService } from "../../services/entidad.service";
 import { ArchivoService } from "../../services/archivo.service";
 
 import Swal from "sweetalert2";
+import { UsuarioService } from 'app/services/usuario.service';
 
 export interface Estados {
   codigo: string;
@@ -38,11 +39,13 @@ export class ChatarreoObligatorioComponent implements OnInit {
       {codigo: "O", descripcion: "Observado"}
     ];
 
-    constructor(public _dialog: MatDialog,
-      private fb: FormBuilder,
-      private _pcoService : PcoService,
+    constructor(
+      public _dialog          : MatDialog,
+      private fb              : FormBuilder,
+      private _pcoService     : PcoService,
       private _entidadService : EntidadService,
-      private _archivoService : ArchivoService
+      private _archivoService : ArchivoService,
+      public _usuarioService  : UsuarioService
   ) { 
     
   }
