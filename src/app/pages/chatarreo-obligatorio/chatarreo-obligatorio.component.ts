@@ -52,7 +52,6 @@ export class ChatarreoObligatorioComponent implements OnInit {
 
   ngOnInit(): void {
     this.crearFormulario();
-    this.obtenerPCO();
   }
 
   crearFormulario() {
@@ -62,13 +61,18 @@ export class ChatarreoObligatorioComponent implements OnInit {
       entidad: new FormControl( )
     });
     
-    this.obtenerEntidades("E");
+    this.obtenerEntidades("O");
   }
 
   obtenerEntidades(tipo: string){
     this._entidadService.getEntidadesPorTipo(tipo)
       .subscribe((data : any) => {
         this.entidades = data;
+        if(this.entidades && this.entidades.length > 0){
+          this.form_busqueda.get("entidad").setValue(this.entidades[0].IdEntidad);
+        }
+
+        this.obtenerPCO();
         console.log(data);
       },
       (error) => {

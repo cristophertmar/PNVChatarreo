@@ -1,40 +1,43 @@
 <div class="main-content">
-    <div style="padding-left: 20px; padding-right: 20px;">
-        <form autocomplete="off" [formGroup]="form_busqueda" (ngSubmit)="obtenerPCH()">
-            <div class="misma-linea" style="margin-bottom: 15px;">
-                <div>
-                    <div class="misma-linea">
-                        <label style="line-height: 2.7; margin-right: 10px;">Estado:</label>
-                        <mat-form-field appearance="outline" style="width: 150px;" color="warn">
-                            <mat-select formControlName="estado" name="estado">
-                                <mat-option [value]="edo.codigo" *ngFor="let edo of edopch">{{ edo.descripcion }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+    <div class="row">
+        <div class="col-md-11">
+            <form autocomplete="off" [formGroup]="form_busqueda" (ngSubmit)="obtenerPCH()">
+                <div class="misma-linea" style="margin-bottom: 15px;">
+                    <div>
+                        <div class="misma-linea">
+                            <label style="line-height: 2.7; margin-right: 10px;">Estado:</label>
+                            <mat-form-field appearance="outline" style="width: 150px;" color="warn">
+                                <mat-select formControlName="estado" name="estado">
+                                    <mat-option [value]="edo.codigo" *ngFor="let edo of edopch">{{ edo.descripcion }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div style="margin-left: 65px;">
+                        <div class="misma-linea">
+                            <label *ngIf="(_usuarioService.esaprobador())" style="line-height: 2.7; margin-right: 10px;">Entidad:</label>
+                            <mat-form-field *ngIf="(_usuarioService.esaprobador())" appearance="outline" style="width: 250px;" color="warn">
+                                <mat-select formControlName="entidad" name="entidad">
+                                    <mat-option [(value)]="entidad.IdEntidad" *ngFor="let entidad of entidades">{{ entidad.Nombre }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <button style="display: none;" class="btn-block" mat-raised-button color="basic">Buscar</button>
+                            <button type="submit" style="margin-left: 25px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="warn">Buscar</button>
+                            <button type="button" (click)="limpiar()" style="margin-left: 10px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="basic">Limpiar</button>
+                        </div>
                     </div>
                 </div>
-                <div style="margin-left: 65px;">
-                    <div class="misma-linea">
-                        <label style="line-height: 2.7; margin-right: 10px;">Entidad:</label>
-                        <mat-form-field appearance="outline" style="width: 250px;" color="warn">
-                            <mat-select formControlName="entidad" name="entidad">
-                                <mat-option [value]="entidad.IdEntidad" *ngFor="let entidad of entidades">{{ entidad.Nombre }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <button style="display: none;" class="btn-block" mat-raised-button color="basic">Buscar</button>
-                        <button type="submit" style="margin-left: 25px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="warn">Buscar</button>
-                        <button type="button" (click)="limpiar()" style="margin-left: 10px; height: 36px; margin-top: -1px;" class="btn-block" mat-raised-button color="basic">Limpiar</button>
-                    </div>
-                </div>
-                <div *ngIf="!(_usuarioService.esaprobador())" style="margin-left: 100px;">
-                    <div class="misma-linea">
-                        <button mat-mini-fab color="warn" style="margin-top: -5px;">
-                            <mat-icon (click)="nuevoPch()">add</mat-icon>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div *ngIf="!(_usuarioService.esaprobador())" class="col-md-1">
+            <button (click)="nuevoPch()" mat-mini-fab color="warn" style="margin-top: -5px;">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
     </div>
+    <!--<div style="padding-left: 20px; padding-right: 20px;">
+        
+    </div>-->
     <div class="container-fluid">
         <div class="card">
             <div *ngIf="pchs && !(pchs.length > 0)" style="width: 400px; margin: auto; text-align: center; padding-top: 130px;">

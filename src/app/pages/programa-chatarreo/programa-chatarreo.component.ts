@@ -50,7 +50,6 @@ export class ProgramaChatarreoComponent implements OnInit {
 
   ngOnInit(): void {
     this.crearFormulario();
-    this.obtenerPCH();
   }
 
   crearFormulario() {
@@ -60,16 +59,22 @@ export class ProgramaChatarreoComponent implements OnInit {
       entidad: new FormControl( )
     });
     
-    this.obtenerEntidades("E");
+    this.obtenerEntidades('H');
   }
 
   obtenerEntidades(tipo: string){
     this._entidadService.getEntidadesPorTipo(tipo)
       .subscribe((data : any) => {
         this.entidades = data;
+        if(this.entidades && this.entidades.length > 0){
+          this.form_busqueda.get("entidad").setValue(this.entidades[0].IdEntidad);
+        }
+
+        this.obtenerPCH();
         console.log(data);
       },
       (error) => {
+        this.obtenerPCH();
       }
       );
   }
@@ -83,14 +88,14 @@ export class ProgramaChatarreoComponent implements OnInit {
     });
     //Swal.showLoading();
     
-    let idEntidad: string = this.form_busqueda.value.entidad === null ? "1" : this.form_busqueda.value.entidad;
+    let idEntidad: string = this.form_busqueda.value.entidad === null ? "0" : this.form_busqueda.value.entidad;
 
     this._pchService.getPCH(this.form_busqueda.value.estado, idEntidad)
-          .subscribe((data : any) => {
-            this.pchs = data;
+      .subscribe((data : any) => {
+        this.pchs = data;
 
-            Swal.close();
-          });
+        Swal.close();
+      });
   }
 
   limpiar(){

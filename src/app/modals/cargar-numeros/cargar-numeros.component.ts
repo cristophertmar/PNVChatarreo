@@ -63,39 +63,21 @@ export class CargarNumerosComponent implements OnInit {
         this._pcoService.cargarVehiculos(this.archivoCSV)
           .subscribe((data : any) => {
             const tabCount = 2;
-            const tmpData: CargaVehiculo = data;
-            
             this.tabIndex = (this.tabIndex + 1) % tabCount;
-            this.nombrecsv = this.archivoCSV.name;
-            this.respuesta = null;
-
-            this.carga_vehiculo.Vehiculos = [];
-            this.carga_vehiculo.Token = tmpData.Token;
+            this.carga_vehiculo = data;
             
-            for(let i = 0; i < tmpData.Vehiculos.length; i++) {
-              /*if(i===1 || i === 3){
-                tmpData.Vehiculos[i].Respuesta = "La placa " + tmpData.Vehiculos[i].Placa + " ya está procesada";
-              }*/
+            //console.log(data);
 
-              if(tmpData.Vehiculos[i].Respuesta){
-                if(this.respuesta){
-                  this.respuesta = this.respuesta + "\n" + tmpData.Vehiculos[i].Respuesta;
-                } else {
-                  this.respuesta = tmpData.Vehiculos[i].Respuesta;
+            /*for(let i = 0; i < this.carga_vehiculo.Vehiculos.length; i++) {
+                if(i === 1 || i === 3 || i === 5 || i === 7 || i === 9){
+                  this.carga_vehiculo.Vehiculos[i].Respuesta = "No se encontró en SUNARP";
                 }
-              } else {
-                this.carga_vehiculo.Vehiculos.push(tmpData.Vehiculos[i]);
-              }
-            }
-
-            if(this.respuesta){
-              this.respuesta = "Los siguientes vehículos no se procesaron:\n" + this.respuesta;
-            }
+            }*/
 
             Swal.close();
           },
           (error) => {
-            console.log(error);
+            //console.log(error);
             
             Swal.close();
 
@@ -112,15 +94,6 @@ export class CargarNumerosComponent implements OnInit {
             return;
           }
         );
-        /*Swal.fire({
-          text: 'Adjuntado exitosamente',
-          width: 350,
-          padding: 15,
-          timer: 2000,
-          allowOutsideClick: false,
-          showConfirmButton: false,
-          icon: 'success'
-        });*/
 
         
         return;
