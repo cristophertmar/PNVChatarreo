@@ -61,6 +61,8 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
   fecha_maxima: string = '2021-01-01';
   long_nro_documento = 0;
 
+  visible_pgm_pch = false;
+
   constructor(
     public gallery: Gallery, 
     public _dialog: MatDialog,
@@ -237,7 +239,9 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   pgm_chatarreo_listeners() {
     this.form_principal.get('pgm_chatarreo').valueChanges.subscribe( (valor: string) => {
-      this.listar_archivos_etapa(valor);
+      const valor_listado = (valor === 'H'? 'P': valor);
+      this.listar_archivos_etapa(valor_listado);
+      this.visible_pgm_pch = (valor === 'H'? true : false);
     });
   }
 
@@ -353,7 +357,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     let nombre_repre_prop = null;
 
     if(seleccion_repre) {
-      tipo_documento_repre_prop = "01";
+      tipo_documento_repre_prop = this.obtener_id_tipo_doc();
       nro_documento_repre_prop = this.vehiculo.Propietarios[0].NumeroDI;
       nombre_repre_prop = this.vehiculo.Propietarios[0].Nombres;
     }
@@ -460,15 +464,14 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
     this.proceso_request.Tipo = this.form_principal.value.pgm_chatarreo;
     this.proceso_request.VehiculoPlaca = this.form_busqueda.value.nro_placa;
-    this.proceso_request.SolicitanteTipoDI = this.form_principal.value.tipo_documento_repre;
-    this.proceso_request.SolicitanteNumeroDI = this.form_principal.value.nro_documento_repre;
+    this.proceso_request.SolicitanteTipoDI = this.form_principal.value.tipo_documento_repre + '';
+    this.proceso_request.SolicitanteNumeroDI = this.form_principal.value.nro_documento_repre + '';
     this.proceso_request.SolicitanteNombre = this.form_principal.value.nombre_repre;
     this.proceso_request.SolicitanteCorreo = this.form_principal.value.correo_repre;
     this.proceso_request.SolicitanteTelefono = this.form_principal.value.celular_repre + '';
-    this.proceso_request.PropietarioTipoDI = "01";
+    this.proceso_request.PropietarioTipoDI = this.obtener_id_tipo_doc();
     this.proceso_request.PropietarioNumeroDI = this.form_principal.getRawValue().nro_documento_prop;
-    this.proceso_request.PropietarioNombre = this.form_principal.getRawValue().nombre_prop;
-    
+    this.proceso_request.PropietarioNombre = this.form_principal.getRawValue().nombre_prop;    
 
     this._procesoService.guardar_proceso(this.proceso_request).
     subscribe( (resp_crea: ProcesoResponse) => {
@@ -568,6 +571,9 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   }
 
+  obtener_id_tipo_doc() {
+    return this.vehiculo.Propietarios[0].TipoDI === 'Documento Nacional de Identidad' ? '01' : '06';
+  }
 
   
 

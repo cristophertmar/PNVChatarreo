@@ -232,29 +232,30 @@
                                         </button>
                                     </div> -->
                                     <div class="misma-linea">
-                                        <label>Pgm. Chatarreo:</label>
+                                        <label>Tipo Chatarreo:</label>
                                         <mat-form-field appearance="outline" style="width: 311px;">
                                             <mat-select formControlName="pgm_chatarreo" name="pgm_chatarreo">
                                                 <mat-option value="O">Obligatorio</mat-option>
                                                 <mat-option value="V">Voluntario</mat-option>
+                                                <mat-option value="H">PCH</mat-option>
                                             </mat-select>
                                         </mat-form-field>
-                                        <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px; display: none;">
+                                        <button *ngIf="visible_pgm_pch" type="button" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="misma-linea ocultar">
+                            <div *ngIf="visible_pgm_pch" class="misma-linea">
                                 <div>
                                     <div class="misma-linea">
-                                        <label>Ent.&nbsp;Promotora:</label>
-                                        <mat-form-field appearance="outline" class="imput-medium">
+                                        <label>Pgm. Chatarreo:</label>
+                                        <mat-form-field appearance="outline" style="width: 600px;">
                                             <input formControlName="ent_promotora" name="ent_promotora" type="text" matInput>
                                         </mat-form-field>
                                     </div>
                                 </div>
-                                <div class="ml-50">
+                                <!-- <div class="ml-50">
                                     <div class="misma-linea">
                                         <mat-form-field appearance="outline" style="width: 201px;">
                                             <input formControlName="distrito_solicitud" name="distrito_solicitud" type="text" matInput>
@@ -263,7 +264,7 @@
                                             <mat-icon>dialpad</mat-icon>
                                         </button>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
 
