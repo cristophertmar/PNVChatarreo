@@ -19,7 +19,7 @@
                 <td> {{ pch.FechaFin | date:"mediumDate" }} </td>
                 <td> {{ pch.CapacidadVehicular }} </td>
                 <td>
-                    <button mat-mini-fab mat-dialog-close color="primary" style="margin-left: 5px;">
+                    <button mat-mini-fab color="primary" style="margin-left: 5px;">
                         <mat-icon (click)="seleccionar_pch(pch)">done</mat-icon>
                     </button>
                 </td>
@@ -27,3 +27,5 @@
         </tbody>
     </table>
 </div>
+
+<button #btn_cerrar_modal mat-dialog-close type="button"></button>

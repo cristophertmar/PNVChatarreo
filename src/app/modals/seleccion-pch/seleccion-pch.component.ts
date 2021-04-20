@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PchService } from '../../services/pch.service';
 import { Pch } from '../../models/pch.model';
 
@@ -11,6 +11,7 @@ import { Pch } from '../../models/pch.model';
 export class SeleccionPchComponent implements OnInit {
 
   pchs: Pch[];
+  @ViewChild('btn_cerrar_modal') btn_cerrar_modal: ElementRef<HTMLElement>;
 
   constructor(
     private _pchService: PchService
@@ -30,6 +31,7 @@ export class SeleccionPchComponent implements OnInit {
 
   seleccionar_pch(pch: Pch) {  
     this._pchService.enviar_pch_seleccionado(pch);
+    this.btn_cerrar_modal.nativeElement.click();
   }
 
 }
