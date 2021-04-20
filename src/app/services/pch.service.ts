@@ -6,6 +6,7 @@ import { UsuarioService } from './usuario.service';
 import { URL_SERVICIOS } from 'app/config/config';
 
 import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,17 @@ import { map } from 'rxjs/operators';
 export class PchService {
 
   token: string;
+  pch_seleccionado = new Subject<Pch>();
 
   constructor(
     private _http: HttpClient,
     private _usuarioService: UsuarioService
   ) {
     this.token = this._usuarioService.token;
+  }
+
+  enviar_pch_seleccionado(pch: Pch) {
+    this.pch_seleccionado.next(pch);
   }
 
   getQuery( query: string ) {
@@ -32,6 +38,10 @@ export class PchService {
 
   getPCH(estado : string, entidadpromotora : string){
     return this.getQuery(`estado=${estado}&entidadidpromotora=${entidadpromotora}`);
+  }
+
+  getPCHActive(estado: string){
+    return this.getQuery(`estado=${estado}`);
   }
 
   getSeleccionar(codigo: string){

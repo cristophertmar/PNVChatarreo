@@ -237,21 +237,22 @@
                                             <mat-select formControlName="pgm_chatarreo" name="pgm_chatarreo">
                                                 <mat-option value="O">Obligatorio</mat-option>
                                                 <mat-option value="V">Voluntario</mat-option>
-                                                <mat-option value="H">PCH</mat-option>
+                                                <mat-option value="P">PCH</mat-option>
                                             </mat-select>
                                         </mat-form-field>
-                                        <button *ngIf="visible_pgm_pch" type="button" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
+                                        <button *ngIf="visible_pgm_pch" (click)="abrirModal_seleccionPCH()" type="button" mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div *ngIf="visible_pgm_pch" class="misma-linea">
+                            <!-- *ngIf="visible_pgm_pch" -->
+                            <div *ngIf="pgm_pch" class="misma-linea">
                                 <div>
                                     <div class="misma-linea">
                                         <label>Pgm. Chatarreo:</label>
                                         <mat-form-field appearance="outline" style="width: 600px;">
-                                            <input formControlName="ent_promotora" name="ent_promotora" type="text" matInput>
+                                            <input type="text" matInput [value]="tipo_pch" [readonly]="true">
                                         </mat-form-field>
                                     </div>
                                 </div>

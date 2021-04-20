@@ -25,6 +25,9 @@ import { ObservacionRequest } from 'app/models/observacionRequest.model';
 import { Subject } from 'rxjs';
 
 import Swal from 'sweetalert2';
+import { SeleccionPchComponent } from '../../modals/seleccion-pch/seleccion-pch.component';
+import { PchService } from '../../services/pch.service';
+import { Pch } from '../../models/pch.model';
 
 @Component({
   selector: 'app-evaluacion-documentaria-editar',
@@ -63,6 +66,9 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   visible_pgm_pch = false;
 
+  pgm_pch: Pch;
+  tipo_pch: string = '';
+
   constructor(
     public gallery: Gallery, 
     public _dialog: MatDialog,
@@ -71,6 +77,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     private _procesoService: ProcesoService,
     private _procesoEtapaService: ProcesoEtapaService,
     private _activatedRoute: ActivatedRoute,
+    private _pchService: PchService,
     private _router: Router
     ) {
       this.tipo_observacion = 'D';
@@ -98,11 +105,12 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       }       
     } );    
     
-    this.recibir_lista_archivos();  
+    this.recibir_lista_archivos(); 
     this.tipo_documento_repre_listener(); 
     this.basicLightboxExample(); // Load items into the lightbox
     this.withCustomGalleryConfig(); // Load item into different lightbox instance with custom gallery config
-    this.pgm_chatarreo_listeners()
+    this.pgm_chatarreo_listeners();
+    this.recibir_pch_seleccionado();
   }
 
   obtener_fecha_maxima() {
@@ -150,6 +158,16 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
       }
     })
+  }
+
+  recibir_pch_seleccionado() {
+    this._pchService.pch_seleccionado.subscribe({
+      next: (resp: Pch) => {
+        this.pgm_pch = resp;
+        console.log(this.pgm_pch);
+        this.tipo_pch = this.pgm_pch.TipoPCH;
+      }
+    });
   }
 
   convertir_fecha(fecha_covertir: string) {
@@ -238,10 +256,13 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
   }
 
   pgm_chatarreo_listeners() {
-    this.form_principal.get('pgm_chatarreo').valueChanges.subscribe( (valor: string) => {
-      const valor_listado = (valor === 'H'? 'P': valor);
-      this.listar_archivos_etapa(valor_listado);
-      this.visible_pgm_pch = (valor === 'H'? true : false);
+    this.form_principal.get('pgm_chatarreo').valueChanges.subscribe( (valor: string) => {      
+      this.listar_archivos_etapa(valor);
+      this.visible_pgm_pch = (valor === 'P'? true : false);
+      if(!this.visible_pgm_pch) { 
+        this.pgm_pch = null; 
+        this.tipo_pch = '';
+      }
     });
   }
 
@@ -324,6 +345,12 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   }
 
+  abrirModal_seleccionPCH() {
+    const dialogRef = this._dialog.open(SeleccionPchComponent, {
+      disableClose: true
+  });
+  }
+
   volverEtapa(){
     this._router.navigate(['/etapa/evaluacion-documentaria']);
   }
@@ -357,7 +384,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     let nombre_repre_prop = null;
 
     if(seleccion_repre) {
-      tipo_documento_repre_prop = this.obtener_id_tipo_doc();
+      tipo_documento_repre_prop =  this.vehiculo.Propietarios[0].IdTipoDoc;
       nro_documento_repre_prop = this.vehiculo.Propietarios[0].NumeroDI;
       nombre_repre_prop = this.vehiculo.Propietarios[0].Nombres;
     }
@@ -416,6 +443,8 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   guardar_proceso() {
     
+    const obs_comentada = this.form_principal.value.descripcion_obs || '';   
+
     if(this.form_principal.invalid || this.form_busqueda.invalid) {    
       Object.values( this.form_busqueda.controls).forEach( control => {
         control.markAsTouched();
@@ -433,6 +462,28 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     } else if ((document.getElementById("tipo_documento_prop") as HTMLInputElement).value.length < 1) {
       Swal.fire({
         text: 'Debe enviar los datos del propietario y del vehículo',
+        width: 350,
+        padding: 15,
+        timer: 2000,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        icon: 'error'
+      });  
+      return;
+    } else if(this.visible_pgm_pch && !(this.pgm_pch)) {
+      Swal.fire({
+        text: 'Seleccione un programa de chatarreo',
+        width: 350,
+        padding: 15,
+        timer: 2000,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        icon: 'error'
+      });  
+      return;
+    } else if(this.tipo_observacion === 'O' && obs_comentada.length === 0) {
+      Swal.fire({
+        text: 'Debe colocar una observación',
         width: 350,
         padding: 15,
         timer: 2000,
@@ -462,16 +513,20 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       return;
     }    
 
-    this.proceso_request.Tipo = this.form_principal.value.pgm_chatarreo;
+    this.proceso_request.Tipo = (this.form_principal.value.pgm_chatarreo === 'P' ? 'p' : this.form_principal.value.pgm_chatarreo);
     this.proceso_request.VehiculoPlaca = this.form_busqueda.value.nro_placa;
     this.proceso_request.SolicitanteTipoDI = this.form_principal.value.tipo_documento_repre + '';
     this.proceso_request.SolicitanteNumeroDI = this.form_principal.value.nro_documento_repre + '';
     this.proceso_request.SolicitanteNombre = this.form_principal.value.nombre_repre;
     this.proceso_request.SolicitanteCorreo = this.form_principal.value.correo_repre;
     this.proceso_request.SolicitanteTelefono = this.form_principal.value.celular_repre + '';
-    this.proceso_request.PropietarioTipoDI = this.obtener_id_tipo_doc();
+    this.proceso_request.PropietarioTipoDI = this.vehiculo.Propietarios[0].IdTipoDoc;
     this.proceso_request.PropietarioNumeroDI = this.form_principal.getRawValue().nro_documento_prop;
-    this.proceso_request.PropietarioNombre = this.form_principal.getRawValue().nombre_prop;    
+    this.proceso_request.PropietarioNombre = this.form_principal.getRawValue().nombre_prop; 
+    
+    this.proceso_request.IdPch = (this.visible_pgm_pch ? this.pgm_pch.CodigoPCH : '');
+
+    console.log(this.proceso_request);
 
     this._procesoService.guardar_proceso(this.proceso_request).
     subscribe( (resp_crea: ProcesoResponse) => {
@@ -558,13 +613,21 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
               );
           });
 
-        }
-            
+        }            
       });
 
     },
     (error: any) => {
-      console.log(error);
+      Swal.fire({
+        text: error.error,
+        width: 350,
+        padding: 15,
+        timer: 4000,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        icon: 'error'
+      });
+      return;
     },
     () => {}
     )

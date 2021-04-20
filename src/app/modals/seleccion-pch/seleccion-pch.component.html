@@ -1,0 +1,29 @@
+<h3 mat-dialog-title>Seleccionar programa de chatarreo</h3>
+<div mat-dialog-content>
+    <table *ngIf="pchs" class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Tipo</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Capacidad Veh</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pch of pchs">
+                <td> {{ pch.CodigoPCH }} </td>
+                <td> {{ pch.TipoPCH }} </td>
+                <td> {{ pch.FechaInicio | date:"mediumDate" }} </td>
+                <td> {{ pch.FechaFin | date:"mediumDate" }} </td>
+                <td> {{ pch.CapacidadVehicular }} </td>
+                <td>
+                    <button mat-mini-fab mat-dialog-close color="primary" style="margin-left: 5px;">
+                        <mat-icon (click)="seleccionar_pch(pch)">done</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

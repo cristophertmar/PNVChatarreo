@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -36,6 +36,12 @@ import { Nl2brPipe } from './pipes/nl2br.pipe';
 import { MantenimientoUsuarioComponent } from './modals/mantenimiento-usuario/mantenimiento-usuario.component';
 import { MantenimientoEntidadComponent } from './modals/mantenimiento-entidad/mantenimiento-entidad.component';
 import { MantenimientoChecklistComponent } from './modals/mantenimiento-checklist/mantenimiento-checklist.component';
+import { SeleccionPchComponent } from './modals/seleccion-pch/seleccion-pch.component';
+
+// Zona Horaria
+import { registerLocaleData } from '@angular/common';
+import localesPE from '@angular/common/locales/es-PE';
+registerLocaleData(localesPE, 'es-Pe');
 
 @NgModule({
   imports: [
@@ -73,8 +79,11 @@ import { MantenimientoChecklistComponent } from './modals/mantenimiento-checklis
     MantenimientoUsuarioComponent,
     MantenimientoEntidadComponent,
     MantenimientoChecklistComponent,
+    SeleccionPchComponent,
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es-Pe' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

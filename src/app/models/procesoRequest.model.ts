@@ -10,7 +10,8 @@ export class ProcesoRequest{
         public SolicitanteTelefono?: string,
         public PropietarioTipoDI?: string,
         public PropietarioNumeroDI?: string,
-        public PropietarioNombre?: string
+        public PropietarioNombre?: string,
+        public IdPch?: string
     ){}
 
 }
