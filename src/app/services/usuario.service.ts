@@ -32,7 +32,7 @@ export class UsuarioService {
   }
 
   esta_logueado() {
-    return this.token? true : false;
+    return this.token.length > 0? true : false;
   }
 
   acceso_etapas() {        

@@ -12,19 +12,15 @@ import { URL_SERVICIOS } from 'app/config/config';
 })
 export class EntidadService {
 
-  token: string;
-
   constructor(
     private _http: HttpClient,
     private _usuarioService: UsuarioService
-  ) {
-    this.token = this._usuarioService.token;
-  }
+  ) {}
 
   getQuery( query: string ) {
     const url = `${ URL_SERVICIOS }api/entidad?${ query }`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.get(url, { headers });
@@ -37,7 +33,7 @@ export class EntidadService {
   insertarEntidad(entidad: EntidadRequest){
     const url = `${ URL_SERVICIOS }api/entidad`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.post(url, entidad, { headers });
@@ -46,7 +42,7 @@ export class EntidadService {
   modificarEntidad(entidad: EntidadRequest  ){
     const url = `${ URL_SERVICIOS }api/entidad`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.put(url, entidad, { headers });

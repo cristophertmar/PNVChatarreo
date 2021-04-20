@@ -14,19 +14,16 @@ import { URL_SERVICIOS } from 'app/config/config';
 })
 
 export class ChecklistService {
-    token: string;
 
     constructor(
         private _http: HttpClient,
         private _usuarioService: UsuarioService
-    ) {
-        this.token = this._usuarioService.token;
-    }
+    ) {}
 
     getChecklist( idEtapa: number ) {
       const url = `${ URL_SERVICIOS }api/checklList?IdEtapa=${ idEtapa }`;
       const headers = new HttpHeaders({
-        'x-api-key': this.token
+        'x-api-key': this._usuarioService.token
       });
   
       return this._http.get(url, { headers });
@@ -35,7 +32,7 @@ export class ChecklistService {
     insertarChecklist(checklist: Checklist){
       const url = `${ URL_SERVICIOS }api/checklList`;
       const headers = new HttpHeaders({
-        'x-api-key': this.token
+        'x-api-key': this._usuarioService.token
       });
   
       return this._http.post(url, checklist, { headers });
@@ -44,7 +41,7 @@ export class ChecklistService {
     modificarCheklist(clUpd: ChecklistRequestUpd){
       const url = `${ URL_SERVICIOS }api/checklList`;
       const headers = new HttpHeaders({
-        'x-api-key': this.token
+        'x-api-key': this._usuarioService.token
       });
   
       return this._http.put(url, clUpd, { headers });
@@ -53,7 +50,7 @@ export class ChecklistService {
     eliminarCheklist(clDel: ChecklistRequestDel){
       const url = `${ URL_SERVICIOS }api/checklList`;
       const headers = new HttpHeaders({
-        'x-api-key': this.token
+        'x-api-key': this._usuarioService.token
       });
   
       return this._http.put(url, clDel, { headers });

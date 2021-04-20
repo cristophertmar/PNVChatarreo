@@ -12,19 +12,15 @@ import { map } from 'rxjs/operators';
 })
 export class PcoService {
 
-  token: string;
-
   constructor(
     private _http: HttpClient,
     private _usuarioService: UsuarioService
-  ) {
-    this.token = this._usuarioService.token;
-  }
+  ) {}
 
   getQuery( query: string ) {
     const url = `${ URL_SERVICIOS }api/pco?${ query }`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.get(url, { headers });
@@ -39,7 +35,7 @@ export class PcoService {
     url = URL_SERVICIOS + 'api/pco/vehiculo';
 
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.post(url, archivo_csv, {headers});
@@ -49,7 +45,7 @@ export class PcoService {
     console.log(pco);
     const url = `${ URL_SERVICIOS }api/pco`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.post(url, pco, { headers }) 
@@ -66,7 +62,7 @@ export class PcoService {
 
     const url = `${ URL_SERVICIOS }api/pco`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.put(url, pco, { headers }) 
@@ -80,7 +76,7 @@ export class PcoService {
   observarPco(pco: Pco){
     const url = `${ URL_SERVICIOS }api/pco`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.put(url, pco, { headers }) 

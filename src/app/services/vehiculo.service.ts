@@ -12,14 +12,11 @@ import { UsuarioService } from './usuario.service';
 export class VehiculoService {
 
   loading: Boolean;
-  token: string;
 
   constructor(
     private _http: HttpClient,
     private _usuarioService: UsuarioService
-  ) {
-    this.token = this._usuarioService.token;
-  }
+  ) {}
   
   obtener_vehiculo(placa: string) {
     
@@ -27,7 +24,7 @@ export class VehiculoService {
     url = URL_SERVICIOS + 'api/vehiculo?placa=' + placa;
 
     const headers = new HttpHeaders({
-        'x-api-key': this.token
+        'x-api-key': this._usuarioService.token
     });
 
     return this._http.get(url, {headers}).pipe(

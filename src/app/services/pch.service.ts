@@ -13,15 +13,12 @@ import { Subject } from 'rxjs';
 })
 export class PchService {
 
-  token: string;
   pch_seleccionado = new Subject<Pch>();
 
   constructor(
     private _http: HttpClient,
     private _usuarioService: UsuarioService
-  ) {
-    this.token = this._usuarioService.token;
-  }
+  ) {}
 
   enviar_pch_seleccionado(pch: Pch) {
     this.pch_seleccionado.next(pch);
@@ -30,7 +27,7 @@ export class PchService {
   getQuery( query: string ) {
     const url = `${ URL_SERVICIOS }api/pch?${ query }`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.get(url, { headers });
@@ -51,7 +48,7 @@ export class PchService {
   insertarPch(pch : Pch) {
     const url = `${ URL_SERVICIOS }api/pch`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.post(url, pch, { headers }) 
@@ -68,7 +65,7 @@ export class PchService {
 
     const url = `${ URL_SERVICIOS }api/pch`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.put(url, pch, { headers }) 
@@ -82,7 +79,7 @@ export class PchService {
   observarPch(pch: Pch){
     const url = `${ URL_SERVICIOS }api/pch`;
     const headers = new HttpHeaders({
-      'x-api-key': this.token
+      'x-api-key': this._usuarioService.token
     });
 
     return this._http.put(url, pch, { headers }) 
