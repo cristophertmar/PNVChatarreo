@@ -90,6 +90,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       this.iarchivo_request = {};
       this.estado_proceso = '';
       this.items = [];
+      this.archivos_etapa = [];
     }
 
   ngOnInit(): void {
@@ -180,16 +181,30 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
   obtener_proceso_token(token: string) {
     this._procesoService.obtener_proceso_token(encodeURIComponent(token))
     .subscribe( (resp: Proceso) => {
+      resp.Tipo === 'p' ? resp.Tipo = 'P' : resp.Tipo = resp.Tipo;
       this.proceso_obtenido = resp;
-      this.archivos_etapa = this.proceso_obtenido.Etapa.TipoArchivos;
+      // this.archivos_etapa = this.proceso_obtenido.Etapa.TipoArchivos;
       this.estado_proceso = resp.ProcesoEtapa.Estado;
       this.tipo_observacion = resp.ProcesoEtapa.Estado || 'D';
       this.obtener_estado_observacion(resp.ProcesoEtapa.Estado || 'D');
       this.setear_datos_proceso(this.proceso_obtenido);
       this.deshabilitarInputs(this.proceso_obtenido);
       this.setImagenes();
+
+      this.listar_archivos_etapa(this.proceso_obtenido.Tipo);
+
+      if(this.proceso_obtenido.Tipo === 'P') {
+        this._pchService.getSeleccionar(this.proceso_obtenido.IdPch)
+        .subscribe((resp: any) =>  {
+            this.tipo_pch = resp.TipoPCH;
+            this.pgm_pch = resp;
+        })
+      }
+
     });
   }
+
+
 
   quitar_archivo(i: number) {
     this.archivos_etapa[i].archivo_adjunto = null;
@@ -197,15 +212,11 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   setear_datos_proceso(proceso: Proceso) {
 
-    console.log(proceso.SolicitanteNumeroDI);
-
     this.form_busqueda.setValue({
       nro_placa: proceso.VehiculoPlaca
     })
 
     this.form_principal.setValue({
-
-      
 
       // Datos del Propietario
       tipo_documento_prop:   proceso.PropietarioTipoDI,
@@ -249,7 +260,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   listar_archivos_etapa(tipo_proceso: string = 'V') {
     this._archivoService.obtener_archivo_etapa(1, tipo_proceso)
-    .subscribe( (resp: ArchivoEtapa[]) => {
+    .subscribe( (resp: ArchivoEtapa[]) => {        
         this.archivos_etapa = resp;
         this.setImagenes();
     });
@@ -531,10 +542,10 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     const arch_aprobados = this.archivos_aprobados.filter(arch => arch.Obligatorio === 'S');
     const arch_etapa = this.archivos_etapa.filter(arch => arch.Obligatorio === 'S');
 
-    console.log(arch_aprobados);
-    console.log(arch_etapa);
+    console.log('ee', this.estado_proceso);
+    
 
-    if((arch_aprobados.length) < (arch_etapa.length)) {
+    if(((arch_aprobados.length) < (arch_etapa.length) && this.tipo_observacion !== 'O')) {
       Swal.fire({
         text: 'Adjunte todos los documentos obligatorios',
         width: 350,
@@ -575,9 +586,11 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     this.proceso_request.PropietarioNombre = this.form_principal.getRawValue().nombre_prop;     
     this.proceso_request.IdPch = (this.visible_pgm_pch ? this.pgm_pch.CodigoPCH : '');
 
-    }    
+    }
+    
+    if(this.tipo_observacion != 'S') {
 
-    this._procesoService.guardar_proceso(this.proceso_request).
+      this._procesoService.guardar_proceso(this.proceso_request).
     subscribe( (resp_crea: ProcesoResponse) => {
       this.proceso_response = resp_crea;
       
@@ -699,6 +712,63 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     },
     () => {}
     )
+
+    } else {
+
+      for(let i = 0; i < this.archivos_aprobados.length; i++) {
+        
+        this.iarchivo_request = {};
+        this.iarchivo_request.IdProceso = this.proceso_obtenido.IdProceso;
+        this.iarchivo_request.IdEtapa = this.proceso_obtenido.ProcesoEtapa.IdEtapa;
+        this.iarchivo_request.IdTipoArchivo = this.archivos_aprobados[i].IdTipoArchivo;
+        this.iarchivo_request.Nombre = this.archivos_aprobados[i].archivo_adjunto.name;
+
+        this._archivoService.insertar_archivo(this.iarchivo_request)
+        .subscribe((resp_token: string) => {
+            this._archivoService.cargar_archivo(encodeURIComponent(resp_token), this.archivos_aprobados[i].archivo_adjunto).
+            subscribe(resp => {
+              
+              if( i === (this.archivos_aprobados.length - 1)){
+                
+                
+                this.festapa_request.IdProceso = this.proceso_obtenido.IdProceso;
+                this.festapa_request.IdEtapa = this.proceso_obtenido.ProcesoEtapa.IdEtapa;
+                this.festapa_request.FechaInicio = this.ietapa_request.FechaInicio;
+                this.festapa_request.FechaFin = this.obtenerFecha_actual();
+                this.festapa_request.Estado = 'T';
+                this.festapa_request.Checklist = [];
+
+                if(this.tipo_observacion === 'S') {
+                  this.festapa_request.Observacion = this.descripcion_obs
+                }
+
+                this._procesoEtapaService.finalizar_etapa(this.festapa_request)
+                .subscribe( resp => {
+                  this.descargar_informe(this.proceso_obtenido.ProcesoEtapa.IdEtapa, encodeURIComponent(this.proceso_token), this.proceso_obtenido.IdProceso);
+                  Swal.fire({
+                    text: 'Evaluación documentaria finalizada',
+                    width: 350,
+                    padding: 15,
+                    timer: 2000,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    icon: 'success'
+                  }).then( result => {
+                    this.volverEtapa();
+                  });
+                  
+                })
+
+              }
+
+            });
+        }); 
+
+      } 
+
+    }
+
+    
 
   }
 
