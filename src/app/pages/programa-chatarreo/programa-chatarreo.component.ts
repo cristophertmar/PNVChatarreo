@@ -63,7 +63,8 @@ export class ProgramaChatarreoComponent implements OnInit {
   }
 
   obtenerEntidades(tipo: string){
-    this._entidadService.getEntidadesPorTipo(tipo)
+    if(this._usuarioService.esaprobador()){
+      this._entidadService.getEntidadesPorTipo(tipo)
       .subscribe((data : any) => {
         this.entidades = data;
         if(this.entidades && this.entidades.length > 0){
@@ -71,12 +72,15 @@ export class ProgramaChatarreoComponent implements OnInit {
         }
 
         this.obtenerPCH();
-        console.log(data);
+        //console.log(data);
       },
       (error) => {
         this.obtenerPCH();
       }
       );
+    } else {
+      this.obtenerPCH();
+    }
   }
 
   obtenerPCH(){
@@ -86,9 +90,11 @@ export class ProgramaChatarreoComponent implements OnInit {
       icon: 'info',
       text: 'Espere por favor...'
     });
-    //Swal.showLoading();
     
-    let idEntidad: string = this.form_busqueda.value.entidad === null ? "0" : this.form_busqueda.value.entidad;
+    let idEntidad: string = "0";
+    if(this._usuarioService.esaprobador()){
+      idEntidad = (this.entidades && this.entidades.length > 0) ? this.entidades[0].IdEntidad.toString() : "0";
+    }
 
     this._pchService.getPCH(this.form_busqueda.value.estado, idEntidad)
       .subscribe((data : any) => {
@@ -109,7 +115,7 @@ export class ProgramaChatarreoComponent implements OnInit {
   }
 
   modificarPch(paramPch: Pch) {
-    console.log(paramPch);
+    //console.log(paramPch);
     paramPch.Estado = "V";
     this.abrirModal_mantenimiento(paramPch);
   }

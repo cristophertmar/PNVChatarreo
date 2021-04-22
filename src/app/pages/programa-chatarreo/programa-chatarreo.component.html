@@ -30,7 +30,7 @@
             </form>
         </div>
         <div *ngIf="!(_usuarioService.esaprobador())" class="col-md-1">
-            <button (click)="nuevoPch()" mat-mini-fab color="warn" style="margin-top: -5px;">
+            <button type="button" (click)="nuevoPch()" mat-mini-fab color="warn" style="margin-top: -5px;">
                 <mat-icon>add</mat-icon>
             </button>
         </div>

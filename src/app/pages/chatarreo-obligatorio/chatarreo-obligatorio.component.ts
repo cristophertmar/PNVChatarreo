@@ -65,19 +65,23 @@ export class ChatarreoObligatorioComponent implements OnInit {
   }
 
   obtenerEntidades(tipo: string){
-    this._entidadService.getEntidadesPorTipo(tipo)
+    if(this._usuarioService.esaprobador()){
+      this._entidadService.getEntidadesPorTipo(tipo)
       .subscribe((data : any) => {
         this.entidades = data;
         if(this.entidades && this.entidades.length > 0){
           this.form_busqueda.get("entidad").setValue(this.entidades[0].IdEntidad);
         }
 
+        //console.log(data);
         this.obtenerPCO();
-        console.log(data);
       },
       (error) => {
       }
       );
+    } else {
+      this.obtenerPCO();
+    }
   }
 
   obtenerPCO(){
@@ -87,14 +91,16 @@ export class ChatarreoObligatorioComponent implements OnInit {
       icon: 'info',
       text: 'Espere por favor...'
     });
-    //Swal.showLoading();
-    
-    let idEntidad: string = this.form_busqueda.value.entidad === null ? "1" : this.form_busqueda.value.entidad;
 
+    let idEntidad: string = "0";
+    if(this._usuarioService.esaprobador()){
+      idEntidad = (this.entidades && this.entidades.length > 0) ? this.entidades[0].IdEntidad.toString() : "0";
+    }
+    
     this._pcoService.getPCO(idEntidad)
       .subscribe((data : any) => {
         this.pcos = data;
-        console.log(this.pcos);
+        //console.log(this.pcos);
 
         Swal.close();
       });
