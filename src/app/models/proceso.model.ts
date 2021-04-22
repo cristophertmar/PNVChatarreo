@@ -35,7 +35,8 @@ export class Proceso {
         public Token?: string,
         public Etapa?: Etapa,
         public ProcesoEtapa?: ProcesoEtapa,
-        public IdCdv?: string
+        public IdCdv?: string,
+        public IdPch?: string
     ){}
 
 }

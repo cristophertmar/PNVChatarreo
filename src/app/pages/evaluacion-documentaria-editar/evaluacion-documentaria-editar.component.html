@@ -315,12 +315,12 @@
                         <mat-tab label="Obervaciones">
                             <div style="height: 271px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
                                 <mat-radio-group color="warn" (change)="obtener_estado_observacion($event.value)" [value]="tipo_observacion">
-                                    <mat-radio-button value="D">Desactivado</mat-radio-button>
+                                    <mat-radio-button value="D" *ngIf="estado_proceso != 'O'">Desactivado</mat-radio-button>
                                     <mat-radio-button value="O">Observado</mat-radio-button>
-                                    <mat-radio-button value="S">Subsanado</mat-radio-button>
+                                    <mat-radio-button value="S" *ngIf="estado_proceso === 'O'">Subsanado</mat-radio-button>
                                 </mat-radio-group>
                                 <mat-form-field appearance="outline" class="w100p">
-                                    <textarea id="obs_desc" matInput rows="12" [disabled]='deshabilitar_obs' formControlName="descripcion_obs" name="descripcion_obs" [value]="descripcion_obs"></textarea>
+                                    <textarea id="obs_desc" matInput rows="12" [readonly]='deshabilitar_obs' formControlName="descripcion_obs" name="descripcion_obs" [(ngModel)]="descripcion_obs"></textarea>
                                 </mat-form-field>
                             </div>
                         </mat-tab>

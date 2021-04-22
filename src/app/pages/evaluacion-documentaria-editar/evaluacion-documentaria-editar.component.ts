@@ -197,11 +197,15 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
   setear_datos_proceso(proceso: Proceso) {
 
+    console.log(proceso.SolicitanteNumeroDI);
+
     this.form_busqueda.setValue({
       nro_placa: proceso.VehiculoPlaca
     })
 
     this.form_principal.setValue({
+
+      
 
       // Datos del Propietario
       tipo_documento_prop:   proceso.PropietarioTipoDI,
@@ -217,7 +221,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       anio_veh:              proceso.VehiculoAnoFabricacion,
       combustible_veh:       proceso.VehiculoCombustible,
       categoria_veh:         proceso.VehiculoCategoria,
-
+      
        // Datos del representante
        tipo_documento_repre: proceso.SolicitanteTipoDI,
        nro_documento_repre:  proceso.SolicitanteNumeroDI,
@@ -312,8 +316,10 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
   }
 
   deshabilitarInputs(proceso_obtenido?: Proceso) {
+
+    console.log(proceso_obtenido);
     
-    if(this.proceso_obtenido) {
+    if(proceso_obtenido) {
 
       this.form_busqueda.controls['nro_placa'].disable();
 
@@ -437,13 +443,41 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
         return;
       }
       this.deshabilitar_obs = false;
-      this.descripcion_obs = '';
-      
+      this.descripcion_obs = '';      
   }
 
   guardar_proceso() {
     
-    const obs_comentada = this.form_principal.value.descripcion_obs || '';   
+    const obs_comentada = this.form_principal.value.descripcion_obs || ''; 
+    console.log(this.descripcion_obs);  
+
+    if(this.estado_proceso === 'O') {
+
+      if(this.tipo_observacion != 'S') {
+        Swal.fire({
+          text: 'Debe de subsanar la etapa',
+          width: 350,
+          padding: 15,
+          timer: 2000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'error'
+        });  
+        return;
+      } else if(this.descripcion_obs.length === 0) {
+        Swal.fire({
+          text: 'Debe colocar un comentario de subsanación',
+          width: 350,
+          padding: 15,
+          timer: 2000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'error'
+        });  
+        return;
+      }  
+      
+    }
 
     if(this.form_principal.invalid || this.form_busqueda.invalid) {    
       Object.values( this.form_busqueda.controls).forEach( control => {
@@ -513,6 +547,22 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       return;
     }    
 
+    if(this.tipo_observacion === 'S') {
+
+    this.proceso_request.Tipo = this.proceso_obtenido.Tipo;
+    this.proceso_request.VehiculoPlaca = this.proceso_obtenido.VehiculoPlaca;
+    this.proceso_request.SolicitanteTipoDI = this.proceso_obtenido.SolicitanteTipoDI;
+    this.proceso_request.SolicitanteNumeroDI = this.proceso_obtenido.SolicitanteNumeroDI;
+    this.proceso_request.SolicitanteNombre = this.proceso_obtenido.SolicitanteNombre;
+    this.proceso_request.SolicitanteCorreo = this.proceso_obtenido.SolicitanteCorreo;
+    this.proceso_request.SolicitanteTelefono = this.proceso_obtenido.SolicitanteTelefono;
+    this.proceso_request.PropietarioTipoDI = this.proceso_obtenido.PropietarioTipoDI;
+    this.proceso_request.PropietarioNumeroDI = this.proceso_obtenido.PropietarioNumeroDI;
+    this.proceso_request.PropietarioNombre = this.proceso_obtenido.PropietarioNombre;    
+    this.proceso_request.IdPch = this.proceso_obtenido.IdPch;
+
+    } else {
+
     this.proceso_request.Tipo = (this.form_principal.value.pgm_chatarreo === 'P' ? 'p' : this.form_principal.value.pgm_chatarreo);
     this.proceso_request.VehiculoPlaca = this.form_busqueda.value.nro_placa;
     this.proceso_request.SolicitanteTipoDI = this.form_principal.value.tipo_documento_repre + '';
@@ -520,13 +570,12 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     this.proceso_request.SolicitanteNombre = this.form_principal.value.nombre_repre;
     this.proceso_request.SolicitanteCorreo = this.form_principal.value.correo_repre;
     this.proceso_request.SolicitanteTelefono = this.form_principal.value.celular_repre + '';
-    this.proceso_request.PropietarioTipoDI = this.vehiculo.Propietarios[0].IdTipoDoc;
+    this.proceso_request.PropietarioTipoDI = this.vehiculo.Propietarios[0].IdTipoDoc || this.obtener_id_tipo_doc();
     this.proceso_request.PropietarioNumeroDI = this.form_principal.getRawValue().nro_documento_prop;
-    this.proceso_request.PropietarioNombre = this.form_principal.getRawValue().nombre_prop; 
-    
+    this.proceso_request.PropietarioNombre = this.form_principal.getRawValue().nombre_prop;     
     this.proceso_request.IdPch = (this.visible_pgm_pch ? this.pgm_pch.CodigoPCH : '');
 
-    console.log(this.proceso_request);
+    }    
 
     this._procesoService.guardar_proceso(this.proceso_request).
     subscribe( (resp_crea: ProcesoResponse) => {
@@ -539,8 +588,8 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
       this._procesoEtapaService.iniciar_etapa(this.ietapa_request)
       .subscribe( (resp_ini: InitEtapaResponse) => {
-      
-        if(this.tipo_observacion === 'O' && !(this.estado_proceso === 'O')) {
+
+        if(this.tipo_observacion === 'O') {
 
           this.observacion_request.IdProceso = resp_crea.IdProceso;
           this.observacion_request.IdEtapa = resp_ini.IdEtapa;
@@ -549,71 +598,90 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
           
           this._procesoEtapaService.observar_etapa(this.observacion_request)
           .subscribe(resp_obs => {
-                this.volverEtapa();
-                return;
-          });
-        }
-
-        for(let i = 0; i < this.archivos_aprobados.length; i++) {
-        
-          this.iarchivo_request = {};
-          this.iarchivo_request.IdProceso = resp_crea.IdProceso;
-          this.iarchivo_request.IdEtapa = resp_ini.IdEtapa;
-          this.iarchivo_request.IdTipoArchivo = this.archivos_aprobados[i].IdTipoArchivo;
-          this.iarchivo_request.Nombre = this.archivos_aprobados[i].archivo_adjunto.name;
-
-          this._archivoService.insertar_archivo(this.iarchivo_request)
-          .subscribe((resp_token: string) => {
-              this._archivoService.cargar_archivo(encodeURIComponent(resp_token), this.archivos_aprobados[i].archivo_adjunto).
-              subscribe(resp => {
-                
-                if( i === (this.archivos_aprobados.length - 1)){
-                  
-                  
-                  this.festapa_request.IdProceso = resp_crea.IdProceso;
-                  this.festapa_request.IdEtapa = resp_ini.IdEtapa;
-                  this.festapa_request.FechaInicio = this.ietapa_request.FechaInicio;
-                  this.festapa_request.FechaFin = this.obtenerFecha_actual();
-                  this.festapa_request.Estado = 'T';
-                  this.festapa_request.Checklist = [];
-          
-                  this._procesoEtapaService.finalizar_etapa(this.festapa_request)
-                  .subscribe( resp => {
-                    this.descargar_informe(resp_ini.IdEtapa, encodeURIComponent(resp_crea.Token), resp_crea.IdProceso);
-                    Swal.fire({
-                      text: 'Evaluación documentaria finalizada',
-                      width: 350,
-                      padding: 15,
-                      timer: 2000,
-                      allowOutsideClick: false,
-                      showConfirmButton: false,
-                      icon: 'success'
-                    }).then( result => {
-                      this.volverEtapa();
-                    });
-                    
-                  })
-
-                }
-
-              },
-              (error: any) => {
                 Swal.fire({
-                  text: 'Ocurrió un problema al cargar el archivo ' + this.archivos_aprobados[i].archivo_adjunto.name,
+                  text: 'Evaluación Observada',
                   width: 350,
                   padding: 15,
                   timer: 2000,
                   allowOutsideClick: false,
                   showConfirmButton: false,
-                  icon: 'error'
+                  icon: 'success'
+                }).then( result => {
+                  this.volverEtapa();
                 });
                 return;
-              },
-              () => {}
-              );
           });
+        } else {
 
-        }            
+          for(let i = 0; i < this.archivos_aprobados.length; i++) {
+        
+            this.iarchivo_request = {};
+            this.iarchivo_request.IdProceso = resp_crea.IdProceso;
+            this.iarchivo_request.IdEtapa = resp_ini.IdEtapa;
+            this.iarchivo_request.IdTipoArchivo = this.archivos_aprobados[i].IdTipoArchivo;
+            this.iarchivo_request.Nombre = this.archivos_aprobados[i].archivo_adjunto.name;
+  
+            this._archivoService.insertar_archivo(this.iarchivo_request)
+            .subscribe((resp_token: string) => {
+                this._archivoService.cargar_archivo(encodeURIComponent(resp_token), this.archivos_aprobados[i].archivo_adjunto).
+                subscribe(resp => {
+                  
+                  if( i === (this.archivos_aprobados.length - 1)){
+                    
+                    
+                    this.festapa_request.IdProceso = resp_crea.IdProceso;
+                    this.festapa_request.IdEtapa = resp_ini.IdEtapa;
+                    this.festapa_request.FechaInicio = this.ietapa_request.FechaInicio;
+                    this.festapa_request.FechaFin = this.obtenerFecha_actual();
+                    this.festapa_request.Estado = 'T';
+                    this.festapa_request.Checklist = [];
+
+                    if(this.tipo_observacion === 'S') {
+                      this.festapa_request.Observacion = this.descripcion_obs
+                    }
+
+                    this._procesoEtapaService.finalizar_etapa(this.festapa_request)
+                    .subscribe( resp => {
+                      this.descargar_informe(resp_ini.IdEtapa, encodeURIComponent(resp_crea.Token), resp_crea.IdProceso);
+                      Swal.fire({
+                        text: 'Evaluación documentaria finalizada',
+                        width: 350,
+                        padding: 15,
+                        timer: 2000,
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        icon: 'success'
+                      }).then( result => {
+                        this.volverEtapa();
+                      });
+                      
+                    })
+  
+                  }
+  
+                },
+                (error: any) => {
+                  Swal.fire({
+                    text: 'Ocurrió un problema al cargar el archivo ' + this.archivos_aprobados[i].archivo_adjunto.name,
+                    width: 350,
+                    padding: 15,
+                    timer: 2000,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    icon: 'error'
+                  });
+                  return;
+                },
+                () => {}
+                );
+            });
+  
+          }  
+
+        }
+
+        
+
       });
 
     },

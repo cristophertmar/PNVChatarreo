@@ -78,7 +78,7 @@
                                         <div class="misma-linea">
                                             <label class="label-sm">Fecha&nbsp;Inicio:</label>
                                             <mat-form-field appearance="outline" style="width: 151px; margin-left: 8px;">
-                                                <input formControlName="fecha_inicio" name="fecha_inicio" type="date" matInput (change)="obtener_fecha_minima()" [max]="fecha_maxima">
+                                                <input formControlName="fecha_inicio" [(ngModel)]="fecha_inicio" name="fecha_inicio" type="date" matInput (change)="obtener_fecha_minima()" [max]="fecha_maxima">
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                         <div class="misma-linea">
                                             <label class="label-sm">Hora&nbsp;Inicio:</label>
                                             <mat-form-field appearance="outline" class="input-small">
-                                                <input formControlName="hora_inicio" name="hora_inicio" type="time" matInput>
+                                                <input formControlName="hora_inicio" [(ngModel)]="hora_inicio" name="hora_inicio" type="time" matInput>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -255,13 +255,13 @@
                             <mat-tab label="Obervaciones">
                                 <div style="height: 190px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
                                     <!-- (change)="obtener_estado_observacion($event.value)" -->
-                                    <mat-radio-group color="warn" [value]="tipo_observacion">
-                                        <mat-radio-button value="D">Desactivado</mat-radio-button>
+                                    <mat-radio-group color="warn" (change)="obtener_estado_observacion($event.value)" [value]="tipo_observacion">
+                                        <mat-radio-button value="P" *ngIf="estado_proceso != 'O'">Desactivado</mat-radio-button>
                                         <mat-radio-button value="O">Observado</mat-radio-button>
-                                        <mat-radio-button value="S">Subsanado</mat-radio-button>
+                                        <mat-radio-button value="S" *ngIf="estado_proceso === 'O'">Subsanado</mat-radio-button>
                                     </mat-radio-group>
                                     <mat-form-field appearance="outline" class="w100p">
-                                        <textarea id="obs_desc" matInput rows="7" [disabled]='deshabilitar_obs' formControlName="descripcion_obs" name="descripcion_obs" [value]="descripcion_obs"></textarea>
+                                        <textarea id="obs_desc" matInput rows="7" [readonly]='deshabilitar_obs' formControlName="descripcion_obs" name="descripcion_obs" [(ngModel)]="descripcion_obs"></textarea>
                                     </mat-form-field>
                                 </div>
                             </mat-tab>

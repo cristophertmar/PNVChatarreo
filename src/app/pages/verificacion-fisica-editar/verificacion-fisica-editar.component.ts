@@ -54,6 +54,9 @@ export class VerificacionFisicaEditarComponent implements OnInit {
   hora_minima: string;
   fecha_fin: string;
 
+  fecha_inicio: string = '';
+  hora_inicio: string = '';
+
   constructor(
     public gallery: Gallery,
     public _dialog: MatDialog,
@@ -91,6 +94,12 @@ export class VerificacionFisicaEditarComponent implements OnInit {
     this.withCustomGalleryConfig(); // Load item into different lightbox instance with custom gallery config
   }
 
+  setear_fecha_hora_inicio(fecha: string) {
+    this.fecha_inicio = this.convertir_fecha(fecha);
+    this.hora_inicio = this.convertir_hora(fecha);
+    this.fecha_fin = this.fecha_inicio;
+  }
+
   obtener_fecha_maxima() {
     const today = new Date();
     this.fecha_maxima = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
@@ -120,15 +129,21 @@ export class VerificacionFisicaEditarComponent implements OnInit {
   obtener_proceso_token(token: string) {
     this._procesoService.obtener_proceso_token(encodeURIComponent(token))
     .subscribe( (resp: Proceso) => {
+      console.table(resp);
       this.proceso_obtenido = resp;
       this.archivos_etapa = this.proceso_obtenido.Etapa.TipoArchivos;
       this.estado_proceso = this.proceso_obtenido.ProcesoEtapa.Estado;
       this.tipo_observacion ='D';
-      /* this.obtener_estado_observacion(this.estado_proceso || 'D'); */
+      this.obtener_estado_observacion(this.estado_proceso || 'D');
       this.checklist = this.proceso_obtenido.ProcesoEtapa.Checklist;
       this.setear_formulario(this.proceso_obtenido);
       this.deshabilitar_inputs();
       this.setImagenes();
+
+      if(resp.ProcesoEtapa.Estado === 'O') {
+        this.setear_fecha_hora_inicio(resp.ProcesoEtapa.FechaInicio);
+      }
+      
     });
   }
 
@@ -151,61 +166,127 @@ export class VerificacionFisicaEditarComponent implements OnInit {
     })
   }
 
-  /* obtener_estado_observacion(tipo_observacion: string) {
-      this.tipo_observacion = tipo_observacion;
-      if((this.tipo_observacion === 'O') && (this.estado_proceso === 'O')) {
-        this.deshabilitar_obs = true;
-        this.descripcion_obs = this.proceso_obtenido.ProcesoEtapa.Observacion;
-        return;
-      }
-      this.deshabilitar_obs = false;
-      this.descripcion_obs = '';
-  } */
-
   guardar_etapa() {
+
+    console.log(this.estado_proceso);
+    const obs_comentada = this.form_etapa.value.descripcion_obs || ''; 
+
+    
 
     const fecha_inicio = this.form_etapa.get('fecha_inicio').value;
     const fecha_fin = this.form_etapa.get('fecha_fin').value;
     const hora_inicio = this.form_etapa.get('hora_inicio').value;
     const hora_fin = this.form_etapa.get('hora_fin').value;
 
+    if(this.estado_proceso === 'O') {
 
-    if(this.form_etapa.invalid) {
-      Swal.fire({
-        text: 'Debe de llenar correctamente el formulario',
-        width: 350,
-        padding: 15,
-        timer: 2000,
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        icon: 'error'
-      })
-      return;
-    } else if(fecha_inicio === fecha_fin) {
-      if(hora_fin < hora_inicio) {
+      if(this.tipo_observacion != 'S') {
         Swal.fire({
-          text: 'La fecha y hora fin no debe ser menor a la inicial',
+          text: 'Debe de subsanar la etapa',
           width: 350,
           padding: 15,
-          timer: 3000,
+          timer: 2000,
           allowOutsideClick: false,
           showConfirmButton: false,
           icon: 'error'
-        });
+        });  
+        return;
+      } else if(this.descripcion_obs.length === 0) {
+        Swal.fire({
+          text: 'Debe colocar un comentario de subsanación',
+          width: 350,
+          padding: 15,
+          timer: 2000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'error'
+        });  
+        return;
+      }  
+      
+    }
+
+    if(this.tipo_observacion === 'O') {
+
+      if(obs_comentada.length === 0) {
+        Swal.fire({
+          text: 'Debe colocar una observación',
+          width: 350,
+          padding: 15,
+          timer: 2000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'error'
+        });  
+        return;
+      } else if (!fecha_inicio) {
+        Swal.fire({
+          text: 'Seleccione una fecha de inicio',
+          width: 350,
+          padding: 15,
+          timer: 2000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'error'
+        });  
+        return;
+      } else if (!hora_inicio) {
+        Swal.fire({
+          text: 'Seleccione una hora de inicio',
+          width: 350,
+          padding: 15,
+          timer: 2000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'error'
+        });  
         return;
       }
-  } else if(this.checklist_request.length !== this.checklist.length) {
-      Swal.fire({
-        text: 'Debe de seleccionar todos los items del Checklist',
-        width: 350,
-        padding: 15,
-        timer: 2000,
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        icon: 'error'
-      })
-      return;
+
+    } else {
+
+      if(this.form_etapa.invalid) {
+        Swal.fire({
+          text: 'Debe de llenar correctamente el formulario',
+          width: 350,
+          padding: 15,
+          timer: 2000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'error'
+        })
+        return;
+      }
+       if(fecha_inicio === fecha_fin) {
+        if(hora_fin < hora_inicio) {
+          Swal.fire({
+            text: 'La fecha y hora fin no debe ser menor a la inicial',
+            width: 350,
+            padding: 15,
+            timer: 3000,
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            icon: 'error'
+          });
+          return;
+        }
+      } 
+       if(this.checklist_request.length !== this.checklist.length) {
+        Swal.fire({
+          text: 'Debe de seleccionar todos los items del Checklist',
+          width: 350,
+          padding: 15,
+          timer: 2000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'error'
+        })
+        return;
+      } 
+
     }
+
+    if(this.tipo_observacion === 'O') {
 
     // Request Object Iniciar Etapa
     this.ietapa.IdProceso = this.proceso_obtenido.IdProceso;
@@ -215,19 +296,6 @@ export class VerificacionFisicaEditarComponent implements OnInit {
 
     this._procesoEtapaService.iniciar_etapa(this.ietapa).
     subscribe(resp_ietapa => {
-      if(this.tipo_observacion === 'O' && !(this.estado_proceso === 'O')) {
-
-        this.observacion_request.IdProceso = this.proceso_obtenido.IdProceso;
-        this.observacion_request.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
-        this.observacion_request.Observacion = (<HTMLInputElement>document.getElementById('obs_desc')).value;
-        this.observacion_request.Estado = this.tipo_observacion;
-        
-        this._procesoEtapaService.observar_etapa(this.observacion_request)
-        .subscribe(resp_obs => {
-            this._router.navigate(['/etapa/verificacion-fisica']);
-            return;
-        });
-      }
 
       for(let i = 0; i < this.archivos_aprobados.length; i++) {
         this.iarchivo_request = {};
@@ -255,9 +323,103 @@ export class VerificacionFisicaEditarComponent implements OnInit {
                 return;
               });
           });
-      }
+      }            
+
+    });
+
+      this.observacion_request.IdProceso = this.proceso_obtenido.IdProceso;
+      this.observacion_request.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
+      this.observacion_request.Observacion = (<HTMLInputElement>document.getElementById('obs_desc')).value;
+      this.observacion_request.Estado = this.tipo_observacion;
+      
+      this._procesoEtapaService.observar_etapa(this.observacion_request)
+      .subscribe(resp_obs => {
+        Swal.fire({
+          text: 'Verificación Observada',
+          width: 350,
+          padding: 15,
+          timer: 3000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'success'
+        }).then( result => {
+          this.volverEtapa();
+        });
+          return;
+      });
+    } else if (this.tipo_observacion === 'S') {
 
       // Request Object Finalizar Etapa
+      this.fetapa.IdProceso = this.proceso_obtenido.IdProceso;
+      this.fetapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
+      this.fetapa.ChatarraPeso = Number(this.proceso_obtenido.ProcesoEtapa.VehiculoPeso);
+      this.fetapa.VehiculoPeso = Number(this.form_etapa.value.peso_real);
+      this.fetapa.FechaInicio =  this.proceso_obtenido.ProcesoEtapa.FechaInicio;
+      this.fetapa.FechaFin = this.obtener_fecha_final();
+      this.fetapa.Estado = 'T';
+      this.fetapa.Checklist = this.checklist_request;
+      this.fetapa.Observacion = this.descripcion_obs
+
+      this._procesoEtapaService.finalizar_etapa(this.fetapa).
+      subscribe( resp_fetapa => {
+        this.descargar_informe();
+        Swal.fire({
+          text: 'Verificación Física finalizada',
+          width: 350,
+          padding: 15,
+          timer: 3000,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          icon: 'success'
+        }).then( result => {
+          this.volverEtapa();
+        });
+
+        return
+        
+      });
+
+    }   
+    else {
+
+    // Request Object Iniciar Etapa
+    this.ietapa.IdProceso = this.proceso_obtenido.IdProceso;
+    this.ietapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
+    this.ietapa.FechaInicio = this.obtener_fecha_inicial();
+    this.ietapa.Estado = 'A';
+
+    this._procesoEtapaService.iniciar_etapa(this.ietapa).
+    subscribe(resp_ietapa => {
+
+      for(let i = 0; i < this.archivos_aprobados.length; i++) {
+        this.iarchivo_request = {};
+        this.iarchivo_request.IdProceso = this.proceso_obtenido.IdProceso;
+        this.iarchivo_request.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
+        this.iarchivo_request.IdTipoArchivo = this.archivos_aprobados[i].IdTipoArchivo;
+        this.iarchivo_request.Nombre = this.archivos_aprobados[i].archivo_adjunto.name;
+
+        this._archivoService.insertar_archivo(this.iarchivo_request)
+          .subscribe((resp_token: string) => {
+            this._archivoService.cargar_archivo(encodeURIComponent(resp_token), this.archivos_aprobados[i].archivo_adjunto)
+              .subscribe(resp => {
+                console.log('archivo cargado...');
+              },
+              (error: any) => {
+                Swal.fire({
+                  text: 'Ocurrió un problema al cargar el archivo ' + this.archivos_aprobados[i].archivo_adjunto.name,
+                  width: 350,
+                  padding: 15,
+                  timer: 2000,
+                  allowOutsideClick: false,
+                  showConfirmButton: false,
+                  icon: 'error'
+                });
+                return;
+              });
+          });
+        }          
+        
+        // Request Object Finalizar Etapa
       this.fetapa.IdProceso = this.proceso_obtenido.IdProceso;
       this.fetapa.IdEtapa = this.proceso_obtenido.Etapa.IdEtapa;
       this.fetapa.ChatarraPeso = Number(this.proceso_obtenido.ProcesoEtapa.VehiculoPeso);
@@ -286,15 +448,52 @@ export class VerificacionFisicaEditarComponent implements OnInit {
 
     });
 
+    }   
+
   }
+
+  obtener_estado_observacion(tipo_observacion: string) {
+    this.tipo_observacion = tipo_observacion;
+
+    if(tipo_observacion === 'O') {
+
+        this.form_etapa.get('fecha_fin').clearValidators();
+        this.form_etapa.get('hora_fin').clearValidators();
+        this.form_etapa.get('peso_estimado').clearValidators();
+        this.form_etapa.get('peso_real').clearValidators();
+
+        this.form_etapa.get('fecha_fin').updateValueAndValidity();
+        this.form_etapa.get('hora_fin').updateValueAndValidity();
+        this.form_etapa.get('peso_estimado').updateValueAndValidity();
+        this.form_etapa.get('peso_real').updateValueAndValidity();
+    } else {
+        this.form_etapa.get('fecha_fin').setValidators([Validators.required]);
+        this.form_etapa.get('hora_fin').setValidators([Validators.required]);
+        this.form_etapa.get('peso_estimado').setValidators([Validators.required]);
+        this.form_etapa.get('peso_real').setValidators([Validators.required]);
+
+        this.form_etapa.get('fecha_fin').updateValueAndValidity();
+        this.form_etapa.get('hora_fin').updateValueAndValidity();
+        this.form_etapa.get('peso_estimado').updateValueAndValidity();
+        this.form_etapa.get('peso_real').updateValueAndValidity();
+    }
+
+    if((this.tipo_observacion === 'O') && (this.estado_proceso === 'O')) {
+      this.deshabilitar_obs = true;
+      this.descripcion_obs = this.proceso_obtenido.ProcesoEtapa.Observacion;
+      return;
+    }
+    this.deshabilitar_obs = false;
+    this.descripcion_obs = '';      
+}
 
   volverEtapa(){
     this._router.navigate(['/etapa/verificacion-fisica']);
   }
 
   obtener_fecha_inicial() {
-    const fecha = this.form_etapa.value.fecha_inicio;
-    const hora = this.form_etapa.value.hora_inicio;
+    const fecha = this.form_etapa.get('fecha_inicio').value;
+    const hora = this.form_etapa.get('hora_inicio').value;
     return fecha + 'T' + hora + ':00.015Z'
   }
 
@@ -356,8 +555,13 @@ export class VerificacionFisicaEditarComponent implements OnInit {
   convertir_fecha(fecha_covertir: string) {
     let fechaFormato = fecha_covertir.split("T",2);
     let fecha = fechaFormato[0];
-    let hora = fechaFormato[1];
     return fecha;
+  }
+
+  convertir_hora(fecha_covertir: string) {
+    let fechaFormato = fecha_covertir.split("T",2);
+    let hora = fechaFormato[1];
+    return hora;
   }
 
   obtener_tipo_di(id_tipo_di: string) {
