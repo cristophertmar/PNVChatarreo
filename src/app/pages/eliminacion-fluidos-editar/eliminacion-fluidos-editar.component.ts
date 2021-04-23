@@ -19,6 +19,7 @@ import { IArchivoRequest } from 'app/models/iarchivoRequest.model';
 import { ObservacionRequest } from 'app/models/observacionRequest.model';
 
 import Swal from 'sweetalert2';
+import { PchService } from '../../services/pch.service';
 
 @Component({
   selector: 'app-eliminacion-fluidos-editar',
@@ -50,6 +51,8 @@ export class EliminacionFluidosEditarComponent implements OnInit {
   hora_minima: string;
   fecha_fin: string;
 
+  pgm_chatarreo: string;
+
   constructor(
     public gallery: Gallery,
     public _dialog: MatDialog,
@@ -57,7 +60,8 @@ export class EliminacionFluidosEditarComponent implements OnInit {
     private _procesoService: ProcesoService,
     private _archivoService: ArchivoService,
     private _procesoEtapaService : ProcesoEtapaService,
-    private _router: Router
+    private _router: Router,
+    private _pchService: PchService
   ) {
     this.proceso_token = '';
     this.estado_proceso = '';
@@ -178,7 +182,17 @@ export class EliminacionFluidosEditarComponent implements OnInit {
 
       // Datos del estado de la etapa
       descripcion_obs: this.descripcion_obs
-    })
+    });
+
+    if(proceso.Tipo === 'p') {
+      this._pchService.getSeleccionar(proceso.IdPch)
+      .subscribe((resp: any) =>  {
+          /* this.pgm_chatarreo = resp.TipoPCH; */
+          this.pgm_chatarreo = resp.TipoPCH;
+          console.log(resp.TipoPCH)
+      })
+    }
+
   }
 
   convertir_fecha(fecha_covertir: string) {

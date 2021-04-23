@@ -11,6 +11,7 @@ import { FinEtapaRequest } from '../../models/fEtapaRequest.model';
 import Swal from 'sweetalert2';
 import { ArchivoService } from 'app/services/archivo.service';
 import { IArchivoRequest } from 'app/models/iarchivoRequest.model';
+import { PchService } from 'app/services/pch.service';
 
 @Component({
   selector: 'app-emision-cdv-editar',
@@ -30,6 +31,8 @@ export class EmisionCdvEditarComponent implements OnInit {
 
   fecha_maxima: string = '';
 
+  pgm_chatarreo: string;
+
   @ViewChild('select_file_cdv') select_file_cdv: ElementRef;
   
   constructor(
@@ -37,6 +40,7 @@ export class EmisionCdvEditarComponent implements OnInit {
     private _procesoService: ProcesoService,
     private _procesoEtapaService : ProcesoEtapaService,
     private _router: Router,
+    private _pchService: PchService,
     private _archivoService: ArchivoService,
     public gallery: Gallery) {
       this.token = '';
@@ -99,7 +103,17 @@ export class EmisionCdvEditarComponent implements OnInit {
       hora_inicio: '',
       informe: null,
       observacion: '',
-    })
+    });
+
+    if(proceso.Tipo === 'p') {
+      this._pchService.getSeleccionar(proceso.IdPch)
+      .subscribe((resp: any) =>  {
+          /* this.pgm_chatarreo = resp.TipoPCH; */
+          this.pgm_chatarreo = resp.TipoPCH;
+          console.log(resp.TipoPCH)
+      })
+    }
+    
   }
 
   convertir_fecha(fecha_covertir: string) {

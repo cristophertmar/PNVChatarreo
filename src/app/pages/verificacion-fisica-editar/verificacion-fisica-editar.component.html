@@ -35,7 +35,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="staticEmail">Tipo&nbsp;chatarreo:</label>
                                             <div style="margin-top: -17px;">
@@ -46,6 +46,16 @@
                                                         <mat-option value="V">Voluntario</mat-option>
                                                         <mat-option value="p">PCH</mat-option>
                                                     </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="pgm_chatarreo" class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="staticEmail">Pgm chatarreo:</label>
+                                            <div style="margin-top: -17px;">
+                                                <mat-form-field appearance="outline" class="w100p">
+                                                    <input [value]="pgm_chatarreo" type="text" matInput disabled>
                                                 </mat-form-field>
                                             </div>
                                         </div>
