@@ -13,6 +13,52 @@
                                 Datos de la solicitud
                             </legend>
                             <div class="container-fielset">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="staticEmail">Nº Solicitud:</label>
+                                            <div style="margin-top: -17px;">
+                                                <mat-form-field appearance="outline" class="w100p">
+                                                    <input formControlName="nro_solicitud" name="nro_solicitud" type="text" matInput>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="staticEmail">Fecha solicitud:</label>
+                                            <div style="margin-top: -17px;">
+                                                <mat-form-field appearance="outline" class="w100p">
+                                                    <input formControlName="fecha_solicitud" name="fecha_solicitud" type="date" matInput>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="staticEmail">Tipo&nbsp;chatarreo:</label>
+                                            <div style="margin-top: -17px;">
+                                                <mat-form-field appearance="outline" class="w100p">
+                                                    <mat-select formControlName="pgm_chatarreo" name="pgm_chatarreo">
+                                                        <mat-option value="">(Seleccionar)</mat-option>
+                                                        <mat-option value="O">Obligatorio</mat-option>
+                                                        <mat-option value="V">Voluntario</mat-option>
+                                                        <mat-option value="p">PCH</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- <div class="card">
+                        <fieldset>
+                            <legend>
+                                Datos de la solicitud
+                            </legend>
+                            <div class="container-fielset">
                                 <div class="misma-linea">
                                     <div>
                                         <div class="misma-linea">
@@ -62,7 +108,7 @@
                                 </div>
                             </div>
                         </fieldset>
-                    </div>
+                    </div> -->
                     <!-- <br>
                     <div class="alert alert-danger" role="alert">
                         La presente etapa de compactación de las partes del vehículo se realiza de conformidad con lo dispuesto en el Decreto Legislativo N° 1278 y su Reglamento aprobado por Decreto Supremo N° 014-2017-MINAM.
@@ -93,7 +139,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br>
+                                <br><br>
                                 <input #select_file_cdv type="file" formControlName="informe" name="informe" (change)="seleccionImagen($event.target.files[0])">
 
                                 <div style="padding-left: 5px; margin-bottom: 5px; margin-top: 25px;" class="ocultar">
@@ -120,12 +166,11 @@
 
                                 <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 80px; margin-bottom: 50px;">
                                     <div class="row">
-
                                         <div class="col-md-3">
                                             <button type="button" (click)="descargar_cdv()" class="btn-block" mat-raised-button color="primary">Descargar CDV</button>
                                         </div>
                                         <div class="col-md-3"></div>
-                                        <div class="col-md-3" style="margin-right: -20px;">
+                                        <div class="col-md-3">
                                             <button type="button" (click)="volverEtapa()" class="btn-block" mat-stroked-button color="warn">Cancelar</button>
                                         </div>
                                         <div class="col-md-3">
@@ -146,7 +191,7 @@
                         <table class="table table-sm table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="text-center bg-vehiculo" colspan="4" scope="col">
+                                    <th class="text-center bg-vehiculo" colspan="2" scope="col">
                                         Datos del vehículo
                                     </th>
                                 </tr>
@@ -155,21 +200,26 @@
                                 <tr>
                                     <th>Placa</th>
                                     <td> {{ proceso_obtenido.VehiculoPlaca }} </td>
+                                </tr>
+                                <tr>
                                     <th>Nº Chasis</th>
                                     <td> {{ proceso_obtenido.VehiculoNroChasis }} </td>
                                 </tr>
                                 <tr>
                                     <th>Nº Motor</th>
                                     <td> {{ proceso_obtenido.VehiculoNroMotor }} </td>
+                                </tr>
+                                <tr>
                                     <th>VIN</th>
                                     <td> {{ proceso_obtenido.VehiculoVIN }} </td>
                                 </tr>
                                 <tr>
                                     <th>Categoría</th>
                                     <td> {{ proceso_obtenido.VehiculoCategoria }} </td>
+                                </tr>
+                                <tr>
                                     <th>Marca</th>
                                     <td> {{ proceso_obtenido.VehiculoMarca }} </td>
-
                                 </tr>
                                 <tr>
                                     <th>Modelo</th>
@@ -178,9 +228,10 @@
                                 <tr>
                                     <th>Año</th>
                                     <td> {{ proceso_obtenido.VehiculoAnoFabricacion }} </td>
+                                </tr>
+                                <tr>
                                     <th>Combustible</th>
                                     <td> {{ proceso_obtenido.VehiculoCombustible }} </td>
-
                                 </tr>
                             </tbody>
                         </table>

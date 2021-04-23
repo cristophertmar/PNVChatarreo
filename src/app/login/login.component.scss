@@ -2,18 +2,26 @@
     background-color: #F7F7F8 !important;
     height: 100vh;
     width: 100%;
-    position: relative;
+    padding-top: 5vh;
+    overflow: hidden;
 }
 
-.card-user {
+
+/* .card-user {
     width: 500px;
     height: 700px;
     position: absolute;
     top: 115px;
-    /* left: 0; */
     bottom: 0;
     right: 50px;
-    /* margin: auto; */
+}
+ */
+
+.card-user {
+    width: 500px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .button-hide {
@@ -23,7 +31,8 @@
 }
 
 .form-login {
-    padding: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 .card {

@@ -37,7 +37,7 @@
     </div>
     <div class="container-fluid">
         <div class="card">
-            <div *ngIf="pcos && !(pcos.length > 0)" style="width: 400px; margin: auto; text-align: center; padding-top: 130px;">
+            <div *ngIf="pcos && !(pcos.length > 0)" style="width: 400px; margin: auto; text-align: center; padding-top: 40px;">
                 <img width="300px" src="/assets/img/icons-form/no-data.svg">
                 <h3 style="margin-top: -20px;">No se encontraron resultados</h3>
             </div>
@@ -52,6 +52,8 @@
                             <th>Estado</th>
                             <th>Sustento</th>
                             <th></th>
+                            <th *ngIf="_usuarioService.esaprobador()"></th>
+                            <th *ngIf="_usuarioService.esaprobador()"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,10 +73,14 @@
                                 <button mat-mini-fab color="warn">
                                     <mat-icon (click)="abrirModal_mantenimiento(pco)">search</mat-icon>
                                 </button>
-                                <button *ngIf="_usuarioService.esaprobador()" mat-mini-fab color="basic" style="margin-left: 5px;">
+                            </td>
+                            <td *ngIf="_usuarioService.esaprobador()">
+                                <button mat-mini-fab color="basic" style="margin-left: 5px;">
                                     <mat-icon (click)="abrirModal_aprobar(pco)">done</mat-icon>
                                 </button>
-                                <button *ngIf="_usuarioService.esaprobador()" mat-mini-fab color="primary" style="margin-left: 5px;">
+                            </td>
+                            <td *ngIf="_usuarioService.esaprobador()">
+                                <button mat-mini-fab color="primary" style="margin-left: 5px;">
                                     <mat-icon (click)="abrirModal_rechazar(pco)">clear</mat-icon>
                                 </button>
                             </td>

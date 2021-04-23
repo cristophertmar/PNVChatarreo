@@ -14,15 +14,59 @@
         <div class="col-md-4">
             <div *ngIf="proceso_obtenido" class="misma-linea" style="margin-top: -20px;">
                 <label style="line-height: 5; padding-left: 20px; font-size: 15px; margin-right: 10px;">Nº&nbsp;Solicitud:</label>
-                <h3 style="color: #D44650; font-weight: 600;"> {{ proceso_obtenido.Correlativo }} </h3>
+                <h3 class="correlativoh3" style="color: #D44650; font-weight: 600;"> {{ proceso_obtenido.Correlativo }} </h3>
             </div>
         </div>
     </div>
     <form class="container-fluid" autocomplete="off" [formGroup]="form_principal" (ngSubmit)="guardar_proceso()">
         <div class="row">
             <div class="col-md-8">
-                <!-- Datos del Propietario -->
+
                 <div class="card">
+                    <fieldset>
+                        <legend>
+                            Datos del propietario
+                            <mat-slide-toggle *ngIf="vehiculo" (change)="mismo_representante($event.checked)" color="warn" style="margin-left: 20px;">¿representante?</mat-slide-toggle>
+                        </legend>
+                        <div class="container-fielset">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Tipo documento:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input id="tipo_documento_prop" formControlName="tipo_documento_prop" name="tipo_documento_prop" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Nº Documento:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="nro_documento_prop" name="nro_documento_prop" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Propietario:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="nombre_prop" name="nombre_prop" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Datos del Propietario -->
+                <!-- <div class="card">
                     <fieldset>
                         <legend>
                             Datos del propietario
@@ -58,9 +102,103 @@
 
                         </div>
                     </fieldset>
-                </div>
+                </div> -->
+
                 <!-- Datos del Vehículo -->
                 <div class="card">
+                    <fieldset>
+                        <legend>
+                            Datos del vehículo
+                        </legend>
+                        <div class="container-fielset">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Nº Chasis:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="nro_chasis_veh" name="nro_chasis_veh" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Nº Motor:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="nro_motor_veh" name="nro_motor_veh" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail">VIN:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="vin_veh" name="vin_veh" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Año fabricación:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="anio_veh" name="anio_veh" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" style="margin-top: -8px !important">
+                                        <label for="staticEmail">Marca:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="marca_veh" name="marca_veh" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" style="margin-top: -8px !important">
+                                        <label for="staticEmail">Modelo:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="modelo_veh" name="modelo_veh" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" style="margin-top: -8px !important">
+                                        <label for="staticEmail">Combustible:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="combustible_veh" name="combustible_veh" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" style="margin-top: -8px !important">
+                                        <label for="staticEmail">Categoría:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="categoria_veh" name="categoria_veh" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Datos del Vehículo -->
+                <!-- <div class="card">
                     <fieldset>
                         <legend>
                             Datos del vehículo
@@ -141,10 +279,78 @@
 
                         </div>
                     </fieldset>
-                </div>
+                </div> -->
 
                 <!-- Datos del Representante -->
+
                 <div class="card">
+                    <fieldset>
+                        <legend>
+                            Datos del representante
+                        </legend>
+                        <div class="container-fielset">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Tipo documento:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <mat-select formControlName="tipo_documento_repre" name="tipo_documento_repre" type="text">
+                                                    <mat-option value="00">(Seleccionar)</mat-option>
+                                                    <mat-option value="01">Documento Nacional de Identidad</mat-option>
+                                                    <mat-option value="06">Carnet Extranjería</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Nº Documento:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input *ngIf="!proceso_obtenido" formControlName="nro_documento_repre" name="nro_documento_repre" matInput type="number" [maxlength]="long_nro_documento" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                                                <input *ngIf="proceso_obtenido" type="text" formControlName="nro_documento_repre2" name="nro_documento_repre2" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Representante:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="nombre_repre" name="nombre_repre" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" style="margin-top: -8px !important">
+                                        <label for="staticEmail">Correo:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="correo_repre" name="correo_repre" type="text" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" style="margin-top: -8px !important">
+                                        <label for="staticEmail">Celular:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="celular_repre" min="900000000" name="celular_repre" type="number" maxlength="9" matInput oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- <div class="card">
                     <fieldset>
                         <legend>
                             Datos del representante
@@ -203,10 +409,64 @@
                             </div>
                         </div>
                     </fieldset>
-                </div>
+                </div> -->
 
                 <!-- Datos de la solicitud -->
+
                 <div class="card">
+                    <fieldset>
+                        <legend>
+                            Datos de la solicitud
+                        </legend>
+                        <div class="container-fielset">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Fecha solicitud:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input formControlName="fecha_solicitud" name="fecha_solicitud" type="date" [max]="fecha_maxima" matInput>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail">Tipo chatarreo:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <mat-select formControlName="pgm_chatarreo" name="pgm_chatarreo">
+                                                    <mat-option value="O">Obligatorio</mat-option>
+                                                    <mat-option value="V">Voluntario</mat-option>
+                                                    <mat-option value="P">PCH</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="visible_pgm_pch && (estado_proceso != 'O')" class="col-md-1">
+                                    <div class="form-group" style="padding-top: 28px; text-align: center;">
+                                        <button (click)="abrirModal_seleccionPCH()" type="button" mat-mini-fab color="basic" style="margin-top: -3px;">
+                                            <mat-icon>more_vert</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div *ngIf="pgm_pch || ((estado_proceso === 'O') && proceso_obtenido.Tipo === 'P')" class="form-group">
+                                        <label for="staticEmail">Programa&nbsp;de&nbsp;chatarreo:</label>
+                                        <div style="margin-top: -17px;">
+                                            <mat-form-field appearance="outline" class="w100p">
+                                                <input type="text" matInput [value]="tipo_pch" [readonly]="true" [disabled]="estado_proceso === 'O'">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- <div class="card">
                     <fieldset>
                         <legend>
                             Datos de la solicitud
@@ -222,15 +482,6 @@
                                     </div>
                                 </div>
                                 <div class="ml-50">
-                                    <!-- <div class="misma-linea">
-                                        <label>Pgm. Chatarreo:</label>
-                                        <mat-form-field appearance="outline" style="width: 311px;">
-                                            <input formControlName="pgm_chatarreo" name="pgm_chatarreo" type="text" matInput>
-                                        </mat-form-field>
-                                        <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -3px;">
-                                            <mat-icon>more_vert</mat-icon>
-                                        </button>
-                                    </div> -->
                                     <div class="misma-linea">
                                         <label>Tipo Chatarreo:</label>
                                         <mat-form-field appearance="outline" style="width: 311px;">
@@ -246,7 +497,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- *ngIf="visible_pgm_pch" -->
                             <div *ngIf="pgm_pch || ((estado_proceso === 'O') && proceso_obtenido.Tipo === 'P')" class="misma-linea">
                                 <div>
                                     <div class="misma-linea">
@@ -256,23 +506,13 @@
                                         </mat-form-field>
                                     </div>
                                 </div>
-                                <!-- <div class="ml-50">
-                                    <div class="misma-linea">
-                                        <mat-form-field appearance="outline" style="width: 201px;">
-                                            <input formControlName="distrito_solicitud" name="distrito_solicitud" type="text" matInput>
-                                        </mat-form-field>
-                                        <button mat-mini-fab color="basic" style="margin-left: 10px; margin-top: -1px;">
-                                            <mat-icon>dialpad</mat-icon>
-                                        </button>
-                                    </div>
-                                </div> -->
                             </div>
 
 
 
                         </div>
                     </fieldset>
-                </div>
+                </div> -->
 
             </div>
             <div class="col-md-4">
@@ -280,24 +520,21 @@
                 <div class="card">
                     <fieldset>
                         <legend>
-                            Documentación requerida <small class="text-danger">(*)</small>
+                            Documentación&nbsp;requerida&nbsp;<small class="text-danger">(*)</small>
                         </legend>
                         <div class="container-fielset">
-                            <div style="height: 270px; overflow: auto;">
-                                <!-- <h5 style="margin-top: -2px;" class="text-danger">Obligatorio (*)</h5> -->
+                            <div style="height: 270px; overflow: auto; margin-left: -25px; margin-top: 20px;">
                                 <div *ngIf="archivos_etapa">
                                     <div *ngFor="let archivo of archivos_etapa; let i = index" class="misma-linea">
                                         <div *ngIf="archivo.Subtipo === 'A'">
-                                            <button *ngIf="archivo.archivo_adjunto" type="button" mat-icon-button style="margin-top: -7px; position: absolute;">
+                                            <button *ngIf="archivo.archivo_adjunto" type="button" mat-icon-button style="margin-top: -10px; margin-right: -40px;">
                                                 <mat-icon (click)="quitar_archivo(i)" style="font-size: 23px;" color="warn">highlight_off</mat-icon>
                                             </button>
-                                            <button *ngIf="!archivo.archivo_adjunto" type="button" mat-icon-button style="margin-top: -7px; position: absolute;">
+                                            <button *ngIf="!archivo.archivo_adjunto" type="button" mat-icon-button style="margin-top: -10px; margin-right: -40px;">
                                                 <mat-icon (click)="adjuntar_archivo(archivo)" style="font-size: 23px;" color="warn">add_circle</mat-icon>
                                             </button>
-
-
-                                            <mat-checkbox style="margin-left: 35px;" color="warn" [checked]="archivo.archivo_adjunto">
-                                                <span *ngIf="archivo.Obligatorio === 'S'" class="text-danger">(*)</span> {{ (archivo.Descripcion.length>50)? (archivo.Descripcion | slice:0:50)+'..':(archivo.Descripcion) }}
+                                            <mat-checkbox style="margin-left: 35px;" color="warn" [checked]="archivo.archivo_adjunto" disabled>
+                                                <abbr [title]="archivo.Descripcion"><span title="olaa" *ngIf="archivo.Obligatorio === 'S'" class="text-danger">(*)</span> {{ (archivo.Descripcion.length>40)? (archivo.Descripcion | slice:0:40)+'..':(archivo.Descripcion) }}</abbr>
                                             </mat-checkbox>
 
                                         </div>
@@ -343,12 +580,13 @@
                         </mat-tab>
                     </mat-tab-group>
                 </div>
-                <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 20px;">
+                <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 20px; margin-bottom: 15px;">
                     <div class="row">
-                        <div class="col-md-6" style="margin-right: -20px;">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-5">
                             <button type="button" (click)="volverEtapa()" class="btn-block" mat-stroked-button color="warn">Cancelar</button>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <button type="submit" class="btn-block" mat-raised-button color="warn">Guardar</button>
                         </div>
                     </div>

@@ -7,7 +7,55 @@
                 <div class="col-md-8">
 
                     <!-- Datos de la solicitud -->
+
                     <div class="card">
+                        <fieldset>
+                            <legend>
+                                Datos de la solicitud
+                            </legend>
+                            <div class="container-fielset">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="staticEmail">Nº Solicitud:</label>
+                                            <div style="margin-top: -17px;">
+                                                <mat-form-field appearance="outline" class="w100p">
+                                                    <input formControlName="nro_solicitud" name="nro_solicitud" type="text" matInput>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="staticEmail">Fecha solicitud:</label>
+                                            <div style="margin-top: -17px;">
+                                                <mat-form-field appearance="outline" class="w100p">
+                                                    <input formControlName="fecha_solicitud" name="fecha_solicitud" type="date" matInput>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="staticEmail">Tipo&nbsp;chatarreo:</label>
+                                            <div style="margin-top: -17px;">
+                                                <mat-form-field appearance="outline" class="w100p">
+                                                    <mat-select formControlName="pgm_chatarreo" name="pgm_chatarreo">
+                                                        <mat-option value="">(Seleccionar)</mat-option>
+                                                        <mat-option value="O">Obligatorio</mat-option>
+                                                        <mat-option value="V">Voluntario</mat-option>
+                                                        <mat-option value="p">PCH</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- <div class="card">
                         <fieldset>
                             <legend>
                                 Datos de la solicitud
@@ -65,14 +113,14 @@
 
                             </div>
                         </fieldset>
-                    </div>
+                    </div> -->
                     <!-- Verificación Física -->
                     <div class="card">
                         <fieldset>
                             <legend>
                                 Verificación física
                             </legend>
-                            <div class="container-fielset">
+                            <div class="container-fielset" style="padding-top: 10px;">
                                 <div class="misma-linea">
                                     <div>
                                         <div class="misma-linea">
@@ -109,27 +157,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="margin-top: 20px;" class="row">
+                                <div style="margin-top: 10px;" class="row">
                                     <div class="col-md-12" *ngFor="let check of checklist">
                                         <mat-checkbox (change)="obtener_check(check)" color="warn" class="example-margin"> {{ check.Descripcion }} </mat-checkbox>
                                     </div>
-                                    <!-- <div>
-                                        <div class="col-md-12">
-                                            <mat-checkbox color="warn" class="example-margin">Nº motor y chasis coiciden con la TIV</mat-checkbox>
-                                        </div>
-                                    </div>
                                     <div>
-                                        <div class="col-md-12">
-                                            <mat-checkbox color="warn" class="example-margin">El vehículo llega por su propia propulsión</mat-checkbox>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="col-md-12">
-                                            <mat-checkbox color="warn" class="example-margin">Cuenta con los componentes estructurales completos</mat-checkbox>
-                                        </div>
-                                    </div> -->
-                                    <div>
-                                        <div class="col-md-12" style="margin-top: 30px;">
+                                        <div class="col-md-12" style="margin-top: 10px;">
                                             <span>Peso estimado del vehículo:</span>&nbsp;&nbsp;
                                             <mat-form-field appearance="outline" class="input-small">
                                                 <input formControlName="peso_estimado" name="peso_estimado" type="text" matInput value="120" disabled>
@@ -138,7 +171,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="col-md-12" style="margin-top: 0px; margin-bottom: 114px;">
+                                        <div class="col-md-12" style="margin-top: 0px;">
                                             <span>Peso real del vehículo (kg):</span>&nbsp;&nbsp;&nbsp;&nbsp;
                                             <mat-form-field appearance="outline" class="input-small">
                                                 <input formControlName="peso_real" name="peso_real" type="number" min="1" matInput>
@@ -152,6 +185,41 @@
                         </fieldset>
                     </div>
 
+                    <!-- Observación e Imágenes -->
+                    <div class="card">
+                        <mat-tab-group color="warn">
+                            <mat-tab label="Obervaciones">
+                                <div style="height: 190px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
+                                    <mat-radio-group color="warn" (change)="obtener_estado_observacion($event.value)" [value]="tipo_observacion">
+                                        <mat-radio-button value="P" *ngIf="estado_proceso != 'O'">Desactivado</mat-radio-button>
+                                        <mat-radio-button value="O">Observado</mat-radio-button>
+                                        <mat-radio-button value="S" *ngIf="estado_proceso === 'O'">Subsanado</mat-radio-button>
+                                    </mat-radio-group>
+                                    <mat-form-field appearance="outline" class="w100p">
+                                        <textarea id="obs_desc" matInput rows="7" [readonly]='deshabilitar_obs' formControlName="descripcion_obs" name="descripcion_obs" [(ngModel)]="descripcion_obs"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Galería de imágenes">
+                                <div class="gallerize-example">
+                                    <div class="misma-linea" style="margin-bottom: 8px;" *ngIf="mostrar_boton_add_img">
+                                        <h4>Agregar imagen</h4>
+                                        <button type="button" mat-icon-button style="margin-left: 10px; margin-top: 25px;">
+                                            <mat-icon (click)="adjuntar_imagen()" style="font-size: 23px;" color="warn">add_circle</mat-icon>
+                                        </button>
+                                    </div>
+                                    <br *ngIf="!mostrar_boton_add_img" />
+                                    <div style="height: 97px; overflow: auto;display: flex; flex-wrap: wrap;">
+                                        <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
+                                            <img style="width: 100%;height: 90px;object-fit: cover;" [lightbox]="i" [gallery]="'anotherLightbox'" [src]="item.data.thumb">
+                                            <a href="javascript:void(0)" style="position: absolute; top:0; right: 0;"><img style="width: 20px;" (click)="quitarImagen(i)" src="assets/img/icons-form/delete.svg"></a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+
                 </div>
                 <div class="col-md-4">
                     <!-- Tablas -->
@@ -159,7 +227,7 @@
                         <table class="table table-sm table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="text-center bg-vehiculo" colspan="4" scope="col">
+                                    <th class="text-center bg-vehiculo" colspan="2" scope="col">
                                         Datos del vehículo
                                     </th>
                                 </tr>
@@ -168,21 +236,26 @@
                                 <tr>
                                     <th>Placa</th>
                                     <td> {{ proceso_obtenido.VehiculoPlaca }} </td>
+                                </tr>
+                                <tr>
                                     <th>Nº Chasis</th>
                                     <td> {{ proceso_obtenido.VehiculoNroChasis }} </td>
                                 </tr>
                                 <tr>
                                     <th>Nº Motor</th>
                                     <td> {{ proceso_obtenido.VehiculoNroMotor }} </td>
+                                </tr>
+                                <tr>
                                     <th>VIN</th>
                                     <td> {{ proceso_obtenido.VehiculoVIN }} </td>
                                 </tr>
                                 <tr>
                                     <th>Categoría</th>
                                     <td> {{ proceso_obtenido.VehiculoCategoria }} </td>
+                                </tr>
+                                <tr>
                                     <th>Marca</th>
                                     <td> {{ proceso_obtenido.VehiculoMarca }} </td>
-
                                 </tr>
                                 <tr>
                                     <th>Modelo</th>
@@ -191,9 +264,10 @@
                                 <tr>
                                     <th>Año</th>
                                     <td> {{ proceso_obtenido.VehiculoAnoFabricacion }} </td>
+                                </tr>
+                                <tr>
                                     <th>Combustible</th>
                                     <td> {{ proceso_obtenido.VehiculoCombustible }} </td>
-
                                 </tr>
                             </tbody>
                         </table>
@@ -249,56 +323,21 @@
                         </table>
                     </div>
 
-                    <!-- Observación e Imágenes 276-->
-                    <div class="card">
-                        <mat-tab-group color="warn">
-                            <mat-tab label="Obervaciones">
-                                <div style="height: 190px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
-                                    <!-- (change)="obtener_estado_observacion($event.value)" -->
-                                    <mat-radio-group color="warn" (change)="obtener_estado_observacion($event.value)" [value]="tipo_observacion">
-                                        <mat-radio-button value="P" *ngIf="estado_proceso != 'O'">Desactivado</mat-radio-button>
-                                        <mat-radio-button value="O">Observado</mat-radio-button>
-                                        <mat-radio-button value="S" *ngIf="estado_proceso === 'O'">Subsanado</mat-radio-button>
-                                    </mat-radio-group>
-                                    <mat-form-field appearance="outline" class="w100p">
-                                        <textarea id="obs_desc" matInput rows="7" [readonly]='deshabilitar_obs' formControlName="descripcion_obs" name="descripcion_obs" [(ngModel)]="descripcion_obs"></textarea>
-                                    </mat-form-field>
-                                </div>
-                            </mat-tab>
-                            <mat-tab label="Galería de imágenes">
-                                <div class="gallerize-example">
-                                    <div class="misma-linea" style="margin-bottom: 8px;" *ngIf="mostrar_boton_add_img">
-                                        <h4>Agregar imagen</h4>
-                                        <button type="button" mat-icon-button style="margin-left: 10px; margin-top: 25px;">
-                                            <mat-icon (click)="adjuntar_imagen()" style="font-size: 23px;" color="warn">add_circle</mat-icon>
-                                        </button>
-                                    </div>
-                                    <br *ngIf="!mostrar_boton_add_img" />
-                                    <div style="height: 97px; overflow: auto;display: flex; flex-wrap: wrap;">
-                                        <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
-                                            <img style="width: 100%;height: 90px;object-fit: cover;" [lightbox]="i" [gallery]="'anotherLightbox'" [src]="item.data.thumb">
-                                            <a href="javascript:void(0)" style="position: absolute; top:0; right: 0;"><img style="width: 20px;" (click)="quitarImagen(i)" src="assets/img/icons-form/delete.svg"></a>
-                                        </span>
-                                    </div>
-                                </div>
-                            </mat-tab>
-                        </mat-tab-group>
+                    <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 45px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" (click)="volverEtapa()" class="btn-block" mat-stroked-button color="warn">Cancelar</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn-block" mat-raised-button color="warn">Guardar</button>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
 
-        <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 10px; margin-bottom: -20px;">
-            <div class="row">
-                <div class="col-md-8"></div>
-                <div class="col-md-2" style="margin-right: -20px;">
-                    <button type="button" (click)="volverEtapa()" class="btn-block" mat-stroked-button color="warn">Cancelar</button>
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn-block" mat-raised-button color="warn">Guardar</button>
-                </div>
-            </div>
-        </div>
     </form>
 
 </div>

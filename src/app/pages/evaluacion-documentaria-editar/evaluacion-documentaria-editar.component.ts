@@ -210,6 +210,8 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     this.archivos_etapa[i].archivo_adjunto = null;
   }
 
+  nro_documento_repe = 10;
+
   setear_datos_proceso(proceso: Proceso) {
 
     this.form_busqueda.setValue({
@@ -219,7 +221,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
     this.form_principal.setValue({
 
       // Datos del Propietario
-      tipo_documento_prop:   proceso.PropietarioTipoDI,
+      tipo_documento_prop:   proceso.PropietarioTipoDI === '01' ? 'Documento Nacional de Identidad' : 'Carnet de Extranjería',
       nro_documento_prop:    proceso.PropietarioNumeroDI,
       nombre_prop:           proceso.PropietarioNombre,
 
@@ -236,6 +238,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
        // Datos del representante
        tipo_documento_repre: proceso.SolicitanteTipoDI,
        nro_documento_repre:  proceso.SolicitanteNumeroDI,
+       nro_documento_repre2:  proceso.SolicitanteNumeroDI,
        nombre_repre:         proceso.SolicitanteNombre,
        correo_repre:         proceso.SolicitanteCorreo,
        celular_repre:        proceso.SolicitanteTelefono,
@@ -309,6 +312,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
       // Datos del representante
       tipo_documento_repre: new FormControl( "00", [Validators.required, Validators.pattern('^(?!.*00).*$')]),
       nro_documento_repre: new FormControl( null, [Validators.required]),
+      nro_documento_repre2: new FormControl( null ),
       nombre_repre: new FormControl( null, [Validators.required]),
       correo_repre: new FormControl( null, [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]),
       celular_repre: new FormControl( null, [Validators.required, Validators.min(900000000)]),
@@ -336,6 +340,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
 
       this.form_principal.controls['tipo_documento_repre'].disable();
       this.form_principal.controls['nro_documento_repre'].disable();
+      this.form_principal.controls['nro_documento_repre2'].disable();
       this.form_principal.controls['nombre_repre'].disable();
       this.form_principal.controls['correo_repre'].disable();
       this.form_principal.controls['celular_repre'].disable();
@@ -426,6 +431,7 @@ export class EvaluacionDocumentariaEditarComponent implements OnInit {
        // Datos del representante
        tipo_documento_repre: tipo_documento_repre_prop,
        nro_documento_repre:  nro_documento_repre_prop,
+       nro_documento_repre2:  nro_documento_repre_prop,
        nombre_repre:         nombre_repre_prop,
        correo_repre:         '',
        celular_repre:        '',

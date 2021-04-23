@@ -525,6 +525,7 @@ export class VerificacionFisicaEditarComponent implements OnInit {
   }
 
   setear_formulario(proceso: Proceso) {
+
     this.form_etapa.setValue({
       // Datos de la solicitud
       nro_solicitud: proceso.Correlativo,

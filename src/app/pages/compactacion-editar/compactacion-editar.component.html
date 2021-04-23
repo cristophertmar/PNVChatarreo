@@ -13,6 +13,52 @@
                                 Datos de la solicitud
                             </legend>
                             <div class="container-fielset">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="staticEmail">Nº Solicitud:</label>
+                                            <div style="margin-top: -17px;">
+                                                <mat-form-field appearance="outline" class="w100p">
+                                                    <input formControlName="nro_solicitud" name="nro_solicitud" type="text" matInput>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="staticEmail">Fecha solicitud:</label>
+                                            <div style="margin-top: -17px;">
+                                                <mat-form-field appearance="outline" class="w100p">
+                                                    <input formControlName="fecha_solicitud" name="fecha_solicitud" type="date" matInput>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="staticEmail">Tipo&nbsp;chatarreo:</label>
+                                            <div style="margin-top: -17px;">
+                                                <mat-form-field appearance="outline" class="w100p">
+                                                    <mat-select formControlName="pgm_chatarreo" name="pgm_chatarreo">
+                                                        <mat-option value="">(Seleccionar)</mat-option>
+                                                        <mat-option value="O">Obligatorio</mat-option>
+                                                        <mat-option value="V">Voluntario</mat-option>
+                                                        <mat-option value="p">PCH</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- <div class="card">
+                        <fieldset>
+                            <legend>
+                                Datos de la solicitud
+                            </legend>
+                            <div class="container-fielset">
                                 <div class="misma-linea">
                                     <div>
                                         <div class="misma-linea">
@@ -62,12 +108,12 @@
                                 </div>
                             </div>
                         </fieldset>
-                    </div>
-                    <br>
+                    </div> -->
+
                     <div class="alert alert-danger" role="alert">
                         La presente etapa de compactación de las partes del vehículo se realiza de conformidad con lo dispuesto en el Decreto Legislativo N° 1278 y su Reglamento aprobado por Decreto Supremo N° 014-2017-MINAM.
                     </div>
-                    <br>
+
                     <!-- Verificación Física -->
                     <div class="card">
                         <fieldset>
@@ -111,12 +157,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="margin-top: 20px;" class="row">
+                                <div style="margin-top: 10px;" class="row">
                                     <div class="col-md-12" *ngFor="let check of checklist">
                                         <mat-checkbox (change)="obtener_check(check)" color="warn" class="example-margin"> {{ check.Descripcion }} </mat-checkbox>
                                     </div>
                                     <div>
-                                        <div class="col-md-12" style="margin-top: 30px; margin-bottom: 73px;">
+                                        <div class="col-md-12" style="margin-top: 10px;">
                                             <span>Peso de chatarra: :</span>&nbsp;&nbsp;
                                             <mat-form-field appearance="outline" class="input-small">
                                                 <input formControlName="peso_chatarra" name="peso_chatarra" type="number" matInput min="1">
@@ -130,6 +176,39 @@
                         </fieldset>
                     </div>
 
+                    <!-- Observación e Imágenes-->
+                    <div class="card">
+                        <mat-tab-group color="warn">
+                            <mat-tab label="Obervaciones">
+                                <div style="height: 175px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
+                                    <div style="padding-left: 5px; margin-bottom: 5px; margin-top: 5px;">
+                                        <span>Escriba comentarios que considere necesarios en esta etapa:</span>
+                                    </div>
+                                    <mat-form-field appearance="outline" class="w100p">
+                                        <textarea id="obs_desc" rows="7" matInput formControlName="descripcion_obs" name="descripcion_obs" [value]="descripcion_obs"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Galería de imágenes">
+                                <div class="gallerize-example">
+                                    <div class="misma-linea" style="margin-bottom: 8px;" *ngIf="mostrar_boton_add_img">
+                                        <h4>Agregar imagen</h4>
+                                        <button type="button" mat-icon-button style="margin-left: 10px; margin-top: 25px;">
+                                            <mat-icon (click)="adjuntar_imagen()" style="font-size: 23px;" color="warn">add_circle</mat-icon>
+                                        </button>
+                                    </div>
+                                    <br *ngIf="!mostrar_boton_add_img" />
+                                    <div style="height: 97px; overflow: auto;display: flex; flex-wrap: wrap;">
+                                        <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
+                                            <img style="width: 100%;height: 90px;object-fit: cover;" [lightbox]="i" [gallery]="'anotherLightbox'" [src]="item.data.thumb">
+                                            <a href="javascript:void(0)" style="position: absolute; top:0; right: 0;"><img style="width: 20px;" (click)="quitarImagen(i)" src="assets/img/icons-form/delete.svg"></a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+
                 </div>
                 <div class="col-md-4">
                     <!-- Tablas -->
@@ -137,7 +216,7 @@
                         <table class="table table-sm table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="text-center bg-vehiculo" colspan="4" scope="col">
+                                    <th class="text-center bg-vehiculo" colspan="2" scope="col">
                                         Datos del vehículo
                                     </th>
                                 </tr>
@@ -146,21 +225,26 @@
                                 <tr>
                                     <th>Placa</th>
                                     <td> {{ proceso_obtenido.VehiculoPlaca }} </td>
+                                </tr>
+                                <tr>
                                     <th>Nº Chasis</th>
                                     <td> {{ proceso_obtenido.VehiculoNroChasis }} </td>
                                 </tr>
                                 <tr>
                                     <th>Nº Motor</th>
                                     <td> {{ proceso_obtenido.VehiculoNroMotor }} </td>
+                                </tr>
+                                <tr>
                                     <th>VIN</th>
                                     <td> {{ proceso_obtenido.VehiculoVIN }} </td>
                                 </tr>
                                 <tr>
                                     <th>Categoría</th>
                                     <td> {{ proceso_obtenido.VehiculoCategoria }} </td>
+                                </tr>
+                                <tr>
                                     <th>Marca</th>
                                     <td> {{ proceso_obtenido.VehiculoMarca }} </td>
-
                                 </tr>
                                 <tr>
                                     <th>Modelo</th>
@@ -169,9 +253,10 @@
                                 <tr>
                                     <th>Año</th>
                                     <td> {{ proceso_obtenido.VehiculoAnoFabricacion }} </td>
+                                </tr>
+                                <tr>
                                     <th>Combustible</th>
                                     <td> {{ proceso_obtenido.VehiculoCombustible }} </td>
-
                                 </tr>
                             </tbody>
                         </table>
@@ -227,51 +312,21 @@
                         </table>
                     </div>
 
-                    <!-- Observación e Imágenes-->
-                    <div class="card">
-                        <mat-tab-group color="warn">
-                            <mat-tab label="Obervaciones">
-                                <div style="height: 175px; padding-left: 20px; padding-top: 10px; padding-right: 20px;">
-                                    <div style="padding-left: 5px; margin-bottom: 5px; margin-top: 5px;">
-                                        <span>Escriba comentarios que considere necesarios en esta etapa:</span>
-                                    </div>
-                                    <mat-form-field appearance="outline" class="w100p">
-                                        <textarea id="obs_desc" rows="7" matInput formControlName="descripcion_obs" name="descripcion_obs" [value]="descripcion_obs"></textarea>
-                                    </mat-form-field>
-                                </div>
-                            </mat-tab>
-                            <mat-tab label="Galería de imágenes">
-                                <div class="gallerize-example">
-                                    <div class="misma-linea" style="margin-bottom: 8px;" *ngIf="mostrar_boton_add_img">
-                                        <h4>Agregar imagen</h4>
-                                        <button type="button" mat-icon-button style="margin-left: 10px; margin-top: 25px;">
-                                            <mat-icon (click)="adjuntar_imagen()" style="font-size: 23px;" color="warn">add_circle</mat-icon>
-                                        </button>
-                                    </div>
-                                    <br *ngIf="!mostrar_boton_add_img" />
-                                    <div style="height: 97px; overflow: auto;display: flex; flex-wrap: wrap;">
-                                        <span style="width: 100px;margin-left: 5px;position: relative;" *ngFor="let item of items; index as i">
-                                            <img style="width: 100%;height: 90px;object-fit: cover;" [lightbox]="i" [gallery]="'anotherLightbox'" [src]="item.data.thumb">
-                                            <a href="javascript:void(0)" style="position: absolute; top:0; right: 0;"><img style="width: 20px;" (click)="quitarImagen(i)" src="assets/img/icons-form/delete.svg"></a>
-                                        </span>
-                                    </div>
-                                </div>
-                            </mat-tab>
-                        </mat-tab-group>
+                    <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 45px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" (click)="volverEtapa()" class="btn-block" mat-stroked-button color="warn">Cancelar</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn-block" mat-raised-button color="warn">Guardar</button>
+                            </div>
+                        </div>
                     </div>
+
+
                 </div>
             </div>
         </div>
-        <div style="width: 100%; text-align: right; padding-right: 20px; padding-left: 20px; margin-top: 10px; margin-bottom: -20px;">
-            <div class="row">
-                <div class="col-md-8"></div>
-                <div class="col-md-2" style="margin-right: -20px;">
-                    <button type="button" (click)="volverEtapa()" class="btn-block" mat-stroked-button color="warn">Cancelar</button>
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn-block" mat-raised-button color="warn">Guardar</button>
-                </div>
-            </div>
-        </div>
+
     </form>
 </div>
