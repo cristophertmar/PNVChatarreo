@@ -22,7 +22,7 @@ export class EtapaComponent implements OnInit {
     private _router: Router,
     private _activatedRoute: ActivatedRoute
   ) {
-    this.crearFormulario();
+    
   }
 
   ngOnInit(): void {
@@ -56,15 +56,19 @@ export class EtapaComponent implements OnInit {
         this.id_etapa = 6;
         break;
     }
+
+    this.crearFormulario();
     
   }
 
   crearFormulario() {
 
+    let item_bus: string = (this.id_etapa === 1? 'O' : 'P');
+
     // Formulario de Búsqueda
     this.form_busqueda = new FormGroup({
       periodo: new FormControl( '2021', [Validators.required]),
-      estado: new FormControl( 'P', [Validators.required])
+      estado: new FormControl( item_bus, [Validators.required])
     });
 
   }

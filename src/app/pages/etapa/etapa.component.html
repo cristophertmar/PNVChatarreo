@@ -19,9 +19,9 @@
                             <label style="line-height: 2.7; margin-right: 10px;">Estado:</label>
                             <mat-form-field appearance="outline" style="width: 150px;" color="warn">
                                 <mat-select formControlName="estado" name="estado">
-                                    <mat-option value="P">Pendiente</mat-option>
-                                    <mat-option value="A">Activado</mat-option>
-                                    <mat-option value="O">Observado</mat-option>
+                                    <mat-option *ngIf="id_etapa != 1" value="P">Pendiente</mat-option>
+                                    <!-- <mat-option value="A">Activado</mat-option> -->
+                                    <mat-option *ngIf="id_etapa <= 2" value="O">Observado</mat-option>
                                 </mat-select>
                             </mat-form-field>
                             <button style="display: none;" class="btn-block" mat-raised-button color="basic">Buscar</button>
