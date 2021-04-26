@@ -30,7 +30,7 @@
                                             <label for="staticEmail">Fecha solicitud:</label>
                                             <div style="margin-top: -17px;">
                                                 <mat-form-field appearance="outline" class="w100p">
-                                                    <input formControlName="fecha_solicitud" name="fecha_solicitud" type="date" matInput>
+                                                    <input formControlName="fecha_solicitud" name="fecha_solicitud" type="date" data-date-format="dd-mmmm-yyyy" matInput>
                                                 </mat-form-field>
                                             </div>
                                         </div>
@@ -136,7 +136,7 @@
                                         <div class="misma-linea">
                                             <label class="label-sm">Fecha&nbsp;Inicio:</label>
                                             <mat-form-field appearance="outline" style="width: 151px; margin-left: 8px;">
-                                                <input formControlName="fecha_inicio" [(ngModel)]="fecha_inicio" name="fecha_inicio" type="date" matInput (change)="obtener_fecha_minima()" [max]="fecha_maxima">
+                                                <input formControlName="fecha_inicio" [(ngModel)]="fecha_inicio" name="fecha_inicio" type="date" data-date-format="dd-mmmm-yyyy" matInput (change)="obtener_fecha_minima()" [max]="fecha_maxima">
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -154,7 +154,7 @@
                                         <div class="misma-linea">
                                             <label class="label-sm">Fecha&nbsp;Fin:</label>
                                             <mat-form-field appearance="outline" style="width: 151px; margin-left: 8px;">
-                                                <input [(ngModel)]="fecha_fin" formControlName="fecha_fin" name="fecha_fin" type="date" matInput [max]="fecha_maxima" [min]="fecha_minima" (change)="obtener_hora_minima()">
+                                                <input [(ngModel)]="fecha_fin" formControlName="fecha_fin" name="fecha_fin" type="date" data-date-format="dd-mmmm-yyyy" matInput [max]="fecha_maxima" [min]="fecha_minima" (change)="obtener_hora_minima()">
                                             </mat-form-field>
                                         </div>
                                     </div>

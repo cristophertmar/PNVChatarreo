@@ -12,7 +12,7 @@
                 <div class="misma-linea">
                     <label style="width: 120px; line-height: 2.5; text-align: left;">Fecha&nbsp;Inicio:</label>
                     <mat-form-field appearance="outline">
-                        <input type="date" matInput formControlName="fechaInicio" [readonly]="pco.Estado === 'V'" [class.is-invalid]="fechaInicioNoValido">
+                        <input type="date" data-date-format="dd-mmmm-yyyy" matInput formControlName="fechaInicio" [readonly]="pco.Estado === 'V'" [class.is-invalid]="fechaInicioNoValido">
                     </mat-form-field>
                 </div>
                 <small *ngIf="fechaInicioNoValido" class="text-danger">
@@ -23,7 +23,7 @@
                 <div class="misma-linea">
                     <label style="width: 100px; line-height: 2.5; text-align: left;">Fecha&nbsp;Fin:</label>
                     <mat-form-field appearance="outline">
-                        <input type="date" matInput formControlName="fechaFin" [readonly]="pco.Estado === 'V'" [class.is-invalid]="fechaFinNoValido">
+                        <input type="date" data-date-format="dd-mmmm-yyyy" matInput formControlName="fechaFin" [readonly]="pco.Estado === 'V'" [class.is-invalid]="fechaFinNoValido">
                     </mat-form-field><br/>
                 </div>
                 <small *ngIf="fechaFinNoValido" class="text-danger">
